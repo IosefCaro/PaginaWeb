@@ -1,0 +1,17 @@
+{
+  "name": "Iosef Caro App",
+  "short_name": "Iosef Caro",
+  "description": "Plataforma Educativa Iosef Caro",
+  "start_url": "/app/index.html",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#1e293b",
+  "icons": [
+  {
+    "src": "logo.png.png",
+    "sizes": "512x512",
+    "type": "image/png",
+    "purpose": "any maskable"
+  }
+]
+}
