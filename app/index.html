@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Instituto Iosef Caro</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#0f172a;min-height:100vh;overflow-x:hidden}
+
+/* Portal de selección */
+#portal-selector{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;animation:fadeUp .5s ease}
+
+/* Login modal */
+#login-modal{position:fixed;inset:0;background:rgba(15,23,42,.95);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+#login-modal.open{display:flex;animation:fadeUp .3s ease}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+
+/* Portal cards */
+.portal-card{background:white;border-radius:2.5rem;padding:2.5rem 2rem;cursor:pointer;transition:all .25s cubic-bezier(.4,0,.2,1);border:2px solid transparent;text-align:center;position:relative;overflow:hidden}
+.portal-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .25s}
+.portal-card:hover{transform:translateY(-8px);box-shadow:0 30px 60px -12px rgba(0,0,0,.25)}
+.portal-card.familia:hover{border-color:#a78bfa}
+.portal-card.escuela:hover{border-color:#38bdf8}
+.portal-card:active{transform:scale(.97)}
+
+/* Input estilo pro */
+.input-pro{background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:1rem;padding:.85rem 1rem;width:100%;outline:none;font-size:15px;font-family:inherit;font-weight:600;transition:all .2s;color:#0f172a}
+.input-pro:focus{border-color:#0f172a;background:white;box-shadow:0 0 0 3px rgba(15,23,42,.08)}
+
+/* Progress bar login */
+.progress-bar{height:3px;background:#e2e8f0;border-radius:2px;overflow:hidden}
+.progress-bar-inner{height:100%;background:#0f172a;border-radius:2px;transition:width .3s;width:0}
+</style>
+</head>
+<body>
+
+<!-- ══ SELECTOR DE PORTAL ══ -->
+<div id="portal-selector">
+  <!-- Logo -->
+  <div class="text-center mb-12">
+    <div class="w-20 h-20 bg-white rounded-[2rem] flex items-center justify-center text-4xl mx-auto mb-5 shadow-2xl">🏫</div>
+    <h1 class="text-4xl font-black text-white tracking-tighter">Iosef Caro</h1>
+    <p class="text-slate-400 text-sm font-bold mt-2 uppercase tracking-widest">Plataforma Educativa</p>
+  </div>
+
+  <!-- Los dos portales -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-lg">
+
+    <!-- Portal Familias -->
+    <div class="portal-card familia" onclick="abrirLogin('familia')">
+      <div class="w-16 h-16 bg-violet-50 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-5">💜</div>
+      <h2 class="text-xl font-black text-slate-900 mb-2">Portal Familias</h2>
+      <p class="text-slate-400 text-sm leading-relaxed">Seguí el desempeño de tu hijo/a, comunicaciones y autorizaciones.</p>
+      <div class="mt-5 flex items-center justify-center gap-2 text-violet-600 font-black text-xs uppercase tracking-wide">
+        <span>Ingresar</span><i class="fas fa-arrow-right text-[10px]"></i>
+      </div>
+    </div>
+
+    <!-- Portal Escuela -->
+    <div class="portal-card escuela" onclick="mostrarPanelesEscuela()">
+      <div class="w-16 h-16 bg-sky-50 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-5">🏫</div>
+      <h2 class="text-xl font-black text-slate-900 mb-2">Portal Escuela</h2>
+      <p class="text-slate-400 text-sm leading-relaxed">Docentes, secretaría, EOE, comunicaciones y administración.</p>
+      <div class="mt-5 flex items-center justify-center gap-2 text-sky-600 font-black text-xs uppercase tracking-wide">
+        <span>Ver paneles</span><i class="fas fa-arrow-right text-[10px]"></i>
+      </div>
+    </div>
+  </div>
+
+  <p class="text-slate-600 text-xs font-bold mt-10 uppercase tracking-widest">© 2026 Instituto Iosef Caro</p>
+</div>
+
+<!-- ══ MODAL PANELES ESCUELA ══ -->
+<div id="modal-paneles" style="position:fixed;inset:0;background:rgba(15,23,42,.95);backdrop-filter:blur(8px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px">
+  <div class="bg-white rounded-[2.5rem] w-full max-w-md p-7 shadow-2xl">
+    <div class="text-center mb-6">
+      <h2 class="text-2xl font-black text-slate-900">Seleccioná tu panel</h2>
+      <p class="text-slate-400 text-sm mt-1">¿A cuál panel necesitás acceder?</p>
+    </div>
+    <div class="space-y-3">
+      <a href="admin.html" class="flex items-center gap-4 p-4 bg-red-50 border-2 border-red-100 hover:border-red-300 rounded-2xl transition-all cursor-pointer no-underline">
+        <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fas fa-hammer text-red-600"></i></div>
+        <div><p class="font-black text-slate-900 text-sm">Administración</p><p class="text-[10px] text-slate-400">Admin y Director — requiere contraseña</p></div>
+        <i class="fas fa-chevron-right text-slate-300 ml-auto"></i>
+      </a>
+      <a href="comunicaciones.html" class="flex items-center gap-4 p-4 bg-blue-50 border-2 border-blue-100 hover:border-blue-300 rounded-2xl transition-all cursor-pointer no-underline">
+        <div class="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fas fa-bullhorn text-blue-600"></i></div>
+        <div><p class="font-black text-slate-900 text-sm">Comunicaciones</p><p class="text-[10px] text-slate-400">Publicar noticias y eventos — requiere contraseña</p></div>
+        <i class="fas fa-chevron-right text-slate-300 ml-auto"></i>
+      </a>
+      <a href="docente.html" class="flex items-center gap-4 p-4 bg-emerald-50 border-2 border-emerald-100 hover:border-emerald-300 rounded-2xl transition-all cursor-pointer no-underline">
+        <div class="w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fas fa-chalkboard-teacher text-emerald-600"></i></div>
+        <div><p class="font-black text-slate-900 text-sm">Docentes</p><p class="text-[10px] text-slate-400">Notas, asistencia e informes — solo email</p></div>
+        <i class="fas fa-chevron-right text-slate-300 ml-auto"></i>
+      </a>
+      <a href="eoe.html" class="flex items-center gap-4 p-4 bg-violet-50 border-2 border-violet-100 hover:border-violet-300 rounded-2xl transition-all cursor-pointer no-underline">
+        <div class="w-10 h-10 bg-violet-100 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fas fa-shield-alt text-violet-600"></i></div>
+        <div><p class="font-black text-slate-900 text-sm">EOE</p><p class="text-[10px] text-slate-400">Orientación escolar y legajos — solo email</p></div>
+        <i class="fas fa-chevron-right text-slate-300 ml-auto"></i>
+      </a>
+      <a href="secretaria.html" class="flex items-center gap-4 p-4 bg-amber-50 border-2 border-amber-100 hover:border-amber-300 rounded-2xl transition-all cursor-pointer no-underline">
+        <div class="w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fas fa-headset text-amber-600"></i></div>
+        <div><p class="font-black text-slate-900 text-sm">Secretaría</p><p class="text-[10px] text-slate-400">Mensajes, justificaciones y llamadas — solo email</p></div>
+        <i class="fas fa-chevron-right text-slate-300 ml-auto"></i>
+      </a>
+      <!-- Importar desde otra app -->
+      <button onclick="cerrarPaneles();abrirImportar()" class="flex items-center gap-4 p-4 bg-gradient-to-r from-indigo-50 to-violet-50 border-2 border-indigo-200 hover:border-indigo-400 rounded-2xl transition-all w-full text-left">
+        <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center flex-shrink-0"><i class="fas fa-file-import text-indigo-600"></i></div>
+        <div><p class="font-black text-slate-900 text-sm">Importar alumnos</p><p class="text-[10px] text-slate-400">Xhendra, Acadeu, Handing y otros sistemas</p></div>
+        <i class="fas fa-chevron-right text-slate-300 ml-auto"></i>
+      </button>
+    </div>
+    <button onclick="cerrarPaneles()" class="w-full text-slate-400 text-xs font-bold py-4 mt-2">← Volver</button>
+  </div>
+</div>
+
+<!-- ══ MODAL LOGIN ══ -->
+<div id="login-modal">
+  <div class="bg-white rounded-[2.5rem] w-full max-w-sm p-8 shadow-2xl">
+    <!-- Header dinámico -->
+    <div class="text-center mb-7">
+      <div id="login-icon" class="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4">💜</div>
+      <h2 id="login-title" class="text-2xl font-black text-slate-900 tracking-tight">Portal Familias</h2>
+      <p id="login-subtitle" class="text-slate-400 text-sm mt-1">Ingresá con tu email registrado</p>
+    </div>
+
+    <!-- Form -->
+    <div class="space-y-4">
+      <div>
+        <label class="text-[10px] font-black text-slate-400 uppercase ml-1 block mb-1.5">Email</label>
+        <input type="email" id="login-email" class="input-pro" placeholder="tu@email.com" autocomplete="email">
+      </div>
+      <div id="pass-field" class="hidden">
+        <label class="text-[10px] font-black text-slate-400 uppercase ml-1 block mb-1.5">Contraseña</label>
+        <input type="password" id="login-pass" class="input-pro" placeholder="Tu contraseña" autocomplete="current-password">
+      </div>
+      <p id="login-hint" class="text-[11px] text-slate-400 text-center">Las familias ingresan solo con email, sin contraseña</p>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="progress-bar mt-5 mb-1" id="progress-cont" style="display:none">
+      <div class="progress-bar-inner" id="progress-bar"></div>
+    </div>
+
+    <p id="login-error" class="text-rose-500 text-xs font-bold text-center mt-3 hidden"></p>
+
+    <button id="btn-ingresar" onclick="realizarLogin()" class="w-full bg-slate-900 text-white p-4 rounded-2xl font-black mt-5 hover:bg-black transition active:scale-95 flex items-center justify-center gap-2">
+      <i class="fas fa-arrow-right"></i> INGRESAR
+    </button>
+    <button onclick="cerrarLogin()" class="w-full text-slate-400 text-xs font-bold py-3 mt-1">← Volver</button>
+  </div>
+</div>
+
+<!-- ══ MODAL IMPORTAR DESDE OTRA APP ══ -->
+<div id="modal-importar" style="position:fixed;inset:0;background:rgba(15,23,42,.97);backdrop-filter:blur(10px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:20px;overflow-y:auto">
+  <div class="bg-white rounded-[2.5rem] w-full max-w-xl my-8 shadow-2xl overflow-hidden">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-indigo-600 to-violet-600 p-7 text-white">
+      <div class="flex items-center justify-between mb-2">
+        <div class="flex items-center gap-3">
+          <div class="w-12 h-12 bg-white/20 rounded-2xl flex items-center justify-center text-2xl">📥</div>
+          <div>
+            <h2 class="text-2xl font-black tracking-tight">Importar Alumnos</h2>
+            <p class="text-white/70 text-xs mt-0.5">Carga masiva desde otro sistema de gestión</p>
+          </div>
+        </div>
+        <button onclick="cerrarImportar()" class="text-white/60 hover:text-white text-3xl font-light leading-none">&times;</button>
+      </div>
+    </div>
+
+    <div class="p-7 space-y-6">
+
+      <!-- Paso 1: Elegir app origen -->
+      <div>
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Paso 1 — Sistema de origen</p>
+        <div class="grid grid-cols-2 gap-3">
+          <button onclick="seleccionarApp('xhendra')" class="app-origen-btn flex items-center gap-3 p-4 border-2 border-slate-100 hover:border-indigo-400 rounded-2xl transition-all text-left" data-app="xhendra">
+            <div class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-lg flex-shrink-0">🔷</div>
+            <div><p class="font-black text-sm text-slate-900">Xhendra</p><p class="text-[9px] text-slate-400 uppercase font-bold">Exportar CSV desde Xhendra</p></div>
+          </button>
+          <button onclick="seleccionarApp('acadeu')" class="app-origen-btn flex items-center gap-3 p-4 border-2 border-slate-100 hover:border-indigo-400 rounded-2xl transition-all text-left" data-app="acadeu">
+            <div class="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-lg flex-shrink-0">🟢</div>
+            <div><p class="font-black text-sm text-slate-900">Acadeu</p><p class="text-[9px] text-slate-400 uppercase font-bold">Exportar CSV desde Acadeu</p></div>
+          </button>
+          <button onclick="seleccionarApp('handing')" class="app-origen-btn flex items-center gap-3 p-4 border-2 border-slate-100 hover:border-indigo-400 rounded-2xl transition-all text-left" data-app="handing">
+            <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-lg flex-shrink-0">🟡</div>
+            <div><p class="font-black text-sm text-slate-900">Handing</p><p class="text-[9px] text-slate-400 uppercase font-bold">Exportar CSV desde Handing</p></div>
+          </button>
+          <button onclick="seleccionarApp('generico')" class="app-origen-btn flex items-center gap-3 p-4 border-2 border-slate-100 hover:border-indigo-400 rounded-2xl transition-all text-left" data-app="generico">
+            <div class="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center text-lg flex-shrink-0">📄</div>
+            <div><p class="font-black text-sm text-slate-900">Otro sistema</p><p class="text-[9px] text-slate-400 uppercase font-bold">CSV o Excel genérico</p></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Instrucciones dinámicas según app -->
+      <div id="imp-instrucciones" class="hidden bg-indigo-50 border border-indigo-100 rounded-2xl p-4">
+        <p class="text-[10px] font-black text-indigo-600 uppercase tracking-widest mb-2">📋 Cómo exportar desde <span id="imp-app-nombre"></span></p>
+        <div id="imp-pasos" class="text-xs text-slate-600 space-y-1 leading-relaxed"></div>
+      </div>
+
+      <!-- Paso 2: Mapeo de columnas -->
+      <div id="imp-mapeo-sect" class="hidden">
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Paso 2 — Mapeo de columnas</p>
+        <p class="text-xs text-slate-500 mb-3">Indicá qué columna de tu archivo corresponde a cada campo de Iosef Caro:</p>
+        <div class="grid grid-cols-2 gap-3" id="imp-mapeo-grid">
+          <!-- Se genera dinámicamente -->
+        </div>
+      </div>
+
+      <!-- Paso 3: Cargar archivo -->
+      <div id="imp-archivo-sect" class="hidden">
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Paso 3 — Cargar archivo</p>
+        <div id="imp-drop-zone" class="border-4 border-dashed border-indigo-200 bg-indigo-50 rounded-2xl p-8 text-center cursor-pointer hover:border-indigo-400 transition-all" onclick="document.getElementById('imp-file-input').click()" ondragover="event.preventDefault()" ondrop="manejarDropImport(event)">
+          <div class="text-4xl mb-3">☁️</div>
+          <p class="font-black text-slate-700">Arrastrá el archivo aquí</p>
+          <p class="text-slate-400 text-xs mt-1">o hacé clic para seleccionar</p>
+          <p class="text-[10px] font-black text-indigo-500 mt-3 uppercase" id="imp-file-nombre">Sin archivo seleccionado</p>
+        </div>
+        <input type="file" id="imp-file-input" accept=".csv,.xlsx,.xls" class="hidden" onchange="cargarArchivoImport(this)">
+      </div>
+
+      <!-- Vista previa -->
+      <div id="imp-preview-sect" class="hidden">
+        <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Vista previa — Primeros 5 alumnos detectados</p>
+        <div id="imp-preview-tabla" class="overflow-x-auto"></div>
+      </div>
+
+      <!-- Botones de acción -->
+      <div id="imp-acciones" class="hidden space-y-3">
+        <div class="bg-amber-50 border border-amber-100 rounded-2xl p-3 text-xs text-amber-800 font-bold">
+          <i class="fas fa-exclamation-triangle mr-2 text-amber-500"></i>
+          Los alumnos ya existentes (mismo nombre + curso) se actualizarán, no se duplicarán.
+        </div>
+        <button onclick="ejecutarImportacion()" class="w-full bg-gradient-to-r from-indigo-600 to-violet-600 text-white p-4 rounded-2xl font-black shadow-xl hover:opacity-90 transition flex items-center justify-center gap-2">
+          <i class="fas fa-rocket"></i> <span id="imp-btn-text">IMPORTAR ALUMNOS</span>
+        </button>
+      </div>
+
+      <!-- Resultado -->
+      <div id="imp-resultado" class="hidden">
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-5 text-center">
+          <div class="text-4xl mb-2">✅</div>
+          <p class="font-black text-emerald-800 text-lg" id="imp-resultado-titulo">Importación completada</p>
+          <p class="text-emerald-600 text-sm mt-1" id="imp-resultado-detalle"></p>
+          <button onclick="cerrarImportar()" class="mt-4 bg-emerald-600 text-white px-6 py-3 rounded-2xl font-black text-sm">Ir a la app</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const FB={apiKey:"AIzaSyD4pg_8j_CbgeqA1x8IOqn3CxpXepVWQtI",authDomain:"app-iosefcaro.firebaseapp.com",projectId:"app-iosefcaro",storageBucket:"app-iosefcaro.firebasestorage.app",messagingSenderId:"651320124248",appId:"1:651320124248:web:97c8ca00e29114e1983b2d"};
+firebase.initializeApp(FB);
+const db=firebase.firestore();
+
+let modoActual='familia';
+let impAppActual=null;
+let impDatosParseados=[];
+
+const IMP_APPS={
+  xhendra:{
+    nombre:'Xhendra',
+    pasos:[
+      '1. Abrí Xhendra y andá a <b>Alumnos → Exportar</b>.',
+      '2. Elegí formato <b>CSV (separado por comas)</b>.',
+      '3. Incluí al menos: nombre, nivel, sección/curso, email del tutor.',
+      '4. Guardá el archivo y subilo en el Paso 3.'
+    ],
+    columnas:{alumno:'nombre',nivel:'nivel',curso:'seccion',familia:'tutor',mail1:'email_tutor',mail2:'email_padre',mail3:'email_madre'}
+  },
+  acadeu:{
+    nombre:'Acadeu',
+    pasos:[
+      '1. En Acadeu ir a <b>Reportes → Padrón → Exportar CSV</b>.',
+      '2. El CSV incluye: apellido_nombre, grado, turno, responsable, correo_responsable.',
+      '3. Subí el archivo en el Paso 3.'
+    ],
+    columnas:{alumno:'apellido_nombre',nivel:'nivel_edu',curso:'grado',familia:'responsable',mail1:'correo_responsable',mail2:'correo_alt',mail3:''}
+  },
+  handing:{
+    nombre:'Handing',
+    pasos:[
+      '1. En Handing ir a <b>Gestión → Alumnos → Descargar planilla</b>.',
+      '2. Elegir Excel (.xlsx) o CSV.',
+      '3. Campos esperados: nombre_alumno, nivel, curso, apellido_familia, email1, email2.',
+      '4. Subí el archivo en el Paso 3.'
+    ],
+    columnas:{alumno:'nombre_alumno',nivel:'nivel',curso:'curso',familia:'apellido_familia',mail1:'email1',mail2:'email2',mail3:''}
+  },
+  generico:{
+    nombre:'tu sistema',
+    pasos:[
+      '1. Exportá un CSV o Excel desde tu sistema de gestión.',
+      '2. El archivo debe tener columnas con: nombre del alumno, nivel (inicial/primario/secundario), curso, nombre de la familia y al menos un email.',
+      '3. En el siguiente paso podés mapear tus columnas a los campos de Iosef Caro.',
+      '4. Subí el archivo en el Paso 3.'
+    ],
+    columnas:{alumno:'nombre',nivel:'nivel',curso:'curso',familia:'familia',mail1:'email',mail2:'email2',mail3:'email3'}
+  }
+};
+
+const IMP_CAMPOS={alumno:'Nombre del alumno',nivel:'Nivel (inicial/primario/sec.)',curso:'Curso (ej: 1A)',familia:'Nombre de la familia',mail1:'Email principal',mail2:'Email 2 (opcional)',mail3:'Email 3 (opcional)'};
+
+function abrirImportar(){
+  document.getElementById('modal-importar').style.display='flex';
+  resetImport();
+}
+function cerrarImportar(){document.getElementById('modal-importar').style.display='none';}
+function resetImport(){
+  impAppActual=null;impDatosParseados=[];
+  document.querySelectorAll('.app-origen-btn').forEach(b=>{b.classList.remove('border-indigo-400','bg-indigo-50');b.classList.add('border-slate-100');});
+  ['imp-instrucciones','imp-mapeo-sect','imp-archivo-sect','imp-preview-sect','imp-acciones','imp-resultado'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+  document.getElementById('imp-file-nombre').textContent='Sin archivo seleccionado';
+}
+function seleccionarApp(app){
+  impAppActual=app;
+  document.querySelectorAll('.app-origen-btn').forEach(b=>{b.classList.remove('border-indigo-400','bg-indigo-50');b.classList.add('border-slate-100');});
+  document.querySelector(`[data-app="${app}"]`).classList.add('border-indigo-400','bg-indigo-50');
+  const cfg=IMP_APPS[app];
+  document.getElementById('imp-app-nombre').textContent=cfg.nombre;
+  document.getElementById('imp-pasos').innerHTML=cfg.pasos.map(p=>`<p>• ${p}</p>`).join('');
+  document.getElementById('imp-instrucciones').classList.remove('hidden');
+  // Generar mapeo
+  const grid=document.getElementById('imp-mapeo-grid');grid.innerHTML='';
+  Object.entries(IMP_CAMPOS).forEach(([campo,etiqueta])=>{
+    grid.innerHTML+=`<div><label class="text-[9px] font-black text-slate-500 uppercase block mb-1">${etiqueta}</label><input type="text" id="map-${campo}" value="${cfg.columnas[campo]||campo}" class="w-full border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold outline-none focus:border-indigo-400 transition"></div>`;
+  });
+  document.getElementById('imp-mapeo-sect').classList.remove('hidden');
+  document.getElementById('imp-archivo-sect').classList.remove('hidden');
+}
+function manejarDropImport(e){e.preventDefault();const f=e.dataTransfer.files[0];if(f)procesarArchivoImport(f);}
+function cargarArchivoImport(inp){if(inp.files[0])procesarArchivoImport(inp.files[0]);}
+async function procesarArchivoImport(file){
+  document.getElementById('imp-file-nombre').textContent=file.name;
+  const texto=await leerArchivoComoTexto(file);
+  const lineas=texto.trim().split('\n').filter(l=>l.trim());
+  if(lineas.length<2){alert('El archivo parece estar vacío o sin filas.');return;}
+  const sep=lineas[0].includes(';')?';':',';
+  const headers=lineas[0].split(sep).map(h=>h.replace(/"/g,'').trim().toLowerCase());
+  const filas=lineas.slice(1).map(l=>l.split(sep).map(v=>v.replace(/"/g,'').trim()));
+  // Leer mapeo
+  const mapa={};
+  Object.keys(IMP_CAMPOS).forEach(campo=>{mapa[campo]=document.getElementById('map-'+campo)?.value.trim().toLowerCase()||campo;});
+  const getCol=(fila,nombre)=>{const idx=headers.indexOf(nombre.toLowerCase());return idx>=0?fila[idx]:''};
+  impDatosParseados=filas.map(f=>({
+    nombre: getCol(f,mapa.alumno),
+    nivel: normalizarNivel(getCol(f,mapa.nivel)),
+    curso: getCol(f,mapa.curso).toUpperCase(),
+    familiaNombre: getCol(f,mapa.familia),
+    mail1: getCol(f,mapa.mail1).toLowerCase(),
+    mail2: mapa.mail2?getCol(f,mapa.mail2).toLowerCase():'',
+    mail3: mapa.mail3?getCol(f,mapa.mail3).toLowerCase():'',
+  })).filter(a=>a.nombre);
+  if(!impDatosParseados.length){alert('No se encontraron alumnos. Revisá el mapeo de columnas.');return;}
+  // Vista previa
+  const prev=impDatosParseados.slice(0,5);
+  let tabla=`<table class="w-full text-[10px] font-bold border-collapse"><thead><tr class="bg-slate-100"><th class="p-2 text-left rounded-tl-xl">Nombre</th><th class="p-2 text-left">Nivel</th><th class="p-2 text-left">Curso</th><th class="p-2 text-left rounded-tr-xl">Email</th></tr></thead><tbody>`;
+  prev.forEach(a=>{tabla+=`<tr class="border-t border-slate-100"><td class="p-2">${a.nombre}</td><td class="p-2">${a.nivel}</td><td class="p-2">${a.curso}</td><td class="p-2 text-blue-500">${a.mail1}</td></tr>`;});
+  tabla+=`</tbody></table><p class="text-[9px] text-slate-400 mt-2 text-center">Total detectado: <b>${impDatosParseados.length} alumnos</b></p>`;
+  document.getElementById('imp-preview-tabla').innerHTML=tabla;
+  document.getElementById('imp-preview-sect').classList.remove('hidden');
+  document.getElementById('imp-btn-text').textContent=`IMPORTAR ${impDatosParseados.length} ALUMNOS`;
+  document.getElementById('imp-acciones').classList.remove('hidden');
+}
+function normalizarNivel(v){
+  v=(v||'').toLowerCase();
+  if(v.includes('inic')||v.includes('jard')||v.includes('kinder'))return 'inicial';
+  if(v.includes('sec')||v.includes('media')||v.includes('bachi'))return 'secundario';
+  return 'primario';
+}
+function leerArchivoComoTexto(file){
+  return new Promise((res,rej)=>{const r=new FileReader();r.onload=e=>res(e.target.result);r.onerror=rej;r.readAsText(file,'UTF-8');});
+}
+async function ejecutarImportacion(){
+  if(!impDatosParseados.length){alert('No hay datos para importar.');return;}
+  const btn=document.getElementById('imp-btn-text');btn.textContent='Importando...';
+  let creados=0,actualizados=0,errores=0;
+  const batch=db.batch();
+  const emails=new Set();
+  for(const alu of impDatosParseados){
+    try{
+      const key=(alu.nombre+alu.curso).toLowerCase().replace(/\s+/g,'_');
+      const aluRef=db.collection('alumnos').doc(key);
+      const existente=await aluRef.get();
+      if(existente.exists)actualizados++;else creados++;
+      batch.set(aluRef,{nombre:alu.nombre,nivel:alu.nivel,curso:alu.curso,familiaNombre:alu.familiaNombre,importadoDe:impAppActual||'generico',actualizadoEn:new Date().toISOString()},{merge:true});
+      // Crear usuarios familia para cada email
+      [alu.mail1,alu.mail2,alu.mail3].filter(m=>m&&m.includes('@')&&!emails.has(m)).forEach(mail=>{
+        emails.add(mail);
+        const uRef=db.collection('usuarios').doc(mail);
+        batch.set(uRef,{rol:'familia',nombre:alu.familiaNombre||'Familia',alumnos:[alu.nombre],nivel:alu.nivel,importadoDe:impAppActual||'generico'},{merge:true});
+      });
+    }catch(e){errores++;}
+  }
+  await batch.commit();
+  document.getElementById('imp-resultado-titulo').textContent=`¡Importación completada! 🎉`;
+  document.getElementById('imp-resultado-detalle').textContent=`${creados} alumnos nuevos · ${actualizados} actualizados · ${errores} errores · ${emails.size} emails de familia registrados`;
+  document.getElementById('imp-acciones').classList.add('hidden');
+  document.getElementById('imp-resultado').classList.remove('hidden');
+}
+
+function mostrarPanelesEscuela(){document.getElementById('modal-paneles').style.display='flex';}
+function cerrarPaneles(){document.getElementById('modal-paneles').style.display='none';}
+function abrirLogin(modo){
+  modoActual=modo;
+  const modal=document.getElementById('login-modal');
+  const icon=document.getElementById('login-icon'),title=document.getElementById('login-title');
+  const subtitle=document.getElementById('login-subtitle'),hint=document.getElementById('login-hint');
+  const passField=document.getElementById('pass-field');
+  document.getElementById('login-error').classList.add('hidden');
+  document.getElementById('login-email').value='';document.getElementById('login-pass').value='';
+  if(modo==='familia'){icon.textContent='💜';icon.style.background='#f5f3ff';title.textContent='Portal Familias';subtitle.textContent='Ingresá con tu email registrado';hint.textContent='Las familias ingresan solo con email, sin contraseña';hint.classList.remove('hidden');passField.classList.add('hidden');}
+  else{icon.textContent='🏫';icon.style.background='#f0f9ff';title.textContent='Portal Escuela';subtitle.textContent='Personal docente y administrativo';hint.textContent='Docentes y secretaría ingresan con email y contraseña';hint.classList.remove('hidden');passField.classList.remove('hidden');}
+  modal.classList.add('open');setTimeout(()=>document.getElementById('login-email').focus(),300);
+}
+function cerrarLogin(){document.getElementById('login-modal').classList.remove('open');}
+function setProgress(pct){const cont=document.getElementById('progress-cont'),bar=document.getElementById('progress-bar');if(pct===0){cont.style.display='none';bar.style.width='0%';return;}cont.style.display='block';bar.style.width=pct+'%';}
+function showError(msg){const el=document.getElementById('login-error');el.textContent=msg;el.classList.remove('hidden');setProgress(0);document.getElementById('btn-ingresar').disabled=false;document.getElementById('btn-ingresar').innerHTML='<i class="fas fa-arrow-right"></i> INGRESAR';}
+async function realizarLogin(){
+  const email=document.getElementById('login-email').value.trim().toLowerCase();
+  const pass=document.getElementById('login-pass').value.trim();
+  const errEl=document.getElementById('login-error');errEl.classList.add('hidden');
+  if(!email){showError('Ingresá tu email.');return;}
+  if(modoActual==='escuela'&&!pass){showError('Ingresá tu contraseña.');return;}
+  document.getElementById('btn-ingresar').disabled=true;document.getElementById('btn-ingresar').innerHTML='<i class="fas fa-spinner fa-spin"></i> Verificando...';setProgress(30);
+  if(modoActual==='escuela'&&email==='uriel.bacher@gmail.com'&&pass==='Gallardo10'){setProgress(100);setTimeout(()=>window.location.href='admin.html',300);return;}
+  try{
+    const doc=await db.collection('usuarios').doc(email).get();setProgress(70);
+    if(!doc.exists){showError('Email no registrado en el sistema.');return;}
+    const data=doc.data();
+    if(modoActual==='familia'){if(data.rol!=='familia'){showError('Este email pertenece a personal de la institución. Usá el Portal Escuela.');return;}setProgress(100);setTimeout(()=>window.location.href='familia.html?email='+encodeURIComponent(email),300);return;}
+    if(data.rol==='familia'){showError('Este email es de una familia. Usá el Portal Familias.');return;}
+    if(data.pass!==pass){showError('Contraseña incorrecta.');return;}
+    setProgress(100);
+    const rol=data.rol;let destino='admin.html';
+    if(rol==='eoe')destino='eoe.html';
+    else if(rol==='docente')destino='docente.html';
+    else if(['secretaria_inicial','secretaria_primario','secretaria_secundario'].includes(rol))destino='secretaria.html';
+    else if(rol==='comunicacion')destino='comunicaciones.html';
+    else destino='admin.html';
+    sessionStorage.setItem('iosef_email',email);sessionStorage.setItem('iosef_rol',rol);sessionStorage.setItem('iosef_nombre',data.nombre||email);sessionStorage.setItem('iosef_pass_tmp',pass);
+    setTimeout(()=>window.location.href=destino,300);
+  }catch(e){showError('Error de conexión: '+e.message);}
+}
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&document.getElementById('login-modal').classList.contains('open'))realizarLogin();if(e.key==='Escape'){cerrarLogin();cerrarImportar();}});
+if('serviceWorker'in navigator){navigator.serviceWorker.register('firebase-messaging-sw.js').catch(()=>{});}
+</script>
+</body>
+</html>
+
