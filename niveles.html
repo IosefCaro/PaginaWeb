@@ -1,0 +1,1794 @@
+!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Colegio Rabino Iosef Caro </title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --primary:#13134F;--primary-soft:#E8E8F5;--ink:#13134F;--bg:#FAF8F3;
+  --accent:#FFB400;--muted:#6B6A8E;--white:#FFFFFF;--border:rgba(19,19,79,0.12);
+  --inicial:#FFB400;--primario:#9DD014;--sec:#5539F2;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;}
+a{color:var(--primary);text-decoration:none;}
+
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;background:rgba(19,19,79,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,180,0,0.2);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;}
+.logo-wrap{display:flex;align-items:center;gap:.85rem;background:none;border:none;cursor:pointer;}
+.logo-text{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--white);line-height:1.1;}
+.logo-text small{display:block;font-family:'Inter',sans-serif;font-size:.52rem;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,0.5);font-weight:400;margin-top:1px;}
+.nav-pills{display:flex;gap:.1rem;align-items:center;}
+.npill{background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.55);padding:.45rem .85rem;border-radius:100px;transition:all .2s;}
+.npill:hover,.npill.active{color:var(--accent);background:rgba(255,180,0,0.1);}
+.btn-inscripcion{background:var(--accent);color:var(--primary);border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.5rem 1.25rem;border-radius:100px;transition:all .3s;}
+.btn-inscripcion:hover{background:#ffc933;box-shadow:0 0 20px rgba(255,180,0,.35);}
+.hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:4px;padding:6px;}
+.hamburger span{display:block;width:18px;height:1.5px;background:rgba(255,255,255,.6);}
+@media(max-width:900px){.nav-pills{display:none;}.hamburger{display:flex;}}
+
+/* ── MOB MENU ── */
+.mob{position:fixed;top:68px;inset-x:0;z-index:199;background:rgba(19,19,79,.98);border-bottom:2px solid var(--accent);padding:1.5rem;display:none;}
+.mob.open{display:block;}
+.mob button{display:block;width:100%;background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);padding:.85rem 0;text-align:left;border-bottom:1px solid rgba(255,255,255,.06);transition:color .2s;}
+.mob button:hover{color:var(--accent);}
+
+/* ── PAGES ── */
+.main{padding-top:68px;}
+.page{display:none;}
+.page.active{display:block;animation:fadeUp .4s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── PAGE HERO ── */
+.page-hero{position:relative;height:420px;display:flex;align-items:flex-end;overflow:hidden;}
+.page-hero-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s ease;}
+.page-hero:hover .page-hero-bg{transform:scale(1.03);}
+.page-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,50,.85) 0%,rgba(10,10,50,.4) 50%,rgba(10,10,50,.15) 100%);}
+.page-hero-content{position:relative;z-index:1;padding:0 3rem 2.5rem;max-width:1100px;margin:0 auto;width:100%;}
+.pb-tag{font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;}
+.pb-tag::before{content:'';width:20px;height:1px;background:var(--accent);}
+.pb-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.5rem);color:var(--white);line-height:1.05;letter-spacing:-.01em;margin-bottom:.75rem;}
+.pb-title em{font-style:italic;color:var(--accent);}
+.pb-desc{font-family:'Inter',sans-serif;font-size:.92rem;line-height:1.7;color:rgba(255,255,255,.75);max-width:55ch;}
+
+/* ── HERO (HOME) ── */
+.hero{position:relative;min-height:calc(100vh - 68px);background-image:url('https://i.ibb.co/3YBpCSG7/web.jpg');background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(10,10,55,.88) 0%,rgba(10,10,55,.6) 60%,rgba(10,10,55,.4) 100%);}
+.hero-content{position:relative;z-index:1;text-align:center;max-width:860px;padding:2rem;}
+.eyebrow{font-family:'Inter',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;display:inline-flex;align-items:center;gap:.75rem;}
+.eyebrow::before,.eyebrow::after{content:'';flex:1;height:1px;width:30px;background:var(--accent);opacity:.5;}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.8rem,7.5vw,6rem);font-weight:700;line-height:.95;color:var(--white);margin-bottom:1.2rem;letter-spacing:-.02em;}
+.hero h1 em{font-style:italic;display:block;background:linear-gradient(135deg,#ffe066,var(--accent),#c88b00);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-lema{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1rem,2vw,1.25rem);color:rgba(255,255,255,.7);margin:1.25rem 0 .5rem;line-height:1.6;}
+.hero-lema-he{font-size:.85rem;color:rgba(255,180,0,.7);letter-spacing:.05em;margin-bottom:2.5rem;font-family:'Playfair Display',serif;}
+.hero-stats{display:flex;justify-content:center;border:1px solid rgba(255,255,255,.15);border-radius:12px;overflow:hidden;background:rgba(255,255,255,.07);backdrop-filter:blur(8px);max-width:560px;margin:0 auto 3rem;}
+.hstat{flex:1;padding:1.4rem 1rem;text-align:center;border-right:1px solid rgba(255,255,255,.1);}
+.hstat:last-child{border-right:none;}
+.hstat .num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--accent);display:block;}
+.hstat .lbl{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-top:.2rem;display:block;}
+.hero-qnav{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:rgba(255,255,255,.08);border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);}
+@media(max-width:700px){.hero-qnav{grid-template-columns:repeat(3,1fr);}}
+.qcard{background:rgba(19,19,79,.6);backdrop-filter:blur(10px);padding:1.4rem .8rem;text-align:center;cursor:pointer;border:none;display:flex;flex-direction:column;align-items:center;gap:.5rem;transition:background .3s,transform .25s;color:inherit;}
+.qcard:hover{background:rgba(255,180,0,.15);transform:translateY(-2px);}
+.qcard-icon{width:38px;height:38px;border:1px solid rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--accent);transition:all .3s;}
+.qcard:hover .qcard-icon{border-color:var(--accent);box-shadow:0 0 12px rgba(255,180,0,.25);}
+.qcard-lbl{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);}
+.qcard-title{font-family:'Playfair Display',serif;font-size:.82rem;font-weight:600;color:var(--white);}
+
+/* ── TAB BAR ── */
+.tab-bar{background:var(--white);border-bottom:2px solid var(--border);display:flex;overflow-x:auto;scrollbar-width:none;position:sticky;top:68px;z-index:50;box-shadow:0 2px 12px rgba(19,19,79,.08);}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab{background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:1rem 1.4rem;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .25s;white-space:nowrap;}
+.tab:hover{color:var(--primary);}
+.tab.active{color:var(--primary);border-bottom-color:var(--primary);}
+
+/* ── PANELS ── */
+.panel{display:none;animation:fadeUp .35s ease;}
+.panel.active{display:block;}
+.pi{max-width:1100px;margin:0 auto;padding:3rem 2rem 6rem;}
+
+/* ── TYPOGRAPHY HELPERS ── */
+.s-label{font-size:.6rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem;}
+.s-label::before{content:'';width:16px;height:1px;background:var(--accent);}
+.s-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3.5vw,2.4rem);color:var(--primary);line-height:1.1;margin-bottom:.75rem;}
+.s-title em{font-style:italic;color:var(--accent);}
+.quote-block{font-family:'Playfair Display',serif;font-size:clamp(1.1rem,2.5vw,1.5rem);font-style:italic;color:var(--primary);line-height:1.65;padding:2rem 2.5rem;border-radius:0;background:var(--primary-soft);border-left:4px solid var(--accent);margin:2rem 0;position:relative;}
+.quote-block::before{content:'"';position:absolute;top:-1rem;left:1.5rem;font-size:6rem;line-height:1;color:rgba(19,19,79,.1);font-family:'Playfair Display',serif;}
+.hbox{background:var(--white);border:1px solid var(--border);padding:1.75rem;margin:1rem 0;border-top:3px solid var(--primary);box-shadow:0 2px 12px rgba(19,19,79,.06);}
+.hbox.gold-top{border-top-color:var(--accent);}
+.hbox-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--primary);margin-bottom:.6rem;}
+.hbox-text{font-size:.88rem;line-height:1.85;color:var(--muted);}
+.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+@media(max-width:760px){.g2,.g3{grid-template-columns:1fr;}.g4{grid-template-columns:repeat(2,1fr);}}
+.card{background:var(--white);border:1px solid var(--border);padding:1.75rem;box-shadow:0 2px 10px rgba(19,19,79,.05);transition:transform .3s,box-shadow .3s;position:relative;overflow:hidden;}
+.card::after{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--primary);transform:scaleX(0);transition:transform .3s;}
+.card:hover::after{transform:scaleX(1);}
+.card:hover{transform:translateY(-3px);box-shadow:0 8px 24px rgba(19,19,79,.12);}
+.card-tag{font-size:.58rem;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem;}
+.card-title{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--primary);margin-bottom:.6rem;}
+.card-text{font-size:.84rem;line-height:1.8;color:var(--muted);}
+.pilar-card{background:var(--white);border:1px solid var(--border);padding:2rem;text-align:center;box-shadow:0 2px 10px rgba(19,19,79,.05);transition:all .3s;position:relative;overflow:hidden;}
+.pilar-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:var(--accent);transform:scaleX(0);transition:transform .4s;}
+.pilar-card:hover::after{transform:scaleX(1);}
+.pilar-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(19,19,79,.1);}
+.pilar-num{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:400;font-style:italic;color:rgba(19,19,79,.1);margin-bottom:.5rem;line-height:1;}
+.pilar-title{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--primary);margin-bottom:.6rem;}
+.pilar-text{font-size:.82rem;line-height:1.78;color:var(--muted);}
+
+/* ── DIRECTOR CARDS ── */
+.director-card{background:var(--white);border:1px solid var(--border);overflow:hidden;transition:transform .3s,box-shadow .3s;box-shadow:0 2px 10px rgba(19,19,79,.06);}
+.director-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(19,19,79,.12);}
+.director-avatar{height:120px;background:linear-gradient(135deg,var(--primary) 0%,#1a1a6e 100%);display:flex;align-items:center;justify-content:center;border-bottom:3px solid var(--accent);position:relative;overflow:hidden;}
+.director-card.card-inicial .director-avatar{background:linear-gradient(135deg,#c88b00,#FFB400);border-bottom-color:var(--primary);}
+.director-card.card-primario .director-avatar{background:linear-gradient(135deg,#6a9000,#9DD014);border-bottom-color:var(--primary);}
+.director-card.card-sec .director-avatar{background:linear-gradient(135deg,#3320a0,#5539F2);border-bottom-color:var(--accent);}
+.director-info{padding:1.25rem;}
+.director-name{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--primary);margin-bottom:.2rem;}
+.director-role{font-size:.6rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem;}
+.director-desc{font-size:.78rem;line-height:1.7;color:var(--muted);}
+
+/* ── TIMELINE ── */
+.timeline-v2{position:relative;padding-left:2rem;margin-top:2rem;}
+.timeline-v2::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--accent),var(--primary));}
+.tli{position:relative;margin-bottom:2rem;padding:1.4rem 1.5rem;background:var(--white);border:1px solid var(--border);box-shadow:0 2px 8px rgba(19,19,79,.05);transition:border-color .3s;}
+.tli:hover{border-color:var(--primary);}
+.tli::before{content:'';position:absolute;left:-2.3rem;top:1.6rem;width:12px;height:12px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(255,180,0,.2);}
+.tli-year{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;font-style:italic;color:var(--primary);margin-bottom:.25rem;}
+.tli-text{font-size:.85rem;color:var(--muted);line-height:1.75;}
+
+/* ── VAL / FEAT ── */
+.val-item{display:flex;gap:1rem;align-items:flex-start;padding:1.2rem 0;border-bottom:1px solid var(--border);}
+.val-icon{width:34px;height:34px;flex-shrink:0;background:var(--primary-soft);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--primary);}
+.val-title{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--primary);margin-bottom:.18rem;font-weight:600;}
+.val-desc{font-size:.82rem;color:var(--muted);line-height:1.65;}
+.feat-list{list-style:none;margin-top:.75rem;}
+.feat-list li{display:flex;gap:.6rem;align-items:flex-start;font-size:.84rem;color:var(--muted);padding:.45rem 0;border-bottom:1px solid var(--border);line-height:1.6;}
+.feat-list li::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:.45rem;}
+
+/* ── SEDES ── */
+.sede-card{background:var(--white);border:1px solid var(--border);padding:1.6rem;border-top:3px solid var(--accent);box-shadow:0 2px 8px rgba(19,19,79,.05);}
+.sede-tag{font-size:.58rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem;}
+.sede-name{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--primary);margin-bottom:.85rem;}
+.sede-info{font-size:.84rem;color:var(--muted);line-height:2;}
+
+/* ── ACTIVIDADES ── */
+.act-card{background:var(--white);border:1px solid var(--border);padding:1.6rem;display:flex;gap:1rem;align-items:flex-start;transition:all .3s;box-shadow:0 2px 8px rgba(19,19,79,.04);}
+.act-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:0 8px 20px rgba(19,19,79,.1);}
+.act-ico{width:40px;height:40px;flex-shrink:0;background:var(--primary-soft);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--primary);}
+.act-title{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--primary);margin-bottom:.28rem;font-weight:600;}
+.act-text{font-size:.8rem;color:var(--muted);line-height:1.68;}
+
+/* ── IDIOMA ── */
+.idioma-card{background:var(--white);border:1px solid var(--border);padding:2rem;text-align:center;box-shadow:0 2px 8px rgba(19,19,79,.05);transition:all .3s;}
+.idioma-card:hover{border-color:var(--primary);box-shadow:0 8px 20px rgba(19,19,79,.1);}
+.idioma-emoji{font-size:2rem;margin-bottom:.65rem;display:block;}
+.idioma-name{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--primary);margin-bottom:.4rem;}
+.idioma-text{font-size:.82rem;color:var(--muted);line-height:1.72;}
+
+/* ── INFRA ── */
+.infra-item{background:var(--white);border:1px solid var(--border);padding:1.5rem;transition:all .3s;box-shadow:0 2px 6px rgba(19,19,79,.04);}
+.infra-item:hover{border-color:var(--accent);box-shadow:0 8px 20px rgba(19,19,79,.08);}
+.infra-item svg{color:var(--primary);margin-bottom:.85rem;}
+.infra-title{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--primary);margin-bottom:.3rem;font-weight:600;}
+.infra-text{font-size:.8rem;color:var(--muted);line-height:1.68;}
+
+/* ── NIVEL BADGE ── */
+.level-badge{display:inline-flex;align-items:center;gap:.5rem;padding:.3rem .85rem;border-radius:100px;font-family:'Inter',sans-serif;font-size:.58rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:.85rem;}
+.badge-inicial{background:var(--inicial);color:var(--primary);}
+.badge-primario{background:var(--primario);color:var(--primary);}
+.badge-sec{background:var(--sec);color:var(--white);}
+.hbox.inicial{border-top-color:var(--inicial);}
+.hbox.primario{border-top-color:var(--primario);}
+.hbox.sec{border-top-color:var(--sec);}
+
+/* ── CONTACTO ── */
+.cform{background:var(--white);border:1px solid var(--border);padding:2.25rem;box-shadow:0 2px 12px rgba(19,19,79,.07);}
+.cform h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--primary);margin-bottom:.4rem;}
+.cform-sub{font-size:.85rem;color:var(--muted);margin-bottom:1.75rem;}
+.fg{margin-bottom:1rem;}
+.fg label{display:block;font-size:.62rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-bottom:.4rem;}
+.fg input,.fg select,.fg textarea{width:100%;padding:.75rem .9rem;background:var(--bg);border:1px solid var(--border);color:var(--ink);font-family:'Inter',sans-serif;font-size:.88rem;outline:none;transition:border-color .3s,box-shadow .3s;}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(19,19,79,.07);}
+.fg textarea{resize:vertical;min-height:95px;}
+.btn-send{width:100%;padding:.9rem;background:var(--primary);border:none;color:var(--white);font-family:'Inter',sans-serif;font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;transition:background .3s,box-shadow .3s;cursor:pointer;}
+.btn-send:hover{background:#1a1a6e;box-shadow:0 6px 20px rgba(19,19,79,.25);}
+.info-line{display:flex;gap:.9rem;align-items:flex-start;margin-bottom:1.35rem;}
+.info-line .icon{width:34px;height:34px;background:var(--primary-soft);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--primary);flex-shrink:0;}
+.info-line strong{display:block;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--primary);margin-bottom:.12rem;}
+.info-line span{font-size:.88rem;color:var(--muted);line-height:1.7;}
+.div-line{height:1px;background:var(--border);margin:2.5rem 0;}
+.he{font-family:'Playfair Display',serif;font-size:.82em;color:var(--accent);letter-spacing:.05em;}
+
+/* ══════════════════════════════════════
+   STAFF CARDS
+══════════════════════════════════════ */
+.staff-section{width:100%;}
+.staff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;margin-bottom:.5rem;}
+.staff-grid-4{grid-template-columns:repeat(4,1fr);}
+@media(max-width:900px){.staff-grid{grid-template-columns:repeat(2,1fr);}.staff-grid-4{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.staff-grid,.staff-grid-4{grid-template-columns:1fr;}}
+
+.staff-card{background:var(--white);border:1px solid var(--border);display:flex;gap:1rem;align-items:flex-start;padding:1.25rem;box-shadow:0 2px 8px rgba(19,19,79,.05);transition:transform .25s,box-shadow .25s;}
+.staff-card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(19,19,79,.1);}
+.staff-card-sm{flex-direction:column;align-items:center;text-align:center;}
+
+.staff-avatar{
+  overflow: hidden;
+  border-radius: 50%;
+}
+.staff-avatar img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.staff-avatar-sm{width:44px;height:44px;margin-bottom:.25rem;}
+.staff-initials{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--white);letter-spacing:.05em;}
+
+.staff-info{flex:1;min-width:0;}
+.staff-card-sm .staff-info{width:100%;}
+.staff-name{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--primary);font-weight:600;margin-bottom:.35rem;line-height:1.2;}
+.staff-role-tag{display:inline-block;font-size:.55rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--white);padding:.2rem .7rem;border-radius:100px;margin-bottom:.5rem;}
+.staff-desc{font-size:.78rem;color:var(--muted);line-height:1.65;margin-bottom:.4rem;}
+.staff-contact{font-size:.72rem;color:var(--muted);opacity:.8;}
+
+.staff-divider{height:1px;background:var(--border);margin:2rem 0 1.5rem;}
+
+/* Nivel panels (2 niveles de navegación) */
+.nivel-panel{display:none;}
+.nivel-panel.active{display:block;animation:fadeUp .35s ease;}
+.nivel-subpanel{display:none;animation:fadeUp .3s ease;}
+.nivel-subpanel.active{display:block;}
+
+/* Sub-tabs visual dentro de nivel */
+#nivel-subtabs .tab.active{color:var(--primary);border-bottom-color:var(--accent);}
+#nivel-subtabs{background:rgba(19,19,79,.04);}
+
+/* ══════════════════════════════════════
+   MURO DE NOVEDADES
+══════════════════════════════════════ */
+.muro-toolbar{display:flex;align-items:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap;}
+.muro-filter{display:flex;gap:.5rem;flex-wrap:wrap;flex:1;}
+.mfbtn{background:var(--white);border:1px solid var(--border);cursor:pointer;font-family:'Inter',sans-serif;font-size:.6rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:.4rem 1rem;border-radius:100px;transition:all .25s;}
+.mfbtn:hover,.mfbtn.active{background:var(--primary);color:var(--white);border-color:var(--primary);}
+.muro-new-btn{background:var(--accent);color:var(--primary);border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.55rem 1.4rem;border-radius:100px;transition:all .3s;white-space:nowrap;}
+.muro-new-btn:hover{background:#ffc933;}
+
+/* Post cards */
+.muro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+@media(max-width:900px){.muro-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.muro-grid{grid-template-columns:1fr;}}
+
+.post-card{background:var(--white);border:1px solid var(--border);box-shadow:0 2px 10px rgba(19,19,79,.05);transition:transform .3s,box-shadow .3s;overflow:hidden;cursor:pointer;position:relative;}
+.post-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(19,19,79,.12);}
+.post-card[data-cat="institucional"] .post-stripe{background:var(--primary);}
+.post-card[data-cat="inicial"] .post-stripe{background:var(--inicial);}
+.post-card[data-cat="primario"] .post-stripe{background:var(--primario);}
+.post-card[data-cat="secundario"] .post-stripe{background:var(--sec);}
+.post-card[data-cat="comunidad"] .post-stripe{background:#E85D04;}
+.post-card[data-cat="logros"] .post-stripe{background:#0077B6;}
+.post-stripe{height:4px;width:100%;}
+.post-img{width:100%;height:160px;object-fit:cover;display:block;background:var(--primary-soft);}
+.post-img-ph{width:100%;height:160px;display:flex;align-items:center;justify-content:center;font-size:2.5rem;background:var(--primary-soft);}
+.post-body{padding:1.25rem 1.4rem 1.4rem;}
+.post-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem;}
+.post-cat{font-size:.55rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:.2rem .65rem;border-radius:100px;color:var(--white);}
+.post-card[data-cat="institucional"] .post-cat{background:var(--primary);}
+.post-card[data-cat="inicial"] .post-cat{background:var(--inicial);color:var(--primary);}
+.post-card[data-cat="primario"] .post-cat{background:var(--primario);color:var(--primary);}
+.post-card[data-cat="secundario"] .post-cat{background:var(--sec);}
+.post-card[data-cat="comunidad"] .post-cat{background:#E85D04;}
+.post-card[data-cat="logros"] .post-cat{background:#0077B6;}
+.post-date{font-size:.62rem;color:var(--muted);}
+.post-title{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--primary);margin-bottom:.5rem;line-height:1.3;}
+.post-excerpt{font-size:.8rem;color:var(--muted);line-height:1.65;}
+.post-footer{padding:.85rem 1.4rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.post-author{font-size:.7rem;color:var(--muted);display:flex;align-items:center;gap:.4rem;}
+.post-likes{display:flex;align-items:center;gap:.35rem;font-size:.7rem;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .2s;}
+.post-likes:hover,.post-likes.liked{color:#E85D04;}
+.post-likes svg{width:14px;height:14px;}
+
+/* Empty state */
+.muro-empty{text-align:center;padding:4rem 2rem;color:var(--muted);}
+.muro-empty svg{opacity:.25;margin-bottom:1rem;}
+.muro-empty p{font-size:.9rem;}
+
+/* ── MODAL nuevo post ── */
+.modal-bg{position:fixed;inset:0;z-index:500;background:rgba(10,10,40,.7);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1rem;}
+.modal-bg.hidden{display:none;}
+.modal{background:var(--white);max-width:560px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.3);}
+.modal-header{padding:1.5rem 2rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-header h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--primary);}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--muted);font-size:1.4rem;line-height:1;transition:color .2s;}
+.modal-close:hover{color:var(--primary);}
+.modal-body{padding:1.5rem 2rem 2rem;}
+.modal-body .fg{margin-bottom:1.1rem;}
+
+/* ── POST DETAIL MODAL ── */
+.post-detail{padding:0;}
+.pd-img{width:100%;height:220px;object-fit:cover;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;font-size:3rem;}
+.pd-body{padding:2rem;}
+.pd-cat-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.75rem;}
+.pd-title{font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--primary);margin-bottom:1rem;line-height:1.2;}
+.pd-content{font-size:.9rem;color:var(--muted);line-height:1.85;}
+.pd-footer{padding:1rem 2rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.pd-author{font-size:.75rem;color:var(--muted);}
+.pd-likes{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--muted);background:none;border:none;cursor:pointer;transition:color .2s;}
+.pd-likes:hover,.pd-likes.liked{color:#E85D04;}
+
+/* ══════════════════════════════════════
+   SUMATE AL EQUIPO
+══════════════════════════════════════ */
+.team-hero-inner{background:linear-gradient(135deg,var(--primary) 0%,#1a1a6e 60%,#2d1b8e 100%);padding:3rem 2.5rem;margin-bottom:2.5rem;position:relative;overflow:hidden;}
+.team-hero-inner::before{content:'✡';position:absolute;right:2rem;top:50%;transform:translateY(-50%);font-size:8rem;opacity:.05;color:var(--accent);}
+.team-hero-inner h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);color:var(--white);margin-bottom:.75rem;}
+.team-hero-inner h2 em{font-style:italic;color:var(--accent);}
+.team-hero-inner p{font-size:.9rem;color:rgba(255,255,255,.7);max-width:55ch;line-height:1.75;}
+
+.roles-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:2.5rem;}
+@media(max-width:700px){.roles-grid{grid-template-columns:repeat(2,1fr);}}
+.role-chip{background:var(--white);border:1px solid var(--border);padding:1.2rem;text-align:center;transition:all .3s;cursor:pointer;}
+.role-chip:hover,.role-chip.selected{background:var(--primary);border-color:var(--primary);}
+.role-chip:hover .rc-title,.role-chip.selected .rc-title{color:var(--white);}
+.role-chip:hover .rc-sub,.role-chip.selected .rc-sub{color:rgba(255,255,255,.6);}
+.rc-icon{font-size:1.6rem;margin-bottom:.4rem;}
+.rc-title{font-family:'Playfair Display',serif;font-size:.9rem;color:var(--primary);font-weight:600;transition:color .3s;}
+.rc-sub{font-size:.68rem;color:var(--muted);transition:color .3s;}
+
+/* CV form */
+.cv-form-wrap{background:var(--white);border:1px solid var(--border);padding:2.5rem;box-shadow:0 4px 20px rgba(19,19,79,.08);}
+.cv-form-wrap h3{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--primary);margin-bottom:.4rem;}
+.cv-form-sub{font-size:.85rem;color:var(--muted);margin-bottom:2rem;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:580px){.fg-row{grid-template-columns:1fr;}}
+
+/* File upload zone */
+.file-zone{border:2px dashed var(--border);padding:2.5rem 1.5rem;text-align:center;cursor:pointer;transition:all .3s;position:relative;background:var(--bg);}
+.file-zone:hover,.file-zone.drag{border-color:var(--primary);background:var(--primary-soft);}
+.file-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.file-zone-icon{color:var(--primary);opacity:.4;margin-bottom:.75rem;}
+.file-zone-text{font-size:.85rem;color:var(--muted);}
+.file-zone-text strong{color:var(--primary);display:block;font-size:.9rem;margin-bottom:.25rem;}
+.file-zone-text span{font-size:.7rem;opacity:.7;}
+.file-chosen{font-size:.78rem;color:var(--primario);font-weight:600;margin-top:.5rem;display:none;}
+
+/* Status badges */
+.status-badge{display:inline-flex;align-items:center;gap:.4rem;padding:.3rem .8rem;border-radius:100px;font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;}
+.sb-open{background:#dcfce7;color:#166534;}
+.sb-urgent{background:#fef9c3;color:#854d0e;}
+
+/* Benefit pills */
+.benefits{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem;}
+.bpill{background:var(--primary-soft);color:var(--primary);font-size:.68rem;font-weight:600;padding:.3rem .85rem;border-radius:100px;letter-spacing:.08em;}
+
+/* Success banner */
+.success-banner{background:linear-gradient(135deg,#dcfce7,#bbf7d0);border:1px solid #86efac;padding:2rem;text-align:center;display:none;}
+.success-banner svg{color:#166534;margin-bottom:.75rem;}
+.success-banner h4{font-family:'Playfair Display',serif;font-size:1.3rem;color:#166534;margin-bottom:.4rem;}
+.success-banner p{font-size:.85rem;color:#166534;opacity:.8;}
+
+/* ── FOOTER ── */
+footer{background:var(--primary);border-top:3px solid var(--accent);padding:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;position:relative;z-index:2;}
+.foot-brand{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--white);}
+.foot-brand small{display:block;font-size:.58rem;letter-spacing:.14em;color:rgba(255,255,255,.45);margin-top:.2rem;}
+.foot-nav{display:flex;gap:.15rem;flex-wrap:wrap;}
+.foot-nav button{background:none;border:none;cursor:pointer;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);padding:.35rem .75rem;border-radius:100px;transition:all .2s;font-family:'Inter',sans-serif;}
+.foot-nav button:hover{color:var(--accent);background:rgba(255,180,0,.1);}
+.foot-copy{width:100%;text-align:center;font-size:.7rem;color:rgba(255,255,255,.25);margin-top:.5rem;}
+
+@media(max-width:760px){.page-hero{height:320px;}.page-hero-content{padding:0 1.5rem 2rem;}.pi{padding:2rem 1rem 4rem;}footer{flex-direction:column;text-align:center;}}
+
+/* ══════════════════════════════════════
+   HERO CAROUSEL + VIDEO
+══════════════════════════════════════ */
+.page-hero-media{position:absolute;inset:0;overflow:hidden;}
+.hero-slide{position:absolute;inset:0;opacity:0;transition:opacity .8s ease;background-size:cover;background-position:center;}
+.hero-slide.active{opacity:1;}
+.hero-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.hero-carousel-dots{position:absolute;bottom:12px;right:20px;z-index:5;display:flex;gap:6px;}
+.hcdot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,.35);border:none;cursor:pointer;padding:0;transition:background .3s;}
+.hcdot.active{background:var(--accent);}
+
+/* ══════════════════════════════════════
+   MODAL PROPUESTA DETALLE
+══════════════════════════════════════ */
+.prop-modal-bg{position:fixed;inset:0;z-index:600;background:rgba(10,10,40,.75);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:1rem;}
+.prop-modal-bg.hidden{display:none;}
+.prop-modal{background:var(--white);max-width:700px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,.3);}
+.prop-modal-header{padding:1.5rem 2rem 1rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.prop-modal-header h3{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--primary);}
+.prop-modal-body{padding:1.75rem 2rem 2rem;}
+.prop-modal-media{width:100%;max-height:340px;object-fit:cover;margin-bottom:1.25rem;background:var(--primary-soft);}
+.prop-modal-text{font-size:.9rem;color:var(--muted);line-height:1.85;}
+.prop-modal-gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:1rem;}
+.prop-modal-gallery img{width:100%;height:90px;object-fit:cover;}
+.pilar-card{cursor:pointer;}
+.pilar-card:hover{box-shadow:0 12px 28px rgba(19,19,79,.15);}
+
+/* ══════════════════════════════════════
+Nuestro Legado
+══════════════════════════════════════ */
+.egresados-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem;}
+@media(max-width:900px){.egresados-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.egresados-grid{grid-template-columns:1fr;}}
+.egresado-card{background:var(--white);border:1px solid var(--border);overflow:hidden;box-shadow:0 2px 10px rgba(19,19,79,.05);transition:transform .3s,box-shadow .3s;}
+.egresado-card:hover{transform:translateY(-4px);box-shadow:0 12px 28px rgba(19,19,79,.12);}
+.egresado-media{width:100%;height:220px;overflow:hidden;background:var(--primary-soft);display:flex;align-items:center;justify-content:center;position:relative;}
+.egresado-media video{width:100%;height:100%;object-fit:cover;}
+.egresado-body{padding:1.25rem;}
+.egresado-name{font-family:'Playfair Display',serif;font-size:1rem;color:var(--primary);margin-bottom:.2rem;font-weight:600;}
+.egresado-year{font-size:.6rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:.6rem;}
+.egresado-text{font-size:.82rem;color:var(--muted);line-height:1.7;font-style:italic;}
+
+/* ══════════════════════════════════════
+   NOVEDADES ADMIN
+══════════════════════════════════════ */
+.admin-lock{display:none;}
+.admin-lock.visible{display:flex;}
+.admin-badge{background:rgba(255,180,0,.15);border:1px solid rgba(255,180,0,.4);border-radius:100px;padding:.3rem .9rem;font-size:.6rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.4rem;}
+.np-block-list{list-style:none;display:flex;flex-direction:column;gap:.5rem;margin-bottom:.75rem;}
+.np-block-item{background:var(--bg);border:1px solid var(--border);padding:.65rem .9rem;display:flex;align-items:center;gap:.7rem;font-size:.82rem;color:var(--ink);}
+.np-block-item .np-block-type{font-size:.58rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);min-width:55px;}
+.np-block-btn{background:none;border:1px solid var(--border);cursor:pointer;font-family:'Inter',sans-serif;font-size:.65rem;font-weight:600;padding:.35rem .75rem;color:var(--muted);transition:all .2s;border-radius:4px;}
+.np-block-btn:hover{background:var(--primary);color:var(--white);border-color:var(--primary);}
+.np-media-preview{width:100%;max-height:180px;object-fit:cover;margin-top:.5rem;border:1px solid var(--border);}
+.pd-content-rich img{max-width:100%;margin:.75rem 0;border-radius:4px;}
+.pd-content-rich video{max-width:100%;margin:.75rem 0;}
+.pd-content-rich p{margin-bottom:.75rem;}
+</style>
+</head>
+<body>
+<!-- ══ TOPBAR ══ -->
+<header class="topbar">
+  <a class="logo-wrap" href="index.html" style="text-decoration:none;">
+    <img src="https://i.ibb.co/hF7Sqzw5/Logo-blanco.png" alt="Colegio Rabino Iosef Caro"
+      onerror="this.style.display='none';"
+      style="height:44px;width:auto;max-width:180px;object-fit:contain;display:block;"/>
+  </a>
+  <nav class="nav-pills">
+    <a class="npill" href="index.html">Inicio</a>
+    <a class="npill" href="institucional.html">Institucional</a>
+    <a class="npill active" href="niveles.html">Niveles</a>
+    <a class="npill" href="propuesta.html">Propuesta</a>
+    <a class="npill" href="novedades.html">Novedades</a>
+    <a class="npill" href="calendario.html">Calendario</a>
+    <a class="npill" href="contacto.html">Contacto</a>
+  </nav>
+  <div style="display:flex;align-items:center;gap:.75rem;">
+    <a href="contacto.html" class="cta-btn" style="text-decoration:none;">Inscribirse</a>
+    <button class="mob-toggle" onclick="toggleMob()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="mob-menu" id="mob">
+  <a href="index.html" onclick="closeMob()">Inicio</a>
+  <a href="institucional.html" onclick="closeMob()">Institucional</a>
+  <a href="niveles.html" onclick="closeMob()">Niveles</a>
+  <a href="propuesta.html" onclick="closeMob()">Propuesta</a>
+  <a href="novedades.html" onclick="closeMob()">Novedades</a>
+  <a href="calendario.html" onclick="closeMob()">Calendario</a>
+  <a href="contacto.html" onclick="closeMob()">Contacto</a>
+  <a href="equipo.html" onclick="closeMob()">Sumate</a>
+  <a href="contacto.html" class="cta-btn" style="margin:1rem auto;text-decoration:none;">Inscribirse</a>
+</div>
+
+<!-- ══════════ NIVELES ══════════ -->
+<div class="page active" id="page-niveles">
+  <!-- nivel tabs: cada nivel tiene su propia sub-navegación -->
+  <div class="tab-bar" id="nivel-tabs" style="top:68px;">
+    <button class="tab active" onclick="switchNivel(0)">🌱 Inicial</button>
+    <button class="tab"        onclick="switchNivel(1)">📖 Primaria</button>
+    <button class="tab"        onclick="switchNivel(2)">🎓 Sec. Varones</button>
+    <button class="tab"        onclick="switchNivel(3)">🎓 Sec. Mujeres</button>
+  </div>
+
+  <!-- Sub-tabs por nivel -->
+  <div class="tab-bar" id="nivel-subtabs" style="top:114px;background:var(--primary-soft);border-bottom-color:rgba(19,19,79,.15);">
+    <button class="tab active" onclick="switchNivelTab(this,0)">👥 Equipo</button>
+    <button class="tab"        onclick="switchNivelTab(this,1)">📋 Propuesta</button>
+    <button class="tab"        onclick="switchNivelTab(this,2)">🎨 Actividades</button>
+  </div>
+
+  <div class="page-hero" id="level-hero"
+    data-fotos=""
+    data-video="https://stream.vidhosting.in/videos/988aca6a.mp4">
+    <!--
+    ══════════════════════════════════════════
+    HERO NIVELES — se actualiza automáticamente
+    al cambiar de nivel. Para editar las fotos/video
+    de cada nivel, buscá "levelData" en el JS.
+    ══════════════════════════════════════════
+    -->
+    <div class="page-hero-bg" id="level-hero-bg"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <div class="level-badge badge-inicial" id="level-badge">Nuestro Gan Soñado</div>
+      <h1 class="pb-title" id="level-title">ג · Nivel Inicial</h1>
+      <p class="pb-desc" id="level-desc">De Maternal a 5 años. Primeros pasos en Torá y Mitzvot.</p>
+    </div>
+  </div>
+
+  <div class="pi" id="nivel-content">
+
+    <!-- ══ INICIAL ══ -->
+    <div class="nivel-panel active" data-nivel="0">
+
+      <!-- EQUIPO -->
+      <div class="nivel-subpanel active">
+        <div class="staff-section">
+          <p class="s-label">Dirección del Nivel</p>
+          <div class="staff-grid">
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#c88b00,#FFB400)"><!-- FOTO_RC: reemplazá PEGAR_URL_FOTO_RC con la URL real --><img src="PEGAR_URL_FOTO_RC" alt="RC" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">RC</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Rabino Shlomo Cohen</div>
+                <div class="staff-role-tag" style="background:var(--inicial);color:var(--primary)">Director Área Kodesh</div>
+                <div class="staff-desc">Lidera la formación judaica del Nivel Inicial. Responsable del proyecto Kabalat Shabat y los jaguim del jardín.</div>
+                <div class="staff-contact"><span>📧 kodesh.inicial@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#c88b00,#FFB400)"><!-- FOTO_LA: reemplazá PEGAR_URL_FOTO_LA con la URL real --><img src="PEGAR_URL_FOTO_LA" alt="LA" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">LA</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Lic. Laura Altman</div>
+                <div class="staff-role-tag" style="background:var(--inicial);color:var(--primary)">Directora Pedagógica</div>
+                <div class="staff-desc">Responsable de la propuesta curricular del jardín maternal e infantes. Sede Amenábar 2424.</div>
+                <div class="staff-contact"><span>📧 inicial@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#c88b00,#FFB400)"><!-- FOTO_MS: reemplazá PEGAR_URL_FOTO_MS con la URL real --><img src="PEGAR_URL_FOTO_MS" alt="MS" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">MS</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Miriam Stein</div>
+                <div class="staff-role-tag" style="background:var(--inicial);color:var(--primary)">Coordinadora Sala de 5</div>
+                <div class="staff-desc">Coordina las salas de 5 años y articula la transición al Nivel Primario.</div>
+                <div class="staff-contact"><span>📧 sala5@iosefcaro.org</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="staff-divider"></div>
+          <p class="s-label">Psicología y Orientación</p>
+          <div class="staff-grid">
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_DF: reemplazá PEGAR_URL_FOTO_DF con la URL real --><img src="PEGAR_URL_FOTO_DF" alt="DF" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">DF</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Psic. Diana Frenkel</div>
+                <div class="staff-role-tag" style="background:#0077B6">Psicóloga del Nivel</div>
+                <div class="staff-desc">Acompañamiento a niños y familias en la etapa inicial. Consultas por turno.</div>
+                <div class="staff-contact"><span>📧 psico.inicial@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_GP: reemplazá PEGAR_URL_FOTO_GP con la URL real --><img src="PEGAR_URL_FOTO_GP" alt="GP" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">GP</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Psicopedag. Gaby Perle</div>
+                <div class="staff-role-tag" style="background:#0077B6">Psicopedagoga</div>
+                <div class="staff-desc">Detección temprana de dificultades de aprendizaje. Trabajo en equipo con las maestras de sala.</div>
+                <div class="staff-contact"><span>📧 psicoped.inicial@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_RV: reemplazá PEGAR_URL_FOTO_RV con la URL real --><img src="PEGAR_URL_FOTO_RV" alt="RV" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">RV</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Lic. Rosa Vainer</div>
+                <div class="staff-role-tag" style="background:#0077B6">Fonoaudióloga</div>
+                <div class="staff-desc">Estimulación del lenguaje y comunicación en edades tempranas. Screening anual.</div>
+                <div class="staff-contact"><span>📧 fono.inicial@iosefcaro.org</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="staff-divider"></div>
+          <p class="s-label">Maestras de Sala</p>
+          <div class="staff-grid staff-grid-4">
+            <div class="staff-card staff-card-sm"><div class="staff-avatar staff-avatar-sm" style="background:linear-gradient(135deg,#c88b00,#FFB400)"><!-- FOTO_NR: reemplazá PEGAR_URL_FOTO_NR con la URL real --><img src="PEGAR_URL_FOTO_NR" alt="NR" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">NR</span></div><div class="staff-info"><div class="staff-name">Noemí Rosen</div><div class="staff-role-tag" style="background:var(--inicial);color:var(--primary)">Maternal A</div><div class="staff-desc">Sala maternal 18–24 meses.</div></div></div>
+            <div class="staff-card staff-card-sm"><div class="staff-avatar staff-avatar-sm" style="background:linear-gradient(135deg,#c88b00,#FFB400)"><!-- FOTO_YB: reemplazá PEGAR_URL_FOTO_YB con la URL real --><img src="PEGAR_URL_FOTO_YB" alt="YB" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">YB</span></div><div class="staff-info"><div class="staff-name">Yael Blum</div><div class="staff-role-tag" style="background:var(--inicial);color:var(--primary)">Sala de 2</div><div class="staff-desc">Sala de 2 años.</div></div></div>
+            <div class="staff-card staff-card-sm"><div class="staff-avatar staff-avatar-sm" style="background:linear-gradient(135deg,#c88b00,#FFB400)"><!-- FOTO_PL: reemplazá PEGAR_URL_FOTO_PL con la URL real --><img src="PEGAR_URL_FOTO_PL" alt="PL" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">PL</span></div><div class="staff-info"><div class="staff-name">Paula Lerner</div><div class="staff-role-tag" style="background:var(--inicial);color:var(--primary)">Sala de 3</div><div class="staff-desc">Sala de 3 años.</div></div></div>
+            <div class="staff-card staff-card-sm"><div class="staff-avatar staff-avatar-sm" style="background:linear-gradient(135deg,#c88b00,#FFB400)"><!-- FOTO_TB: reemplazá PEGAR_URL_FOTO_TB con la URL real --><img src="PEGAR_URL_FOTO_TB" alt="TB" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">TB</span></div><div class="staff-info"><div class="staff-name">Tamara Ben-David</div><div class="staff-role-tag" style="background:var(--inicial);color:var(--primary)">Sala de 4</div><div class="staff-desc">Sala de 4 años.</div></div></div>
+          </div>
+  
+        </div>
+        <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/TU-OTRO-VIDEO.mp4" type="video/mp4">
+  </video>
+        </div>
+      </div>
+
+      <!-- PROPUESTA -->
+      <div class="nivel-subpanel">
+        <div class="g2">
+          <div>
+<div class="hbox inicial"
+     style="cursor:pointer;"
+     onclick='openPropModal(
+       "inicial-prop1",
+       "Nivel Inicial",
+       "La primera escuela del niño. Un espacio cálido donde el pequeño comienza a descubrir el mundo judío a través del juego, los jaguim y el Kabalat Shabat.",
+       [
+         "https://i.ibb.co/HpT6MnWf/web-2.jpg",
+    
+       ],
+       ""
+     )'>
+
+  <div class="hbox-title">
+    Nivel Inicial
+    <span style="font-size:.65rem;color:var(--accent);font-family:Inter,sans-serif;font-weight:600;letter-spacing:.1em;margin-left:.5rem;">
+      ▶ VER MÁS
+    </span>
+  </div>
+
+  <div class="hbox-text">
+    Proyecto musical del Jardín con canciones de valores judaicos. Con apoyo de AMIA y Vaad Ha Jinuj. Los niños aprenden los valores más importantes del judaísmo a través de la música, el movimiento y la alegría..
+  </div>
+</div>        
+<div class="hbox REGASHOT"
+     style="cursor:pointer;"
+     onclick='openPropModal(
+       "inicial-prop1",
+       "Nivel Inicial",
+       "Proyecto musical del Jardín con canciones de valores judaicos. Con apoyo de AMIA y Vaad Ha Jinuj. Los niños aprenden los valores más importantes del judaísmo a través de la música, el movimiento y la alegría.",
+       [
+         "https://i.ibb.co/HpT6MnWf/web-2.jpg",
+    
+       ],
+       ""
+     )'>
+
+  <div class="hbox-title">
+    Proyecto REGASHOT
+    <span style="font-size:.65rem;color:var(--accent);font-family:Inter,sans-serif;font-weight:600;letter-spacing:.1em;margin-left:.5rem;">
+      ▶ VER MÁS
+    </span>
+  </div>
+
+  <div class="hbox-text">
+    Proyecto musical del Jardín con canciones de valores judaicos. Con apoyo de AMIA y Vaad Ha Jinuj. Los niños aprenden los valores más importantes del judaísmo a través de la música, el movimiento y la alegría.
+  </div>
+</div>          </div>
+          <div>
+            <p class="s-label">Características</p>
+            <ul class="feat-list">
+              <li>Jardín maternal desde los 18 meses</li>
+              <li>Iniciación en hebreo desde los primeros años</li>
+              <li>Kabalat Shabat todos los viernes</li>
+              <li>Jornada completa con comedor kosher</li>
+              <li>Proyecto REGASHOT · TorArt</li>
+              <li>Sede: Amenábar 2424</li>
+            </ul>
+          </div>
+          </div>
+          <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/TU-OTRO-VIDEO.mp4" type="video/mp4">
+  </video>
+      </div>
+</div>
+      
+      <!-- ACTIVIDADES INICIAL -->
+<div class="nivel-subpanel active">
+          <p class="s-label" style="margin-bottom:1rem;">Actividades del Nivel Inicial</p>
+        <div class="g2">
+          <div class="act-card"><div class="act-ico">🕍</div><div><div class="act-title">Kabalat Shabat</div><div class="act-text">Cada viernes, los niños y maestras celebran la entrada del Shabbat con canciones y actividades especiales.</div></div></div>
+          <div class="act-card"><div class="act-ico">🎵</div><div><div class="act-title">REGASHOT — Música</div><div class="act-text">Proyecto musical del jardín. Canciones de valores judaicos con apoyo de AMIA y Vaad Ha Jinuj.</div></div></div>
+          <div class="act-card"><div class="act-ico">🎨</div><div><div class="act-title">TorArt</div><div class="act-text">Expresión artística vinculada a la Torá y el calendario hebreo. Plástica, manualidades y más.</div></div></div>
+          <div class="act-card"><div class="act-ico">🕯️</div><div><div class="act-title">Jaguim del Jardín</div><div class="act-text">Celebración de cada fiesta judía con actividades temáticas, disfraces, comidas especiales y actos.</div></div></div>
+          <div class="act-card"><div class="act-ico">🌱</div><div><div class="act-title">Huerta Escolar</div><div class="act-text">Los niños aprenden sobre la naturaleza y el cuidado de la tierra a través de la huerta del jardín.</div></div></div>
+          <div class="act-card"><div class="act-ico">👨‍👩‍👧</div><div><div class="act-title">Jornadas Familiares</div><div class="act-text">Actividades especiales donde las familias participan en la vida del jardín junto a sus hijos.</div></div></div>
+        </div>
+        <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+<video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+      </div>
+      </div>
+
+    </div><!-- end nivel-panel inicial -->
+
+    <!-- ══ PRIMARIO ══ -->
+    <div class="nivel-panel" data-nivel="1">
+
+      <!-- EQUIPO -->
+      <div class="nivel-subpanel active">
+        <div class="staff-section">
+          <p class="s-label">Dirección del Nivel</p>
+          <div class="staff-grid">
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#6a9000,#9DD014)"><!-- FOTO_JA: reemplazá PEGAR_URL_FOTO_JA con la URL real --><img src="PEGAR_URL_FOTO_JA" alt="JA" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">JA</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Javier Abraham</div>
+                <div class="staff-role-tag" style="background:#6a9000">Director Área Oficial</div>
+                <div class="staff-desc">Articula la propuesta curricular oficial con la identidad judía del Nivel Primario.</div>
+                <div class="staff-contact"><span>📧 primario@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#6a9000,#9DD014)"><!-- FOTO_HG: reemplazá PEGAR_URL_FOTO_HG con la URL real --><img src="PEGAR_URL_FOTO_HG" alt="HG" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">HG</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Rab. Haim Goldwasser</div>
+                <div class="staff-role-tag" style="background:#6a9000">Director Área Kodesh</div>
+                <div class="staff-desc">Lidera el programa judaico del Nivel Primario. Responsable de Mesibat Sidur, Jumash y Jidón Hatanaj.</div>
+                <div class="staff-contact"><span>📧 kodesh.primario@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#6a9000,#9DD014)"><!-- FOTO_CF: reemplazá PEGAR_URL_FOTO_CF con la URL real --><img src="PEGAR_URL_FOTO_CF" alt="CF" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">CF</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Carla Feuerstein</div>
+                <div class="staff-role-tag" style="background:#6a9000">Vice-directora</div>
+                <div class="staff-desc">Coordinación cotidiana de los grados 1° a 7°. Vínculo con familias y docentes.</div>
+                <div class="staff-contact"><span>📧 vice.primario@iosefcaro.org</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="staff-divider"></div>
+          <p class="s-label">Coordinación por Ciclo</p>
+          <div class="staff-grid">
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#6a9000,#9DD014)"><!-- FOTO_BW: reemplazá PEGAR_URL_FOTO_BW con la URL real --><img src="PEGAR_URL_FOTO_BW" alt="BW" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">BW</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Beatriz Weiss</div>
+                <div class="staff-role-tag" style="background:#6a9000">Coordinadora 1° Ciclo (1° a 3°)</div>
+                <div class="staff-desc">Acompaña a los docentes del primer ciclo en planificación y evaluación.</div>
+                <div class="staff-contact"><span>📧 1ciclo@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#6a9000,#9DD014)"><!-- FOTO_IO: reemplazá PEGAR_URL_FOTO_IO con la URL real --><img src="PEGAR_URL_FOTO_IO" alt="IO" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">IO</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Ignacio Osorio</div>
+                <div class="staff-role-tag" style="background:#6a9000">Coordinador 2° Ciclo (4° a 7°)</div>
+                <div class="staff-desc">Lidera el segundo ciclo con foco en la preparación para el nivel secundario.</div>
+                <div class="staff-contact"><span>📧 2ciclo@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#6a9000,#9DD014)"><!-- FOTO_VK: reemplazá PEGAR_URL_FOTO_VK con la URL real --><img src="PEGAR_URL_FOTO_VK" alt="VK" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">VK</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Verónica Katz</div>
+                <div class="staff-role-tag" style="background:#6a9000">Coordinadora de Inglés</div>
+                <div class="staff-desc">Programa bilingüe del Nivel Primario. Articulación Cambridge / Trinity.</div>
+                <div class="staff-contact"><span>📧 ingles.primario@iosefcaro.org</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="staff-divider"></div>
+          <p class="s-label">Psicología y Orientación</p>
+          <div class="staff-grid">
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_AM: reemplazá PEGAR_URL_FOTO_AM con la URL real --><img src="PEGAR_URL_FOTO_AM" alt="AM" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">AM</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Psic. Alejandro Molina</div>
+                <div class="staff-role-tag" style="background:#0077B6">Psicólogo del Nivel</div>
+                <div class="staff-desc">Acompañamiento a alumnos de 1° a 7° grado. Intervención en situaciones de convivencia.</div>
+                <div class="staff-contact"><span>📧 psico.primario@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_SH: reemplazá PEGAR_URL_FOTO_SH con la URL real --><img src="PEGAR_URL_FOTO_SH" alt="SH" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">SH</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Psicopedag. Sara Helman</div>
+                <div class="staff-role-tag" style="background:#0077B6">Psicopedagoga</div>
+                <div class="staff-desc">Evaluación y seguimiento de trayectorias escolares. Trabajo articulado con docentes.</div>
+                <div class="staff-contact"><span>📧 psicoped.primario@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_MN: reemplazá PEGAR_URL_FOTO_MN con la URL real --><img src="PEGAR_URL_FOTO_MN" alt="MN" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">MN</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Lic. Marta Nudel</div>
+                <div class="staff-role-tag" style="background:#0077B6">Maestra Integradora</div>
+                <div class="staff-desc">Coordinación de estrategias de inclusión para alumnos con necesidades específicas.</div>
+                <div class="staff-contact"><span>📧 integracion.primario@iosefcaro.org</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+<video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+      </div>
+      </div>
+
+      <!-- PROPUESTA PRIMARIO -->
+      <div class="nivel-subpanel">
+        <div class="g2">
+          <div>
+            <div class="hbox primario" style="cursor:pointer;" onclick="openPropModal('primario-prop1','Nivel Primario','Formación integral apuntando al desarrollo de valores y potencialidades, afirmando la identidad judía desde 1° a 7° grado.','','')"><div class="hbox-title">Nivel Primario <span style="font-size:.65rem;color:var(--accent);font-family:Inter,sans-serif;font-weight:600;letter-spacing:.1em;margin-left:.5rem;">▶ VER MÁS</span></div><div class="hbox-text">Formación integral apuntando al desarrollo de valores y potencialidades, afirmando la identidad judía.</div></div>
+            <div class="hbox gold-top" style="cursor:pointer;" onclick="openPropModal('primario-prop2','Escritura Rashí','El aprendizaje de la escritura Rashí permite a nuestros alumnos acceder directamente a los comentarios más importantes de la Torá desde el Nivel Primario. Un puente entre la tradición y el estudio.','','')"><div class="hbox-title">Escritura Rashí <span style="font-size:.65rem;color:var(--accent);font-family:Inter,sans-serif;font-weight:600;letter-spacing:.1em;margin-left:.5rem;">▶ VER MÁS</span></div><div class="hbox-text">Acceso a los comentarios clásicos de la Torá desde el Nivel Primario.</div></div>
+          </div>
+          <div>
+            <p class="s-label">Características</p>
+            <ul class="feat-list">
+              <li>1° a 7° grado · Secciones separadas</li>
+              <li>Hebreo, inglés y escritura Rashí</li>
+              <li>Laboratorio de computación y físico-química</li>
+              <li>Talleres de música y plástica</li>
+              <li>Mesibat Sidur · Jumash · Jidón Hatanaj</li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+<video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+      </div>
+      </div>
+      <!-- ACTIVIDADES PRIMARIO -->
+      <div class="nivel-subpanel">
+        <p class="s-label" style="margin-bottom:1rem;">Actividades del Nivel Primario</p>
+        <div class="g2">
+          <div class="act-card"><div class="act-ico">📜</div><div><div class="act-title">Mesibat Sidur y Jumash</div><div class="act-text">Hitos en la vida de cada iehudí. Celebraciones de 1° y 2° grado que involucran a toda la familia.</div></div></div>
+          <div class="act-card"><div class="act-ico">🏆</div><div><div class="act-title">Jidón Hatanaj</div><div class="act-text">Certamen anual coordinado por AMIA. Nuestros alumnos se destacan año tras año en la instancia regional y nacional.</div></div></div>
+          <div class="act-card"><div class="act-ico">👨‍👩‍👧</div><div><div class="act-title">Mi Historia Familiar</div><div class="act-text">Proyecto emblema de 6° grado. Los alumnos investigan y narran sus historias familiares ante padres y abuelos.</div></div></div>
+          <div class="act-card"><div class="act-ico">🎵</div><div><div class="act-title">Talleres de Música</div><div class="act-text">Formación musical en todos los grados. Coro, instrumentos y participación en actos institucionales.</div></div></div>
+          <div class="act-card"><div class="act-ico">🎨</div><div><div class="act-title">Talleres de Plástica · TorArt</div><div class="act-text">Creatividad artística relacionada con valores judaicos y el calendario hebreo.</div></div></div>
+          <div class="act-card"><div class="act-ico">🕍</div><div><div class="act-title">Kabalat Shabat</div><div class="act-text">Cada viernes, alumnos y maestros celebran la entrada del Shabbat con canciones y reflexiones.</div></div></div>
+        </div>
+      </div>
+      <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+<video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+      </div>
+    </div>
+
+    <!-- ══ SECUNDARIO VARONES ══ -->
+    <div class="nivel-panel" data-nivel="2">
+
+      <!-- EQUIPO -->
+      <div class="nivel-subpanel active">
+        <div class="staff-section">
+          <p class="s-label">Rectorado y Dirección</p>
+          <div class="staff-grid">
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_RC: reemplazá PEGAR_URL_FOTO_RC con la URL real --><img src="PEGAR_URL_FOTO_RC" alt="RC" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">RC</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Rodolfo Compagno</div>
+                <div class="staff-role-tag" style="background:var(--sec)">Rector Área Oficial</div>
+                <div class="staff-desc">Rector del área oficial del Nivel Secundario de Varones. Visión pedagógica integral.</div>
+                <div class="staff-contact"><span>📧 rector.varones@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_AE: reemplazá PEGAR_URL_FOTO_AE con la URL real --><img src="PEGAR_URL_FOTO_AE" alt="AE" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">AE</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Rab. Ari Engel</div>
+                <div class="staff-role-tag" style="background:var(--sec)">Director Área Kodesh</div>
+                <div class="staff-desc">Lidera la formación judaica del Secundario de Varones. Yeshivá integrada y estudio de Guemará.</div>
+                <div class="staff-contact"><span>📧 kodesh.varones@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_FM: reemplazá PEGAR_URL_FOTO_FM con la URL real --><img src="PEGAR_URL_FOTO_FM" alt="FM" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">FM</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Federico Mauricio</div>
+                <div class="staff-role-tag" style="background:var(--sec)">Vicerrector</div>
+                <div class="staff-desc">Coordinación de preceptores y convivencia escolar. Sede Echeverría 1166.</div>
+                <div class="staff-contact"><span>📧 vice.varones@iosefcaro.org</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="staff-divider"></div>
+          <p class="s-label">Coordinación de Año</p>
+          <div class="staff-grid staff-grid-4">
+            <div class="staff-card staff-card-sm"><div class="staff-avatar staff-avatar-sm"><img src="https://i.ibb.co/fdgL2tK4/ddd.jpg" alt="Tamara Geller"></div><div class="staff-info"><div class="staff-name">Tamara Geller</div><div class="staff-role-tag" style="background:var(--sec)">Coord. 1° año</div><div class="staff-desc">Acompañamiento en la transición al secundario.</div></div></div>
+            <div class="staff-card staff-card-sm"><div class="staff-avatar staff-avatar-sm" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_OR: reemplazá PEGAR_URL_FOTO_OR con la URL real --><img src="PEGAR_URL_FOTO_OR" alt="OR" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">OR</span></div><div class="staff-info"><div class="staff-name">Omar Rolnik</div><div class="staff-role-tag" style="background:var(--sec)">Coord. 2° y 3° año</div><div class="staff-desc">Ciclo básico del secundario.</div></div></div>
+            <div class="staff-card staff-card-sm"><div class="staff-avatar staff-avatar-sm" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_LS: reemplazá PEGAR_URL_FOTO_LS con la URL real --><img src="PEGAR_URL_FOTO_LS" alt="LS" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">LS</span></div><div class="staff-info"><div class="staff-name">Lorena Sender</div><div class="staff-role-tag" style="background:var(--sec)">Coord. 4° y 5° año</div><div class="staff-desc">Ciclo orientado y orientación vocacional.</div></div></div>
+            <div class="staff-card staff-card-sm"><div class="staff-avatar staff-avatar-sm" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_MF: reemplazá PEGAR_URL_FOTO_MF con la URL real --><img src="PEGAR_URL_FOTO_MF" alt="MF" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">MF</span></div><div class="staff-info"><div class="staff-name">Moshe Faier</div><div class="staff-role-tag" style="background:var(--sec)">Coord. Yeshivá</div><div class="staff-desc">Coordinador del programa de Yeshivá integrada.</div></div></div>
+          </div>
+
+          <div class="staff-divider"></div>
+          <p class="s-label">Psicología y Orientación</p>
+          <div class="staff-grid">
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_PB: reemplazá PEGAR_URL_FOTO_PB con la URL real --><img src="PEGAR_URL_FOTO_PB" alt="PB" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">PB</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Psic. Pablo Benharroch</div>
+                <div class="staff-role-tag" style="background:#0077B6">Psicólogo del Nivel</div>
+                <div class="staff-desc">Acompañamiento individual y grupal. Intervención en situaciones de convivencia y conducta.</div>
+                <div class="staff-contact"><span>📧 psico.varones@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_ET: reemplazá PEGAR_URL_FOTO_ET con la URL real --><img src="PEGAR_URL_FOTO_ET" alt="ET" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">ET</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Lic. Ezequiel Tauber</div>
+                <div class="staff-role-tag" style="background:#0077B6">Orientador Vocacional</div>
+                <div class="staff-desc">Acompaña a los alumnos de 4° y 5° año en su orientación vocacional y universitaria.</div>
+                <div class="staff-contact"><span>📧 orientacion.varones@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_NW: reemplazá PEGAR_URL_FOTO_NW con la URL real --><img src="PEGAR_URL_FOTO_NW" alt="NW" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">NW</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Psicopedag. Natalia Wolf</div>
+                <div class="staff-role-tag" style="background:#0077B6">Psicopedagoga</div>
+                <div class="staff-desc">Seguimiento de trayectorias y estrategias de aprendizaje para alumnos con necesidades específicas.</div>
+                <div class="staff-contact"><span>📧 psicoped.varones@iosefcaro.org</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+<video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+      </div>
+      </div>
+
+      <!-- PROPUESTA SEC VARONES -->
+      <div class="nivel-subpanel">
+        <div class="g2">
+          <div>
+            <div class="hbox sec" style="cursor:pointer;" onclick="openPropModal('sec-v-prop1','Sec. Varones — Kodesh','Puentes afectivos a la Torá. Rigor, reflexión y compromiso. La Yeshivá integrada al proyecto educativo permite que cada alumno desarrolle una relación personal y profunda con el estudio de Torá, sin separarlo del mundo contemporáneo.','','')"><div class="hbox-title">Sec. Varones — Kodesh <span style="font-size:.65rem;color:var(--accent);font-family:Inter,sans-serif;font-weight:600;letter-spacing:.1em;margin-left:.5rem;">▶ VER MÁS</span></div><div class="hbox-text">Puentes afectivos a la Torá. Rigor, reflexión y compromiso. Yeshivá integrada al proyecto educativo.</div></div>
+          </div>
+          <div>
+            <ul class="feat-list">
+              <li>1° a 5° año · Bachiller oficial</li>
+              <li>Yeshivá integrada al curriculum</li>
+              <li>TED · Future Leaders · Jidón Internacional</li>
+              <li>Sede: Echeverría 1166</li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+<video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+      </div>
+      </div>
+
+      <!-- ACTIVIDADES SEC VARONES -->
+      <div class="nivel-subpanel">
+        <p class="s-label" style="margin-bottom:1rem;">Actividades del Secundario Varones</p>
+        
+        <div class="g2">
+          <div class="act-card"><div class="act-ico">🎤</div><div><div class="act-title">TED Escolar</div><div class="act-text">Programa de oratoria y presentaciones donde los alumnos exponen sus ideas ante la comunidad educativa.</div>
+      <div style="display:flex; gap:10px;">
+  <a href="https://i.ibb.co/mf7Mm6R/web-8.jpg" target="_blank"><img src="https://i.ibb.co/mf7Mm6R/web-8.jpg" style="width:200px; height:140px; object-fit:cover; border-radius:14px;"></a>
+  <a href="https://i.ibb.co/mf7Mm6R/web-8.jpg" target="_blank"><img src="https://i.ibb.co/mf7Mm6R/web-8.jpg" style="width:200px; height:140px; object-fit:cover; border-radius:14px;"></a>
+</div>
+        </div></div>
+          <div class="act-card"><div class="act-ico">🏆</div><div><div class="act-title">Future Leaders</div><div class="act-text">Programa de liderazgo y compromiso comunitario para alumnos del ciclo orientado.</div></div></div>
+          <div class="act-card"><div class="act-ico">📖</div><div><div class="act-title">Jidón Hatanaj Internacional</div><div class="act-text">Certamen internacional de conocimiento bíblico. Nuestros alumnos representan a la institución con orgullo.</div></div></div>
+          <div class="act-card"><div class="act-ico">✡️</div><div><div class="act-title">Yeshivá Integrada</div><div class="act-text">Estudio de Guemará y fuentes judaicas integrado al curriculum oficial. Una experiencia única.</div></div></div>
+          <div class="act-card"><div class="act-ico">🏅</div><div><div class="act-title">Iom Sport</div><div class="act-text">Jornadas deportivas entre niveles y sedes. Deporte, compañerismo y espíritu de equipo.</div></div></div>
+          <div class="act-card"><div class="act-ico">🌍</div><div><div class="act-title">Salidas Educativas</div><div class="act-text">Visitas a museos, instituciones comunitarias y proyectos de voluntariado en la comunidad judía.</div></div></div>
+        </div>
+      </div>
+      <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+<video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+      </div>
+    </div>
+
+    <!-- ══ SECUNDARIO MUJERES ══ -->
+    <div class="nivel-panel" data-nivel="3">
+
+      <!-- EQUIPO -->
+      <div class="nivel-subpanel active">
+        <div class="staff-section">
+          <p class="s-label">Dirección del Nivel</p>
+          <div class="staff-grid">
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_YS: reemplazá PEGAR_URL_FOTO_YS con la URL real --><img src="PEGAR_URL_FOTO_YS" alt="YS" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">YS</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Yael Schargorodsky</div>
+                <div class="staff-role-tag" style="background:var(--sec)">Directora Área Oficial</div>
+                <div class="staff-desc">Rectora del área oficial del Nivel Secundario de Mujeres. Liderazgo pedagógico y convivencia.</div>
+                <div class="staff-contact"><span>📧 rectora.mujeres@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_DF: reemplazá PEGAR_URL_FOTO_DF con la URL real --><img src="PEGAR_URL_FOTO_DF" alt="DF" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">DF</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Rabino Dov Fischler</div>
+                <div class="staff-role-tag" style="background:var(--sec)">Director Área Kodesh</div>
+                <div class="staff-desc">Lidera el área judaica del Secundario Mujeres. Proyectos: Lilaj, Jizuk, Jodesh Elul.</div>
+                <div class="staff-contact"><span>📧 kodesh.mujeres@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_RB: reemplazá PEGAR_URL_FOTO_RB con la URL real --><img src="PEGAR_URL_FOTO_RB" alt="RB" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">RB</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Romina Bensimon</div>
+                <div class="staff-role-tag" style="background:var(--sec)">Vice-directora</div>
+                <div class="staff-desc">Coordinación académica y seguimiento docente. Sede Moldes 2440.</div>
+                <div class="staff-contact"><span>📧 vice.mujeres@iosefcaro.org</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="staff-divider"></div>
+          <p class="s-label">Coordinación de Proyectos</p>
+          <div class="staff-grid">
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_TL: reemplazá PEGAR_URL_FOTO_TL con la URL real --><img src="PEGAR_URL_FOTO_TL" alt="TL" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">TL</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Tali Levin</div>
+                <div class="staff-role-tag" style="background:var(--sec)">Coordinadora Future Leaders</div>
+                <div class="staff-desc">Lidera el programa de liderazgo y oratoria para alumnas del secundario.</div>
+                <div class="staff-contact"><span>📧 leaders.mujeres@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_HK: reemplazá PEGAR_URL_FOTO_HK con la URL real --><img src="PEGAR_URL_FOTO_HK" alt="HK" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">HK</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Morah Hadas Kremer</div>
+                <div class="staff-role-tag" style="background:var(--sec)">Coordinadora Lilaj y Jizuk</div>
+                <div class="staff-desc">Proyectos de identidad y crecimiento personal judaico para las alumnas.</div>
+                <div class="staff-contact"><span>📧 lilaj@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#3320a0,#5539F2)"><!-- FOTO_GS: reemplazá PEGAR_URL_FOTO_GS con la URL real --><img src="PEGAR_URL_FOTO_GS" alt="GS" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">GS</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Prof. Graciela Saban</div>
+                <div class="staff-role-tag" style="background:var(--sec)">Coord. Orientación Vocacional</div>
+                <div class="staff-desc">Talleres vocacionales para alumnas de 4° y 5° año. Puente hacia la universidad.</div>
+                <div class="staff-contact"><span>📧 vocacional.mujeres@iosefcaro.org</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="staff-divider"></div>
+          <p class="s-label">Psicología y Orientación</p>
+          <div class="staff-grid">
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_CO: reemplazá PEGAR_URL_FOTO_CO con la URL real --><img src="PEGAR_URL_FOTO_CO" alt="CO" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">CO</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Psic. Claudia Ostrowicz</div>
+                <div class="staff-role-tag" style="background:#0077B6">Psicóloga del Nivel</div>
+                <div class="staff-desc">Acompañamiento a alumnas en etapas clave del adolescencia. Escucha y contención.</div>
+                <div class="staff-contact"><span>📧 psico.mujeres@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_FK: reemplazá PEGAR_URL_FOTO_FK con la URL real --><img src="PEGAR_URL_FOTO_FK" alt="FK" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">FK</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Psicopedag. Fanny Krauss</div>
+                <div class="staff-role-tag" style="background:#0077B6">Psicopedagoga</div>
+                <div class="staff-desc">Evaluación, estrategias y acompañamiento de trayectorias educativas singulares.</div>
+                <div class="staff-contact"><span>📧 psicoped.mujeres@iosefcaro.org</span></div>
+              </div>
+            </div>
+            <div class="staff-card">
+              <div class="staff-avatar" style="background:linear-gradient(135deg,#0077B6,#0096c7)"><!-- FOTO_BI: reemplazá PEGAR_URL_FOTO_BI con la URL real --><img src="PEGAR_URL_FOTO_BI" alt="BI" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;"/><span class="staff-initials" style="display:none;">BI</span></div>
+              <div class="staff-info">
+                <div class="staff-name">Lic. Brenda Isman</div>
+                <div class="staff-role-tag" style="background:#0077B6">Trabajadora Social</div>
+                <div class="staff-desc">Articulación familia-escuela-comunidad. Acompañamiento en situaciones de vulnerabilidad.</div>
+                <div class="staff-contact"><span>📧 social.mujeres@iosefcaro.org</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+<video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+      </div>
+      </div>
+
+      <!-- PROPUESTA SEC MUJERES -->
+      <div class="nivel-subpanel">
+        <div class="g2">
+          <div>
+            <div class="hbox sec" style="cursor:pointer;" onclick="openPropModal('sec-m-prop1','Sec. Mujeres — Kodesh','Calidez, contención y legado. Las jóvenes desarrollan su identidad judaica con profundidad espiritual y liderazgo. Los proyectos Lilaj, Jizuk y Future Leaders son pilares de su formación integral.','','')"><div class="hbox-title">Sec. Mujeres — Kodesh <span style="font-size:.65rem;color:var(--accent);font-family:Inter,sans-serif;font-weight:600;letter-spacing:.1em;margin-left:.5rem;">▶ VER MÁS</span></div><div class="hbox-text">Calidez, contención y legado. Las jóvenes desarrollan su identidad judaica con profundidad espiritual y liderazgo.</div></div>
+          </div>
+          <div>
+            <ul class="feat-list">
+              <li>1° a 5° año · Bachiller oficial</li>
+              <li>Lilaj · Jizuk · Future Leaders</li>
+              <li>Jodesh Elul · Iom Sport</li>
+              <li>Sede: Moldes 2440</li>
+            </ul>
+          </div>
+        </div>
+        <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+<video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+      </div>
+      </div>
+      <!-- ACTIVIDADES SEC MUJERES -->
+      <div class="nivel-subpanel">
+        <p class="s-label" style="margin-bottom:1rem;">Actividades del Secundario Mujeres</p>
+        <div class="g2">
+          <div class="act-card"><div class="act-ico">🌸</div><div><div class="act-title">Proyecto Lilaj</div><div class="act-text">Proyecto de identidad y crecimiento personal judaico. Reflexión, espiritualidad y comunidad.</div></div></div>
+          <div class="act-card"><div class="act-ico">💪</div><div><div class="act-title">Proyecto Jizuk</div><div class="act-text">Fortalecimiento personal y judaico. Las alumnas trabajan en equipo para crecer como personas.</div></div></div>
+          <div class="act-card"><div class="act-ico">🎤</div><div><div class="act-title">Future Leaders</div><div class="act-text">Liderazgo y oratoria. Las alumnas aprenden a hablar en público y liderar proyectos comunitarios.</div></div></div>
+          <div class="act-card"><div class="act-ico">🌙</div><div><div class="act-title">Jodesh Elul</div><div class="act-text">Actividades de introspección y Teshuvá durante el mes de Elul. Preparación para los días sagrados.</div></div></div>
+          <div class="act-card"><div class="act-ico">🏅</div><div><div class="act-title">Iom Sport</div><div class="act-text">Jornadas deportivas entre niveles. Actividad física, trabajo en equipo y espíritu comunitario.</div></div></div>
+          <div class="act-card"><div class="act-ico">🤝</div><div><div class="act-title">Voluntariado Comunitario</div><div class="act-text">Guemilut Jasadim y voluntariado en la comunidad judía de Buenos Aires.</div></div></div>
+        </div>
+      </div>
+      <div style="margin-top:2rem; display:flex; gap:1rem; overflow-x:auto; padding-bottom:.5rem;">
+
+  <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg"
+       alt="Foto 1"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+<video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+
+  <img src="https://i.ibb.co/3YBpCSG7/web.jpg"
+       alt="Foto 2"
+       style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block;">
+
+  <video autoplay muted loop playsinline
+         style="flex:0 0 220px; height:140px; object-fit:cover; border-radius:14px; display:block; background:#000;">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <div class="foot-brand">
+    Rabino Iosef Caro
+    <small>Belgrano, CABA · Comunidad Ajdut Israel · Desde 1967</small>
+  </div>
+  <div class="foot-nav">
+    <button onclick="goPage('institucional')">Institucional</button>
+    <button onclick="goPage('niveles')">Niveles</button>
+    <button onclick="goPage('propuesta')">Propuesta</button>
+    <button onclick="goPage('novedades')">Novedades</button>
+    <button onclick="goPage('calendario')">Calendario</button>
+    <button onclick="goPage('contacto')">Contacto</button>
+    <button onclick="goPage('equipo')">Sumate</button>
+
+  </div>
+
+<!-- Redes Sociales -->
+<div style="margin-top:1rem; display:flex; justify-content:center; gap:1rem;">
+
+  <!-- Facebook -->
+  <a href="PEGAR_AQUI_LINK_DE_FACEBOOK"
+     target="_blank"
+     rel="noopener noreferrer">
+    <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png"
+         alt="Facebook"
+         style="width:42px; height:42px; border-radius:50%; transition:transform .3s;">
+  </a>
+
+  <!-- Instagram -->
+  <a href="PEGAR_AQUI_LINK_DE_INSTAGRAM"
+     target="_blank"
+     rel="noopener noreferrer">
+    <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png"
+         alt="Instagram"
+         style="width:42px; height:42px; border-radius:50%; transition:transform .3s;">
+  </a>
+
+</div>
+
+<p class="foot-copy">
+  &copy; 2026 Colegio Rabino Iosef Caro · "Formamos Iehudim íntegros para el mañana"
+</p>
+</footer>
+
+<!-- ══ MODAL NUEVA NOVEDAD (MEJORADO) ══ -->
+<div class="modal-bg hidden" id="modal-post">
+  <div class="modal" style="max-width:680px;">
+    <div class="modal-header">
+      <h3>Nueva Novedad</h3>
+      <button class="modal-close" onclick="closeNewPost()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="fg">
+        <label>Título de la novedad *</label>
+        <input type="text" id="np-titulo" placeholder="Ej: Festejamos Purim con toda la kehilá"/>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+        <div class="fg">
+          <label>Categoría *</label>
+          <select id="np-cat">
+            <option value="institucional">🏛️ Institucional</option>
+            <option value="inicial">🌱 Nivel Inicial</option>
+            <option value="primario">📖 Nivel Primario</option>
+            <option value="secundario">🎓 Nivel Secundario</option>
+            <option value="comunidad">🤝 Comunidad</option>
+            <option value="logros">🏆 Logros</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Autor / Nivel</label>
+          <input type="text" id="np-autor" placeholder="Ej: Dirección General"/>
+        </div>
+      </div>
+      <div class="fg">
+        <label>Descripción corta (aparece en la tarjeta)</label>
+        <input type="text" id="np-excerpt" placeholder="Breve descripción para el muro…"/>
+      </div>
+
+      <!-- Foto de portada -->
+      <div class="fg">
+        <label>Foto de portada (URL o subir)</label>
+        <div style="display:flex;gap:.5rem;align-items:center;">
+          <input type="text" id="np-cover-url" placeholder="https://…url-de-la-foto.jpg" style="flex:1;" oninput="previewCover()"/>
+          <button type="button" class="np-block-btn" onclick="document.getElementById('np-cover-file').click()">📁 Subir</button>
+          <input type="file" id="np-cover-file" accept="image/*" style="display:none;" onchange="handleCoverFile(this)"/>
+        </div>
+        <img id="np-cover-preview" class="np-media-preview" style="display:none;" alt="preview"/>
+      </div>
+
+      <!-- Bloques de contenido -->
+      <div class="fg">
+        <label style="display:flex;justify-content:space-between;align-items:center;">
+          Contenido de la novedad
+          <span style="display:flex;gap:.35rem;">
+            <button type="button" class="np-block-btn" onclick="addBlock('text')">+ Texto</button>
+            <button type="button" class="np-block-btn" onclick="addBlock('photo')">+ Foto</button>
+            <button type="button" class="np-block-btn" onclick="addBlock('video')">+ Video</button>
+          </span>
+        </label>
+        <div id="np-blocks-container" style="display:flex;flex-direction:column;gap:.65rem;margin-top:.5rem;">
+          <!-- bloques dinámicos aquí -->
+        </div>
+        <p style="font-size:.72rem;color:var(--muted);margin-top:.5rem;opacity:.7;">Podés combinar texto, fotos y videos en el orden que quieras.<br/>
+        <strong style="color:var(--primary);">Google Drive:</strong> compartí el archivo → "Cualquiera con el enlace" → pegá la URL acá.</p>
+      </div>
+
+      <button class="btn-send" onclick="addPost()">Publicar en el Muro</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MODAL DETALLE POST (MEJORADO) ══ -->
+<div class="modal-bg hidden" id="modal-detail">
+  <div class="modal" style="max-width:700px;">
+    <div class="modal-header">
+      <h3 id="detail-header-title" style="font-size:1rem;">Novedad</h3>
+      <button class="modal-close" onclick="closeDetail()">×</button>
+    </div>
+    <div class="post-detail" id="detail-body"></div>
+  </div>
+</div>
+
+<!-- ══ MODAL PROPUESTA DETALLE ══ -->
+<div class="prop-modal-bg hidden" id="modal-propuesta">
+  <div class="prop-modal">
+    <div class="prop-modal-header">
+      <h3 id="prop-modal-title">Propuesta</h3>
+      <button class="modal-close" onclick="closePropModal()">×</button>
+    </div>
+    <div class="prop-modal-body" id="prop-modal-body">
+    </div>
+  </div>
+</div>
+
+<script>
+
+/* ═══════════════════════════════════════
+   NAVEGACIÓN
+═══════════════════════════════════════ */
+function goPage(id){const m={"home": "index.html", "institucional": "institucional.html", "niveles": "niveles.html", "propuesta": "propuesta.html", "novedades": "novedades.html", "calendario": "calendario.html", "contacto": "contacto.html", "equipo": "equipo.html"};if(m[id])window.location.href=m[id];}
+function switchTab(btn){
+  const bar=btn.closest('.tab-bar');
+  const page=btn.closest('.page');
+  const tabs=bar.querySelectorAll('.tab');
+  const panels=page.querySelectorAll('.panel');
+  const idx=Array.from(tabs).indexOf(btn);
+  tabs.forEach(t=>t.classList.remove('active'));
+  panels.forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  if(panels[idx]) panels[idx].classList.add('active');
+}
+function toggleMob(){document.getElementById('mob').classList.toggle('open');}
+function closeMob(){document.getElementById('mob').classList.remove('open');}
+
+window.addEventListener('scroll',()=>{
+  document.querySelector('.topbar').style.background=window.scrollY>40?'rgba(19,19,79,0.99)':'rgba(19,19,79,0.97)';
+});
+
+/* ═══════════════════════════════════════
+   HERO INTELIGENTE — lee data-fotos y data-video
+   y decide qué mostrar sin que toques JS
+═══════════════════════════════════════ */
+function buildHeroMedia(heroEl){
+  const bgEl = heroEl.querySelector('.page-hero-bg');
+  if(!bgEl) return;
+
+  const videoSrc = (heroEl.dataset.video || '').trim();
+  const fotosRaw = (heroEl.dataset.fotos || '').trim();
+  const fotos = fotosRaw ? fotosRaw.split(',').map(s=>s.trim()).filter(Boolean) : [];
+
+  // Armar lista de slides: video primero si existe
+  const slides = [];
+  if(videoSrc) slides.push({type:'video', src: videoSrc});
+  fotos.forEach(f => slides.push({type:'img', src: f}));
+
+  if(slides.length === 0){
+    // Sin media: fondo oscuro, nada que hacer
+    bgEl.style.background = 'rgba(19,19,79,0.6)';
+    return;
+  }
+
+  if(slides.length === 1 && slides[0].type === 'img'){
+    // Caso simple: una sola foto → background-image estático
+    bgEl.style.backgroundImage = `url(${slides[0].src})`;
+    return;
+  }
+
+  if(slides.length === 1 && slides[0].type === 'video'){
+    // Solo video
+    bgEl.innerHTML = buildVideoSlideHTML(slides[0].src);
+    bgEl.style.position = 'absolute';
+    bgEl.style.inset = '0';
+    bgEl.style.overflow = 'hidden';
+    return;
+  }
+
+  // Múltiples slides → carrusel
+  bgEl.style.position = 'absolute';
+  bgEl.style.inset = '0';
+  bgEl.style.overflow = 'hidden';
+  bgEl.innerHTML = slides.map((s,i) => {
+    const activeClass = i===0 ? ' active' : '';
+    if(s.type === 'video'){
+      return `<div class="hero-slide${activeClass}" style="position:absolute;inset:0;">${buildVideoSlideHTML(s.src)}</div>`;
+    } else {
+      return `<div class="hero-slide${activeClass}" style="position:absolute;inset:0;background-size:cover;background-position:center;background-image:url(${s.src});"></div>`;
+    }
+  }).join('');
+
+  // Dots
+  if(slides.length > 1){
+    const dots = document.createElement('div');
+    dots.className = 'hero-carousel-dots';
+    slides.forEach((_,i)=>{
+      const d = document.createElement('button');
+      d.className = 'hcdot' + (i===0?' active':'');
+      d.onclick = ()=> goDot(heroEl, i);
+      dots.appendChild(d);
+    });
+    heroEl.appendChild(dots);
+    heroEl._carouselIdx = 0;
+    heroEl._carouselTotal = slides.length;
+    heroEl._carouselTimer = setInterval(()=>{
+      const next = (heroEl._carouselIdx + 1) % heroEl._carouselTotal;
+      goDot(heroEl, next);
+    }, 10000);
+  }
+}
+
+function goDot(heroEl, idx){
+  heroEl.querySelectorAll('.hero-slide').forEach((s,i) => s.classList.toggle('active', i===idx));
+  heroEl.querySelectorAll('.hcdot').forEach((d,i) => d.classList.toggle('active', i===idx));
+  heroEl._carouselIdx = idx;
+}
+
+function buildVideoSlideHTML(url){
+  // Google Drive — Drive bloquea autoplay por política del navegador cuando viene desde iframe.
+  // La mejor alternativa es usar YouTube (no listado) o Vimeo para videos de hero.
+  // Igual intentamos con los permisos máximos disponibles:
+  if(url.includes('drive.google.com')){
+    const m = url.match(/\/file\/d\/([^/\?&]+)/) || url.match(/[?&]id=([^&]+)/);
+    const id = m ? m[1] : '';
+    if(id) return `<iframe src="https://drive.google.com/file/d/${id}/preview"
+      style="position:absolute;inset:0;width:100%;height:100%;border:none;pointer-events:none;"
+      allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  }
+  // YouTube — autoplay silencioso, sin controles, en loop
+  if(url.includes('youtube.com')||url.includes('youtu.be')){
+    let id = url.includes('youtu.be/') ? url.split('youtu.be/')[1].split('?')[0] : (url.split('v=')[1]||'').split('&')[0];
+    if(id) return `<iframe
+      src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&disablekb=1&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3"
+      style="position:absolute;inset:-10%;width:120%;height:120%;border:none;pointer-events:none;"
+      allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  }
+  // Vimeo — background=1 fuerza autoplay + mute + loop sin ninguna UI
+  if(url.includes('vimeo.com')){
+    const id = url.split('vimeo.com/')[1]?.split('?')[0];
+    if(id) return `<iframe
+      src="https://player.vimeo.com/video/${id}?autoplay=1&muted=1&loop=1&background=1&autopause=0"
+      style="position:absolute;inset:-10%;width:120%;height:120%;border:none;pointer-events:none;"
+      allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+  }
+  // Video directo mp4/webm — autoplay nativo, siempre funciona si el navegador lo permite
+  return `<video autoplay muted loop playsinline preload="auto"
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+    <source src="${url}"/>
+  </video>`;
+}
+
+
+// Inicializar todos los heroes con data-fotos/data-video al cargar
+function initAllHeroes(){
+  document.querySelectorAll('.page-hero[data-fotos], .page-hero[data-video]').forEach(buildHeroMedia);
+}
+initAllHeroes();
+
+/* ═══════════════════════════════════════
+   HERO NIVEL + NAVEGACIÓN DOBLE
+═══════════════════════════════════════ */
+// levelData: editá fotos (separadas por coma) y video para cada nivel
+const levelData=[
+  {
+    fotos: 'https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?w=1600&q=80',
+    video: '',
+    badge:'גן · Nivel Inicial', cls:'badge-inicial',
+    title:'Jardín e Inicial', desc:'De 18 meses a 5 años. Primeros pasos en Torá y Mitzvot. Cálido, lúdico, afectivo.'
+  },
+  {
+    fotos: 'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1600&q=80',
+    video: '',
+    badge:'יסודי · Nivel Primario', cls:'badge-primario',
+    title:'Nivel Primario', desc:'Formación integral, identidad judía y respeto por la Torá. 1° a 7° grado.'
+  },
+  {
+    fotos: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=80',
+    video: '',
+    badge:'בנים · Sec. Varones', cls:'badge-sec',
+    title:'Secundario Varones', desc:'Área Kodesh — puentes afectivos a la Torá. Riguroso y con liderazgo.'
+  },
+  {
+    fotos: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600&q=80',
+    video: '',
+    badge:'בנות · Sec. Mujeres', cls:'badge-sec',
+    title:'Secundario Mujeres', desc:'Área Kodesh — calidez, contención y legado. Inspirador y empoderante.'
+  },
+];
+
+let currentNivel=0;
+let currentSubTab=0;
+
+function changeLevelHero(i){
+  const d = levelData[i];
+  const hero = document.getElementById('level-hero');
+  // Actualizar badge y textos
+  const b = document.getElementById('level-badge');
+  b.textContent = d.badge; b.className = 'level-badge ' + d.cls;
+  document.getElementById('level-title').textContent = d.title;
+  document.getElementById('level-desc').textContent = d.desc;
+  // Actualizar media: limpiar timer anterior si existe
+  if(hero._carouselTimer) clearInterval(hero._carouselTimer);
+  // Asignar data y reconstruir
+  hero.dataset.fotos = d.fotos || '';
+  hero.dataset.video = d.video || '';
+  const bg = document.getElementById('level-hero-bg');
+  if(bg){ bg.innerHTML = ''; bg.style.backgroundImage = ''; bg.style.cssText = 'position:absolute;inset:0;background-size:cover;background-position:center;'; }
+  hero.querySelectorAll('.hero-slide, .hero-carousel-dots').forEach(el=>el.remove());
+  buildHeroMedia(hero);
+}
+
+function switchNivel(idx){
+  currentNivel=idx;
+  const tabs=document.querySelectorAll('#nivel-tabs .tab');
+  tabs.forEach((t,i)=>{t.classList.toggle('active',i===idx);});
+  document.querySelectorAll('.nivel-panel').forEach((p,i)=>{
+    p.classList.toggle('active',i===idx);
+  });
+  currentSubTab=0;
+  const subTabs=document.querySelectorAll('#nivel-subtabs .tab');
+  subTabs.forEach((t,i)=>t.classList.toggle('active',i===0));
+  const activePanel=document.querySelector(`.nivel-panel[data-nivel="${idx}"]`);
+  if(activePanel){
+    activePanel.querySelectorAll('.nivel-subpanel').forEach((sp,i)=>sp.classList.toggle('active',i===0));
+  }
+  changeLevelHero(idx);
+  document.getElementById('nivel-tabs').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function switchNivelTab(btn,subIdx){
+  currentSubTab=subIdx;
+  const subTabs=document.querySelectorAll('#nivel-subtabs .tab');
+  subTabs.forEach((t,i)=>t.classList.toggle('active',i===subIdx));
+  const activePanel=document.querySelector(`.nivel-panel[data-nivel="${currentNivel}"]`);
+  if(activePanel){
+    activePanel.querySelectorAll('.nivel-subpanel').forEach((sp,i)=>sp.classList.toggle('active',i===subIdx));
+  }
+}
+
+/* ═══════════════════════════════════════
+   COUNTER ANIMATION
+═══════════════════════════════════════ */
+function animateCounters(){
+  document.querySelectorAll('.hstat .num').forEach(el=>{
+    const t=parseInt(el.dataset.target,10); let c=0;
+    const step=Math.ceil(t/40);
+    const iv=setInterval(()=>{ c+=step; if(c>=t){el.textContent=(t===55?'+':'')+t;clearInterval(iv);}else el.textContent=c; },30);
+  });
+}
+const statsEl=document.querySelector('.hero-stats');
+if(statsEl){const o=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting){animateCounters();o.disconnect();}});},{threshold:.5});o.observe(statsEl);}
+
+/* Helper para renderizar videos de distintas fuentes */
+function renderVideoEmbed(url){
+  if(!url) return '';
+  // YouTube
+  if(url.includes('youtube.com')||url.includes('youtu.be')){
+    let ytId='';
+    if(url.includes('youtu.be/')) ytId=url.split('youtu.be/')[1].split('?')[0];
+    else if(url.includes('v=')) ytId=url.split('v=')[1].split('&')[0];
+    if(ytId) return `<iframe width="100%" height="280" src="https://www.youtube.com/embed/${ytId}" frameborder="0" allowfullscreen style="margin:.75rem 0;display:block;"></iframe>`;
+  }
+  // Vimeo
+  if(url.includes('vimeo.com')){
+    const vmId=url.split('vimeo.com/')[1]?.split('?')[0];
+    if(vmId) return `<iframe width="100%" height="280" src="https://player.vimeo.com/video/${vmId}" frameborder="0" allowfullscreen style="margin:.75rem 0;display:block;"></iframe>`;
+  }
+  // Google Drive — formatos:
+  //   https://drive.google.com/file/d/FILE_ID/view
+  //   https://drive.google.com/open?id=FILE_ID
+  if(url.includes('drive.google.com')){
+    let driveId='';
+    const matchFile=url.match(/\/file\/d\/([^/\?&]+)/);
+    const matchOpen=url.match(/[?&]id=([^&]+)/);
+    if(matchFile) driveId=matchFile[1];
+    else if(matchOpen) driveId=matchOpen[1];
+    if(driveId) return `<iframe src="https://drive.google.com/file/d/${driveId}/preview" width="100%" height="280" frameborder="0" allowfullscreen style="margin:.75rem 0;display:block;" allow="autoplay"></iframe>`;
+  }
+  // Video directo (mp4, webm, etc.)
+  return `<video src="${url}" controls style="max-width:100%;margin:.75rem 0;display:block;"></video>`;
+}
+
+
+// ── Admin removido de página pública ──
+function openAdminLogin(){}
+function openNewPost(){ window.location.href='admin.html'; }
+
+/* ═══════════════════════════════════════
+   MODAL PROPUESTA DETALLE
+═══════════════════════════════════════ */
+function openPropModal(id, title, text, imgUrl, videoUrl){
+  document.getElementById('prop-modal-title').textContent=title;
+  let mediaHtml='';
+  if(imgUrl) mediaHtml+=`<img src="${imgUrl}" class="prop-modal-media" alt="${title}"/>`;
+  if(videoUrl) mediaHtml+=`<video src="${videoUrl}" controls class="prop-modal-media"></video>`;
+  document.getElementById('prop-modal-body').innerHTML=`
+    ${mediaHtml}
+    <div class="prop-modal-text">${text}</div>
+    <p style="font-size:.72rem;color:var(--muted);margin-top:1.5rem;opacity:.6;"></p>
+  `;
+  document.getElementById('modal-propuesta').classList.remove('hidden');
+}
+function closePropModal(){document.getElementById('modal-propuesta').classList.add('hidden');}
+function closeDetail(){document.getElementById('modal-detail').classList.add('hidden');}
+function closeNewPost(){document.getElementById('modal-post').classList.add('hidden');}
+
+/* ═══════════════════════════════════════
+   SUMATE AL EQUIPO
+═══════════════════════════════════════ */
+let selectedRoleVal='';
+function selectRole(el,val,label){
+  document.querySelectorAll('.role-chip').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedRoleVal=val;
+  const rolSel=document.getElementById('cv-rol');
+  for(let i=0;i<rolSel.options.length;i++){
+    if(rolSel.options[i].value.startsWith(val)||rolSel.options[i].value===val){rolSel.selectedIndex=i;break;}
+  }
+}
+function fileChosen(input){
+  const label=document.getElementById('file-chosen-label');
+  if(input.files&&input.files[0]){label.textContent='✅ '+input.files[0].name;label.style.display='block';}
+}
+function dragOver(e){e.preventDefault();document.getElementById('file-zone').classList.add('drag');}
+function dragLeave(e){document.getElementById('file-zone').classList.remove('drag');}
+function dropFile(e){
+  e.preventDefault();document.getElementById('file-zone').classList.remove('drag');
+  const files=e.dataTransfer.files;
+  if(files.length){const label=document.getElementById('file-chosen-label');label.textContent='✅ '+files[0].name;label.style.display='block';}
+}
+function submitCV(){
+  const nombre=document.getElementById('cv-nombre').value.trim();
+  const email=document.getElementById('cv-email').value.trim();
+  const sector=document.getElementById('cv-sector').value;
+  const rol=document.getElementById('cv-rol').value;
+  const consent=document.getElementById('cv-consentimiento').checked;
+  if(!nombre||!email||!sector||!rol){alert('Por favor completá los campos obligatorios (*).');return;}
+  if(!consent){alert('Debés aceptar el consentimiento para continuar.');return;}
+  document.getElementById('cv-form-wrap').style.display='none';
+  document.getElementById('cv-success').style.display='block';
+  window.scrollTo({top:document.getElementById('cv-success').offsetTop-100,behavior:'smooth'});
+}
+function resetCV(){
+  document.getElementById('cv-form-wrap').style.display='block';
+  document.getElementById('cv-success').style.display='none';
+  document.querySelectorAll('#cv-form-wrap input,#cv-form-wrap select,#cv-form-wrap textarea').forEach(el=>el.value='');
+  document.getElementById('cv-consentimiento').checked=false;
+  document.getElementById('file-chosen-label').style.display='none';
+  document.querySelectorAll('.role-chip').forEach(c=>c.classList.remove('selected'));
+}
+
+// Cerrar modales al clickear fondo
+// Cerrar modales al clickear fondo — solo si existen en esta página
+['modal-post','modal-detail','modal-propuesta'].forEach(function(id){
+  var el=document.getElementById(id);
+  if(el) el.addEventListener('click',function(e){
+    if(e.target===this){
+      if(id==='modal-post') closeNewPost();
+      else if(id==='modal-detail') closeDetail();
+      else if(id==='modal-propuesta') closePropModal();
+    }
+  });
+});
+
+</script>
+</body>
+</html>
