@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Panel Docente - Iosef Caro</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore-compat.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+*{box-sizing:border-box}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#f8fafc;padding-bottom:130px}
+.tab-content{display:none}.tab-content.active{display:block}
+.nav-btn.active{color:#2563eb;background:#eff6ff;border-radius:1rem}
+.btn-flotante{position:fixed;bottom:100px;left:1rem;right:1rem;z-index:900;display:none}
+.input-pro{border:1.5px solid #e2e8f0;border-radius:1rem;padding:.75rem;outline:none;width:100%;font-size:14px;font-family:inherit;background:white;transition:border-color .2s}
+.input-pro:focus{border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.grilla-wrapper{overflow-x:auto;border:1px solid #e2e8f0;border-radius:1rem}
+.grilla-tabla{width:100%;border-collapse:collapse;font-size:12px}
+.grilla-tabla th{background:#0f172a;color:white;padding:8px 10px;font-weight:800;font-size:10px;text-transform:uppercase;white-space:nowrap;position:sticky;top:0;z-index:10}
+.grilla-tabla th.sticky-col{left:0;z-index:11;min-width:140px}
+.grilla-tabla td{border:1px solid #f1f5f9;padding:0}
+.grilla-tabla td.sticky-col{background:#f8fafc;font-weight:700;font-size:12px;padding:8px 10px;position:sticky;left:0;z-index:5;min-width:140px;white-space:nowrap}
+.grilla-inp{width:64px;height:40px;border:none;text-align:center;font-weight:800;font-size:13px;outline:none;background:transparent;font-family:inherit;display:block;margin:0 auto}
+.grilla-inp:focus{background:#eff6ff}
+.alerta-falta{background:#fef3c7;border:1px solid #f59e0b;border-radius:.6rem;padding:3px 8px;font-size:10px;font-weight:800;color:#92400e;display:inline-block}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen" class="fixed inset-0 bg-white z-[2000] flex flex-col items-center justify-center p-8 text-center">
+  <div class="w-16 h-16 bg-blue-600 rounded-2xl mb-5 flex items-center justify-center text-white text-2xl shadow-xl">
+    <i class="fas fa-chalkboard-teacher"></i>
+  </div>
+  <h2 class="text-2xl font-black mb-1">Panel Docente</h2>
+  <p class="text-slate-400 text-sm mb-6">Ingresá con tu email registrado</p>
+  <input type="email" id="login-email" class="w-full max-w-xs p-4 bg-slate-100 rounded-2xl mb-4 font-bold outline-none" placeholder="Tu email">
+  <div id="pass-wrap" class="hidden w-full max-w-xs mb-4">
+    <input type="password" id="login-pass" class="w-full p-4 bg-slate-100 rounded-2xl font-bold outline-none" placeholder="Contraseña (si tenés)">
+  </div>
+  <p id="login-error" class="text-red-500 text-xs font-bold mb-3 hidden"></p>
+  <button onclick="login()" class="w-full max-w-xs bg-slate-900 text-white p-4 rounded-2xl font-bold shadow-lg">Entrar</button>
+</div>
+
+<!-- HEADER -->
+<header class="p-4 bg-white border-b sticky top-0 z-50 flex justify-between items-center gap-3 shadow-sm">
+  <div class="flex-1 min-w-0">
+    <h1 id="doc-nom" class="font-black text-lg leading-none truncate">Hola</h1>
+    <div class="flex items-center gap-3 mt-1">
+      <div>
+        <label class="text-[8px] font-black text-slate-400 uppercase">Materia</label>
+        <select id="select-materia" onchange="actualizarMateriaActiva()" class="text-[10px] font-bold text-blue-600 uppercase bg-transparent outline-none border-none p-0 cursor-pointer block"></select>
+      </div>
+      <div>
+        <label class="text-[8px] font-black text-slate-400 uppercase">Período</label>
+        <select id="select-periodo" onchange="cargarAlumnos()" class="text-[10px] font-bold text-emerald-600 uppercase bg-transparent outline-none border-none p-0 cursor-pointer block"></select>
+      </div>
+    </div>
+  </div>
+  <div class="flex items-center gap-2">
+    <a href="eoe.html" class="w-9 h-9 bg-violet-50 text-violet-600 hover:bg-violet-600 hover:text-white rounded-lg flex items-center justify-center transition-all" title="Ir al panel EOE">
+      <i class="fas fa-shield-alt text-sm"></i>
+    </a>
+    <input type="date" id="fecha-hoy" class="bg-slate-100 p-2 rounded-lg text-[10px] font-bold outline-none" onchange="cargarAlumnos()">
+  </div>
+</header>
+
+<main class="p-4 max-w-lg mx-auto">
+
+  <!-- NOTAS -->
+  <section id="tab-notas" class="tab-content active">
+    <div class="grid grid-cols-2 gap-2 mb-4">
+      <div>
+        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Curso</label>
+        <select id="select-curso" onchange="cargarAlumnos()" class="w-full p-3 bg-white rounded-xl border font-bold mt-1 outline-none text-xs shadow-sm"></select>
+      </div>
+      <div>
+        <label class="text-[9px] font-black text-slate-400 uppercase ml-1">Modalidad</label>
+        <select id="select-modalidad" onchange="cargarAlumnos()" class="w-full p-3 bg-white rounded-xl border font-bold mt-1 outline-none text-xs shadow-sm text-blue-600">
+          <option value="NUMERICO">Numérico (1-10)</option>
+          <option value="INDICADORES">Carga bimestral por indicadores</option>
+        </select>
+      </div>
+    </div>
+    <div id="periodo-info" class="bg-blue-50 border border-blue-100 rounded-2xl p-3 mb-4 hidden">
+      <p id="periodo-info-txt" class="text-xs font-bold text-blue-700"></p>
+    </div>
+    <div id="ctrl-examenes" class="mb-4 flex items-center gap-2 flex-wrap hidden">
+      <span class="text-[10px] font-black text-slate-400 uppercase">Evaluaciones:</span>
+      <div id="tags-examenes" class="flex gap-2 flex-wrap"></div>
+      <button onclick="agregarColumna()" class="text-[10px] font-black bg-blue-600 text-white px-3 py-1.5 rounded-xl shadow-sm">+ Agregar</button>
+    </div>
+    <div id="grilla-container" class="hidden">
+      <div class="grilla-wrapper mb-4">
+        <table class="grilla-tabla">
+          <thead><tr id="grilla-head"></tr></thead>
+          <tbody id="grilla-body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div id="indicadores-container" class="hidden space-y-3"></div>
+    <div id="btn-guardar-notas" class="btn-flotante">
+      <button onclick="confirmarNotas()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-black shadow-2xl flex items-center justify-center gap-2">
+        <i class="fas fa-save"></i> GUARDAR NOTAS
+      </button>
+    </div>
+  </section>
+
+  <!-- ASISTENCIA -->
+  <section id="tab-asis" class="tab-content">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="font-black text-xl">Pasar Lista</h3>
+      <span id="asis-fecha-label" class="text-xs font-bold text-slate-400 bg-slate-100 px-3 py-1 rounded-full"></span>
+    </div>
+    <div id="lista-asis" class="space-y-2"></div>
+    <div id="btn-guardar-asis" class="btn-flotante">
+      <button onclick="confirmarAsistencia()" class="w-full bg-emerald-500 text-white p-4 rounded-2xl font-black shadow-2xl flex items-center justify-center gap-2">
+        <i class="fas fa-check-circle"></i> CONFIRMAR ASISTENCIA
+      </button>
+    </div>
+  </section>
+
+  <!-- INFORMES -->
+  <section id="tab-informes" class="tab-content space-y-4">
+    <h3 class="font-black text-xl">Informes Pedagógicos</h3>
+    <div class="bg-white p-6 rounded-3xl border shadow-sm space-y-4">
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[9px] font-black text-slate-400 uppercase">Alumno</label>
+          <select id="informe-alumno" onchange="cargarInformes()" class="input-pro mt-1 text-xs"></select>
+        </div>
+        <div>
+          <label class="text-[9px] font-black text-slate-400 uppercase">Período</label>
+          <select id="informe-periodo" class="input-pro mt-1 text-xs"></select>
+        </div>
+      </div>
+      <div>
+        <label class="text-[9px] font-black text-slate-400 uppercase">Informe</label>
+        <textarea id="informe-texto" class="input-pro mt-1 h-28" placeholder="Desempeño, logros, áreas a mejorar..."></textarea>
+      </div>
+      <div>
+        <label class="text-[9px] font-black text-slate-400 uppercase mb-2 block">Indicadores de desempeño</label>
+        <div class="grid grid-cols-2 gap-2">
+          <label class="flex items-center gap-2 text-sm font-bold cursor-pointer bg-slate-50 p-3 rounded-xl"><input type="checkbox" id="ind-participacion" class="accent-blue-600"> Participación</label>
+          <label class="flex items-center gap-2 text-sm font-bold cursor-pointer bg-slate-50 p-3 rounded-xl"><input type="checkbox" id="ind-entregas" class="accent-blue-600"> Entregas</label>
+          <label class="flex items-center gap-2 text-sm font-bold cursor-pointer bg-slate-50 p-3 rounded-xl"><input type="checkbox" id="ind-conducta" class="accent-blue-600"> Conducta</label>
+          <label class="flex items-center gap-2 text-sm font-bold cursor-pointer bg-slate-50 p-3 rounded-xl"><input type="checkbox" id="ind-progreso" class="accent-blue-600"> Progreso</label>
+        </div>
+      </div>
+      <button onclick="guardarInforme()" class="w-full bg-blue-600 text-white p-4 rounded-2xl font-bold shadow-lg">
+        <i class="fas fa-save mr-2"></i>GUARDAR INFORME
+      </button>
+    </div>
+    <div id="lista-informes" class="space-y-3"></div>
+  </section>
+
+  <!-- CALENDARIO -->
+  <section id="tab-calendario" class="tab-content space-y-4">
+    <h3 class="font-black text-xl">Avisos de Pruebas</h3>
+    <p class="text-slate-400 text-xs -mt-2">Publicá evaluaciones y entregas para que las familias las vean en su agenda.</p>
+    <div class="bg-white p-6 rounded-3xl border shadow-sm space-y-4">
+      <input type="hidden" id="cal-id-editando-doc">
+      <div class="flex items-center justify-between">
+        <label class="text-[9px] font-black text-slate-400 uppercase">Título</label>
+        <button id="btn-cancelar-cal-doc" onclick="cancelarEditarEventoDoc()" class="hidden text-[9px] font-black text-slate-400 bg-slate-100 px-3 py-1.5 rounded-xl">✕ Cancelar</button>
+      </div>
+      <div>
+        <input type="text" id="cal-titulo" placeholder="Ej: Parcial de Matemática" class="input-pro mt-1">
+      </div>
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="text-[9px] font-black text-slate-400 uppercase">Fecha</label>
+          <input type="date" id="cal-fecha" class="input-pro mt-1">
+        </div>
+        <div>
+          <label class="text-[9px] font-black text-slate-400 uppercase">Curso</label>
+          <select id="cal-curso" class="input-pro mt-1 text-xs"></select>
+        </div>
+      </div>
+      <div>
+        <label class="text-[9px] font-black text-slate-400 uppercase">Descripción (opcional)</label>
+        <textarea id="cal-desc" class="input-pro mt-1 h-16 resize-none" placeholder="Temas a evaluar, materiales necesarios..."></textarea>
+      </div>
+      <button onclick="guardarEvento()" class="w-full bg-emerald-600 text-white p-4 rounded-2xl font-bold shadow-lg">
+        <i class="fas fa-calendar-plus mr-2"></i><span id="btn-cal-doc-txt">PUBLICAR EN AGENDA</span>
+      </button>
+    </div>
+    <h4 class="font-black text-sm text-slate-700">Mis eventos publicados</h4>
+    <div id="lista-cal-doc" class="space-y-2"></div>
+  </section>
+
+  <!-- COMUNICADOS DOCENTE ══════════════════ -->
+  <section id="tab-comunicados" class="tab-content space-y-4 pb-24">
+    <div>
+      <h3 class="font-black text-xl">Avisos a Familias</h3>
+      <p class="text-slate-400 text-xs -mt-1">Publicá avisos para los cursos que tenés asignados. Las familias los ven en el Muro.</p>
+    </div>
+
+    <div class="bg-white rounded-3xl border shadow-sm p-5 space-y-4">
+      <div>
+        <label class="text-[9px] font-black text-slate-400 uppercase">Título del aviso</label>
+        <input type="text" id="com-titulo" class="input-pro mt-1" placeholder="Ej: Parcial la próxima semana">
+      </div>
+      <div>
+        <label class="text-[9px] font-black text-slate-400 uppercase">Mensaje</label>
+        <textarea id="com-texto" rows="4" class="input-pro mt-1 resize-none" placeholder="Escribí el mensaje para las familias..."></textarea>
+      </div>
+      <div>
+        <label class="text-[9px] font-black text-slate-400 uppercase">Curso destinatario</label>
+        <select id="com-curso" class="input-pro mt-1 text-xs"></select>
+      </div>
+      <div>
+        <label class="text-[9px] font-black text-slate-400 uppercase">Tipo</label>
+        <select id="com-tag" class="input-pro mt-1 text-xs">
+          <option value="info">📣 Información</option>
+          <option value="urgente">🔴 Urgente</option>
+          <option value="tramite">📋 Trámite</option>
+        </select>
+      </div>
+      <button onclick="publicarComunicadoDocente()" class="w-full bg-slate-900 text-white p-4 rounded-2xl font-bold shadow-lg">
+        <i class="fas fa-paper-plane mr-2"></i>PUBLICAR AVISO
+      </button>
+    </div>
+
+    <h4 class="font-black text-sm text-slate-700">Mis avisos publicados</h4>
+    <div id="lista-com-doc" class="space-y-2">
+      <p class="text-slate-400 text-xs text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- NAV -->
+<nav class="fixed bottom-0 left-4 right-4 bg-white border shadow-2xl rounded-[2rem] mb-4 flex justify-around p-2 z-[1000]">
+  <button onclick="switchTab('notas')"      id="btn-notas"      class="nav-btn active flex-1 py-3 flex flex-col items-center gap-1 font-bold text-[9px]">
+    <i class="fas fa-table text-lg"></i>NOTAS
+  </button>
+  <button onclick="switchTab('asis')"       id="btn-asis"       class="nav-btn flex-1 py-3 flex flex-col items-center gap-1 font-bold text-[9px]">
+    <i class="fas fa-list-check text-lg"></i>ASIST.
+  </button>
+  <button onclick="switchTab('informes')"   id="btn-informes"   class="nav-btn flex-1 py-3 flex flex-col items-center gap-1 font-bold text-[9px]">
+    <i class="fas fa-file-alt text-lg"></i>INF.
+  </button>
+  <button onclick="switchTab('calendario')" id="btn-calendario" class="nav-btn flex-1 py-3 flex flex-col items-center gap-1 font-bold text-[9px]">
+    <i class="fas fa-calendar text-lg"></i>CAL.
+  </button>
+  <button onclick="switchTab('comunicados')" id="btn-comunicados" class="nav-btn flex-1 py-3 flex flex-col items-center gap-1 font-bold text-[9px]">
+    <i class="fas fa-bullhorn text-lg"></i>AVISOS
+  </button>
+</nav>
+
+<script>
+const FB={apiKey:"AIzaSyD4pg_8j_CbgeqA1x8IOqn3CxpXepVWQtI",authDomain:"app-iosefcaro.firebaseapp.com",projectId:"app-iosefcaro",storageBucket:"app-iosefcaro.firebasestorage.app",messagingSenderId:"651320124248",appId:"1:651320124248:web:97c8ca00e29114e1983b2d"};
+firebase.initializeApp(FB);
+const db=firebase.firestore();
+
+const LLAVE_EMAIL='uriel.bacher@gmail.com',LLAVE_PASS='Gallardo10';
+let docenteData=null, docenteEmail="", materiaActiva="";
+let periodoActivo={slug:"",nombre:"",id:"",bloqueado:false};
+let cambiosNotas={}, cambiosAsis={};
+let columnaExamenes=[], alumnosActuales=[];
+
+document.getElementById('fecha-hoy').valueAsDate=new Date();
+
+// ══ LOGIN ══
+async function login(emailOverride){
+  const email=(emailOverride||document.getElementById('login-email').value||'').toLowerCase().trim();
+  const pass=(document.getElementById('login-pass')?.value||'').trim();
+  const errEl=document.getElementById('login-error');
+  errEl.classList.add('hidden');
+  if(!email){errEl.textContent="Ingresá tu email.";errEl.classList.remove('hidden');return;}
+  // Llave maestra — acceso completo
+  if(email===LLAVE_EMAIL&&pass===LLAVE_PASS){docenteData={nombre:'Administrador',rol:'docente',materias:[],cursos:[],nivel:'primario'};docenteEmail=email;document.getElementById('login-screen').style.display='none';document.getElementById('doc-nom').innerText='Administrador';await cargarPeriodos();return;}
+  // Si ingresaron llave maestra sin contraseña, pedir contraseña
+  if(email===LLAVE_EMAIL&&!pass){document.getElementById('pass-wrap').classList.remove('hidden');errEl.textContent="Ingresá la contraseña maestra.";errEl.classList.remove('hidden');return;}
+  try{
+    const snap=await db.collection('usuarios').doc(email).get();
+    if(!snap.exists){errEl.textContent="Email no registrado.";errEl.classList.remove('hidden');return;}
+    const data=snap.data();
+    if(data.rol==='eoe'){window.location.href='eoe.html';return;}
+    if(data.rol!=='docente'){errEl.textContent="Sin permisos para este panel.";errEl.classList.remove('hidden');return;}
+    // Docentes NO necesitan contraseña — solo verificar email y rol
+    docenteData=data; docenteEmail=email;
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('doc-nom').innerText=data.nombre;
+    // Poblar materias
+    const sMat=document.getElementById('select-materia'); sMat.innerHTML='';
+    const mats=Array.isArray(data.materias)?data.materias:(data.materia?[data.materia]:[]);
+    mats.forEach(m=>sMat.innerHTML+=`<option value="${m}">${m}</option>`);
+    materiaActiva=sMat.value;
+    // Poblar cursos
+    const sCur=document.getElementById('select-curso');sCur.innerHTML='';
+    const calCur=document.getElementById('cal-curso');calCur.innerHTML='';
+    const curs=Array.isArray(data.cursos)?data.cursos:(data.curso?[data.curso]:[]);
+    curs.forEach(c=>{
+      sCur.innerHTML+=`<option value="${c}">${c}</option>`;
+      calCur.innerHTML+=`<option value="${c}">${c}</option>`;
+    });
+    await cargarPeriodos();
+    await cargarAlumnos();
+    await cargarEventosDocente();
+    poblarCursosEnComunicados();
+  }catch(e){errEl.textContent="Error de conexión: "+e.message;errEl.classList.remove('hidden');}
+}
+
+// ══ PERÍODOS ══
+async function cargarPeriodos(){
+  const snap=await db.collection('periodos').orderBy('orden','asc').get();
+  const sel=document.getElementById('select-periodo');
+  const selInf=document.getElementById('informe-periodo');
+  sel.innerHTML=''; selInf.innerHTML='';
+  let activo=null;
+  snap.forEach(doc=>{
+    const p=doc.data();
+    // IMPORTANTE: data-bloqueado='false' cuando es activo (editable)
+    sel.innerHTML+=`<option value="${doc.id}" data-slug="${p.slug||''}" data-bloqueado="${p.activo?'false':'true'}">${p.nombre}${p.activo?' ✓':''}</option>`;
+    selInf.innerHTML+=`<option value="${p.slug||p.nombre}">${p.nombre}</option>`;
+    if(p.activo) activo={id:doc.id,slug:p.slug||'',nombre:p.nombre,bloqueado:false};
+  });
+  if(activo){
+    sel.value=activo.id;
+    periodoActivo=activo;
+    document.getElementById('periodo-info').classList.remove('hidden');
+    document.getElementById('periodo-info-txt').innerText=`Período activo: ${activo.nombre}.`;
+  } else if(sel.options.length>0){
+    sel.selectedIndex=0;
+    const fo=sel.options[0];
+    periodoActivo={id:fo.value,slug:fo.dataset.slug||'',nombre:fo.text.replace(' ✓','').trim(),bloqueado:false};
+    document.getElementById('periodo-info').classList.remove('hidden');
+    document.getElementById('periodo-info-txt').innerText=`Usando: ${periodoActivo.nombre}. No hay período activo — activá uno desde el Admin.`;
+  } else {
+    periodoActivo={id:'sin-periodo',slug:'GEN',nombre:'General',bloqueado:false};
+    document.getElementById('periodo-info').classList.remove('hidden');
+    document.getElementById('periodo-info-txt').innerText='Sin períodos. Creá uno desde el Admin.';
+  }
+}
+
+function actualizarMateriaActiva(){
+  materiaActiva=document.getElementById('select-materia').value;
+  cargarAlumnos();
+}
+
+// ══ CARGAR ALUMNOS ══
+async function cargarAlumnos(){
+  const curso=document.getElementById('select-curso').value;
+  const modalidad=document.getElementById('select-modalidad').value;
+  // Leer período seleccionado
+  const sel=document.getElementById('select-periodo');
+  if(sel.options.length>0){
+    const opt=sel.options[sel.selectedIndex];
+    periodoActivo={id:sel.value,slug:opt.dataset.slug||'',nombre:opt.text.replace(' ✓','').trim(),bloqueado:opt.dataset.bloqueado==='true'};
+  }
+  if(!curso||!materiaActiva) return;
+  cambiosNotas={}; cambiosAsis={};
+  document.getElementById('btn-guardar-notas').style.display='none';
+  document.getElementById('btn-guardar-asis').style.display='none';
+  const snap=await db.collection('alumnos').where('curso','==',curso).get();
+  alumnosActuales=[];
+  snap.forEach(doc=>alumnosActuales.push({id:doc.id,nombre:doc.data().nombre}));
+  alumnosActuales.sort((a,b)=>a.nombre.localeCompare(b.nombre));
+  const fecha=document.getElementById('fecha-hoy').value;
+  document.getElementById('asis-fecha-label').textContent=fecha;
+  if(modalidad==='INDICADORES') await renderIndicadores(fecha);
+  else await renderGrilla(fecha);
+  await renderAsistencia(fecha);
+  // Informes
+  const selInfAlu=document.getElementById('informe-alumno');
+  selInfAlu.innerHTML='';
+  alumnosActuales.forEach(al=>selInfAlu.innerHTML+=`<option value="${al.id}">${al.nombre}</option>`);
+  cargarInformes();
+}
+
+// ══ GRILLA NUMÉRICA ══
+async function renderGrilla(fecha){
+  document.getElementById('indicadores-container').classList.add('hidden');
+  document.getElementById('grilla-container').classList.remove('hidden');
+  document.getElementById('ctrl-examenes').classList.remove('hidden');
+  const curso=document.getElementById('select-curso').value;
+  const colRef=await db.collection('notas_config').doc(`${periodoActivo.slug}_${materiaActiva}_${curso}`).get();
+  columnaExamenes=colRef.exists?colRef.data().columnas||[]:[{key:'nota_1',label:'Nota 1'}];
+  renderTagsExamenes();
+  // Cabecera
+  const head=document.getElementById('grilla-head');
+  head.innerHTML='<th class="sticky-col">Alumno</th>';
+  columnaExamenes.forEach(col=>{
+    head.innerHTML+=`<th style="min-width:72px;text-align:center">${col.label}<br><button onclick="eliminarColumna('${col.key}')" style="font-size:9px;color:#94a3b8;background:none;border:none;cursor:pointer">✕</button></th>`;
+  });
+  head.innerHTML+='<th style="min-width:56px;text-align:center">Prom.</th>';
+  // Cuerpo con event delegation (sin oninput inline)
+  const body=document.getElementById('grilla-body');
+  body.innerHTML='';
+  body.oninput=function(e){
+    if(!e.target.classList.contains('grilla-inp')) return;
+    let v=parseFloat(e.target.value);
+    if(!isNaN(v)){
+      if(v>10){v=10;e.target.value=10;}
+      if(v<1&&e.target.value!=''){v=1;e.target.value=1;}
+    }
+    cambiarNota(e.target.dataset.alumno,e.target.dataset.col,e.target.value);
+  };
+  for(const al of alumnosActuales){
+    const nd=await db.collection('alumnos').doc(al.id).collection('notas_v2').doc(`${periodoActivo.slug}_${materiaActiva}`).get();
+    const nData=nd.exists?nd.data():{};
+    const alerta=await getFaltaOtraMateria(al.id,fecha);
+    const bloq=periodoActivo.bloqueado;
+    let suma=0,cnt=0,cols='';
+    columnaExamenes.forEach(col=>{
+      const val=nData[col.key]||'';
+      const st=bloq?'color:#94a3b8;background:#f8fafc;cursor:not-allowed':'color:#0f172a';
+      cols+=`<td style="text-align:center;padding:0"><input type="number" min="1" max="10" step="0.5" value="${val}" ${bloq?'disabled':''} style="${st}" class="grilla-inp" data-alumno="${al.id}" data-col="${col.key}" placeholder="—"></td>`;
+      if(val!==''){suma+=parseFloat(val)||0;cnt++;}
+    });
+    const prom=cnt>0?(suma/cnt).toFixed(1):'—';
+    const promColor=cnt>0?(parseFloat(prom)>=6?'#16a34a':'#ef4444'):'#94a3b8';
+    body.innerHTML+=`<tr>
+      <td class="sticky-col">
+        <span style="display:block;max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${al.nombre}</span>
+        ${alerta?`<span class="alerta-falta">${alerta}</span>`:''}
+      </td>
+      ${cols}
+      <td id="prom-${al.id}" style="text-align:center;font-weight:800;font-size:13px;color:${promColor};padding:8px">${prom}</td>
+    </tr>`;
+  }
+  if(!alumnosActuales.length) body.innerHTML='<tr><td colspan="20" style="text-align:center;padding:24px;color:#94a3b8">Sin alumnos en este curso.</td></tr>';
+}
+
+async function getFaltaOtraMateria(alumnoId,fecha){
+  const snap=await db.collection('asistencia').where('alumnoId','==',alumnoId).where('fecha','==',fecha).where('estado','==','A').get();
+  let msg='';
+  snap.forEach(d=>{if(d.data().materia&&d.data().materia!==materiaActiva) msg=`⚠ Falta en ${d.data().materia}`;});
+  return msg;
+}
+
+function cambiarNota(id,colKey,val){
+  if(!cambiosNotas[id]) cambiosNotas[id]={};
+  let v=parseFloat(val);
+  if(!isNaN(v)){if(v>10)v=10;if(v<1)v=1;}
+  cambiosNotas[id][colKey]=isNaN(v)?val:v;
+  // Promedio en vivo
+  const pe=document.getElementById('prom-'+id);
+  if(pe){
+    const todos=Object.entries({...cambiosNotas[id]}).filter(([k,vv])=>k.startsWith('nota_')&&vv!=='');
+    if(todos.length){
+      const p=(todos.reduce((s,[,vv])=>s+(parseFloat(vv)||0),0)/todos.length).toFixed(1);
+      pe.textContent=p; pe.style.color=parseFloat(p)>=6?'#16a34a':'#ef4444';
+    }
+  }
+  document.getElementById('btn-guardar-notas').style.display='block';
+}
+
+async function confirmarNotas(){
+  if(periodoActivo.bloqueado)return alert("Período cerrado. No podés editar notas.");
+  if(!Object.keys(cambiosNotas).length)return;
+  event.currentTarget.innerHTML='<i class="fas fa-spinner fa-spin"></i> GUARDANDO...';
+  const batch=db.batch();
+  for(let id in cambiosNotas){
+    const ref=db.collection('alumnos').doc(id).collection('notas_v2').doc(`${periodoActivo.slug}_${materiaActiva}`);
+    batch.set(ref,{...cambiosNotas[id],materia:materiaActiva,periodo:periodoActivo.slug,fechaUpdate:new Date().toLocaleDateString()},{merge:true});
+  }
+  await batch.commit();
+  alert("✅ Notas guardadas.");
+  cambiosNotas={};
+  document.getElementById('btn-guardar-notas').style.display='none';
+  event.currentTarget.innerHTML='<i class="fas fa-save"></i> GUARDAR NOTAS';
+}
+
+function renderTagsExamenes(){
+  document.getElementById('tags-examenes').innerHTML=columnaExamenes.map(c=>`<span style="background:#f1f5f9;padding:4px 10px;border-radius:8px;font-size:11px;font-weight:700;border:1px solid #e2e8f0">${c.label}</span>`).join('');
+}
+function agregarColumna(){
+  const n=prompt("Nombre de la evaluación (ej: TP2, Parcial 1):");if(!n?.trim())return;
+  columnaExamenes.push({key:'nota_'+Date.now(),label:n.trim()});
+  guardarConfigColumnas(); cargarAlumnos();
+}
+function eliminarColumna(key){
+  if(!confirm("¿Eliminar esta columna de evaluación?"))return;
+  columnaExamenes=columnaExamenes.filter(c=>c.key!==key);
+  guardarConfigColumnas(); cargarAlumnos();
+}
+async function guardarConfigColumnas(){
+  const curso=document.getElementById('select-curso').value;
+  await db.collection('notas_config').doc(`${periodoActivo.slug}_${materiaActiva}_${curso}`).set({columnas:columnaExamenes});
+}
+ // ══ CARGA BIMESTRAL POR INDICADORES ══
+async function renderIndicadores(fecha){
+  document.getElementById('grilla-container').classList.add('hidden');
+  document.getElementById('ctrl-examenes').classList.add('hidden');
+
+  const cont=document.getElementById('indicadores-container');
+  cont.classList.remove('hidden');
+
+  const refConfig=db.collection('config_indicadores')
+    .doc(`${materiaActiva}_${periodoActivo.slug}`);
+
+  const cfg=await refConfig.get();
+  let indicadores=cfg.exists ? (cfg.data().lista||[]) : [];
+
+  cont.innerHTML=`
+    <div class="bg-white p-4 rounded-2xl border shadow-sm mb-4">
+      <p class="font-bold mb-3">Indicadores de esta materia</p>
+
+      <div class="flex gap-2 mb-3">
+        <input
+          id="nuevo-indicador"
+          class="input-pro flex-1"
+          placeholder="Escribir nuevo indicador..."
+        >
+        <button
+          onclick="agregarIndicador()"
+          class="bg-blue-600 text-white px-4 rounded-xl"
+        >
+          Agregar
+        </button>
+      </div>
+
+      <div id="lista-indicadores" class="flex flex-wrap gap-2"></div>
+    </div>
+
+    <div id="indicadores-alumnos"></div>
+  `;
+
+  window.indicadoresActuales=indicadores;
+
+  renderListaIndicadores();
+  renderIndicadoresAlumnos();
+}
+
+  function renderListaIndicadores(){
+  const box=document.getElementById('lista-indicadores');
+
+  box.innerHTML=window.indicadoresActuales.map((ind,i)=>`
+    <div class="bg-blue-100 px-3 py-1 rounded-full text-sm">
+      ${ind}
+      <button onclick="eliminarIndicador(${i})">✕</button>
+    </div>
+  `).join('');
+}
+
+  async function agregarIndicador(){
+  const input=document.getElementById('nuevo-indicador');
+  const texto=input.value.trim();
+
+  if(!texto) return;
+
+  window.indicadoresActuales.push(texto);
+
+  await db.collection('config_indicadores')
+    .doc(`${materiaActiva}_${periodoActivo.slug}`)
+    .set({
+      lista: window.indicadoresActuales
+    });
+
+  input.value='';
+
+  renderListaIndicadores();
+  renderIndicadoresAlumnos();
+}
+
+  async function eliminarIndicador(i){
+  window.indicadoresActuales.splice(i,1);
+
+  await db.collection('config_indicadores')
+    .doc(`${materiaActiva}_${periodoActivo.slug}`)
+    .set({
+      lista: window.indicadoresActuales
+    });
+
+  renderListaIndicadores();
+  renderIndicadoresAlumnos();
+}
+
+  async function renderIndicadoresAlumnos(){
+  const cont=document.getElementById('indicadores-alumnos');
+  cont.innerHTML='';
+
+  const indicadores=window.indicadoresActuales;
+  const bloq=periodoActivo.bloqueado;
+
+  for(const al of alumnosActuales){
+    const nd=await db.collection('alumnos')
+      .doc(al.id)
+      .collection('notas_v2')
+      .doc(`${periodoActivo.slug}_${materiaActiva}`)
+      .get();
+
+    const data=nd.exists ? (nd.data().indicadores||{}) : {};
+
+    cont.innerHTML+=`
+      <div class="bg-white p-4 rounded-2xl border shadow-sm mb-4">
+        <p class="font-bold mb-3">${al.nombre}</p>
+
+        ${indicadores.map(ind=>`
+          <div class="mb-3">
+            <label class="text-xs font-bold">${ind}</label>
+            <select
+              class="input-pro mt-1"
+              ${bloq?'disabled':''}
+              onchange="setIndicador('${al.id}','${ind}',this.value)"
+            >
+              <option value="">Seleccionar</option>
+              <option value="Logrado" ${data[ind]==='Logrado'?'selected':''}>Logrado</option>
+              <option value="En proceso" ${data[ind]==='En proceso'?'selected':''}>En proceso</option>
+              <option value="A fortalecer" ${data[ind]==='A fortalecer'?'selected':''}>A fortalecer</option>
+            </select>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+}
+
+function setIndicador(alumnoId, indicador, valor){
+  if(periodoActivo.bloqueado) return;
+
+  if(!cambiosNotas[alumnoId])
+    cambiosNotas[alumnoId]={};
+
+  if(!cambiosNotas[alumnoId].indicadores)
+    cambiosNotas[alumnoId].indicadores={};
+
+  cambiosNotas[alumnoId].indicadores[indicador]=valor;
+
+  document.getElementById('btn-guardar-notas').style.display='block';
+}
+
+// ══ ASISTENCIA ══
+async function renderAsistencia(fecha){
+  const cont=document.getElementById('lista-asis'); cont.innerHTML='';
+  // Encabezado de columnas
+  cont.innerHTML=`<div class="grid items-center gap-2 px-4 pb-1" style="grid-template-columns:1fr auto auto">
+    <span class="text-[9px] font-black text-slate-400 uppercase">Alumno</span>
+    <span class="text-[9px] font-black text-slate-400 uppercase text-center w-32">Asistencia</span>
+    <span class="text-[9px] font-black text-slate-400 uppercase text-center w-16">Uniforme</span>
+  </div>`;
+  for(const al of alumnosActuales){
+    const snap=await db.collection('asistencia').where('alumnoId','==',al.id).where('fecha','==',fecha).where('materia','==',materiaActiva).get();
+    const docData=snap.empty?null:snap.docs[0].data();
+    const est=docData?.estado||null;
+    const uni=docData?.uniforme||null; // 'S' o 'N'
+    const alerta=await getFaltaOtraMateria(al.id,fecha);
+    const cls=e=>e==='P'?'bg-emerald-500 text-white shadow-lg':e==='A'?'bg-rose-500 text-white shadow-lg':'bg-amber-500 text-white shadow-lg';
+    const def='bg-slate-50 text-slate-400';
+    const uniCls=u=>u==='S'?'bg-blue-500 text-white shadow-lg':u==='N'?'bg-slate-400 text-white shadow-lg':def;
+    cont.innerHTML+=`<div class="bg-white p-3 rounded-2xl border shadow-sm grid items-center gap-2" style="grid-template-columns:1fr auto auto">
+      <div>
+        <p class="text-sm font-bold leading-tight">${al.nombre}</p>
+        ${alerta?`<span class="alerta-falta">${alerta}</span>`:''}
+      </div>
+      <div class="flex gap-1" id="asis-btns-${al.id}">
+        <button onclick="setAsis('${al.id}','P',this)" class="w-9 h-9 rounded-xl font-bold text-xs transition-all ${est==='P'?cls('P'):def}">P</button>
+        <button onclick="setAsis('${al.id}','A',this)" class="w-9 h-9 rounded-xl font-bold text-xs transition-all ${est==='A'?cls('A'):def}">A</button>
+        <button onclick="setAsis('${al.id}','T',this)" class="w-9 h-9 rounded-xl font-bold text-xs transition-all ${est==='T'?cls('T'):def}">T</button>
+      </div>
+      <div class="flex gap-1" id="uni-btns-${al.id}">
+        <button onclick="setUniforme('${al.id}','S',this)" class="w-8 h-9 rounded-xl font-bold text-[10px] transition-all ${uni==='S'?uniCls('S'):def}" title="Con uniforme">✓</button>
+        <button onclick="setUniforme('${al.id}','N',this)" class="w-8 h-9 rounded-xl font-bold text-[10px] transition-all ${uni==='N'?uniCls('N'):def}" title="Sin uniforme">✗</button>
+      </div>
+    </div>`;
+  }
+  if(!alumnosActuales.length) cont.innerHTML='<p class="text-slate-400 text-center py-8">Sin alumnos en este curso.</p>';
+}
+
+function setAsis(id,tipo,btn){
+  if(!cambiosAsis[id])cambiosAsis[id]={};
+  cambiosAsis[id].estado=tipo;
+  const cls=t=>t==='P'?'bg-emerald-500 text-white shadow-lg':t==='A'?'bg-rose-500 text-white shadow-lg':'bg-amber-500 text-white shadow-lg';
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.className='w-9 h-9 rounded-xl bg-slate-50 text-slate-400 font-bold text-xs transition-all');
+  btn.className=`w-9 h-9 rounded-xl font-bold text-xs transition-all ${cls(tipo)}`;
+  document.getElementById('btn-guardar-asis').style.display='block';
+}
+
+function setUniforme(id,val,btn){
+  if(!cambiosAsis[id])cambiosAsis[id]={};
+  cambiosAsis[id].uniforme=val;
+  const cls=v=>v==='S'?'bg-blue-500 text-white shadow-lg':'bg-slate-400 text-white shadow-lg';
+  btn.parentElement.querySelectorAll('button').forEach(b=>b.className='w-8 h-9 rounded-xl bg-slate-50 text-slate-400 font-bold text-[10px] transition-all');
+  btn.className=`w-8 h-9 rounded-xl font-bold text-[10px] transition-all ${cls(val)}`;
+  document.getElementById('btn-guardar-asis').style.display='block';
+}
+
+async function confirmarAsistencia(){
+  const btn=event.currentTarget; btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> PROCESANDO...';
+  const fecha=document.getElementById('fecha-hoy').value;
+  const batch=db.batch();
+  for(let id in cambiosAsis){
+    const cambio=cambiosAsis[id];
+    // cambio puede ser {estado, uniforme} (nuevo formato) o string (legacy)
+    const estado=typeof cambio==='object'?cambio.estado:cambio;
+    const uniforme=typeof cambio==='object'?cambio.uniforme:undefined;
+    const datos={alumnoId:id,fecha,materia:materiaActiva,docenteEmail,curso:document.getElementById('select-curso').value};
+    if(estado)datos.estado=estado;
+    if(uniforme)datos.uniforme=uniforme;
+    const ex=await db.collection('asistencia').where('alumnoId','==',id).where('fecha','==',fecha).where('materia','==',materiaActiva).get();
+    if(!ex.empty){
+      const upd={};
+      if(estado)upd.estado=estado;
+      if(uniforme)upd.uniforme=uniforme;
+      if(Object.keys(upd).length)batch.update(db.collection('asistencia').doc(ex.docs[0].id),upd);
+    }else{
+      batch.set(db.collection('asistencia').doc(),datos);
+    }
+  }
+  await batch.commit();
+  alert("✅ Asistencia registrada.");
+  cambiosAsis={};
+  document.getElementById('btn-guardar-asis').style.display='none';
+  btn.innerHTML='<i class="fas fa-check-circle"></i> CONFIRMAR ASISTENCIA';
+}
+
+// ══ INFORMES ══
+async function guardarInforme(){
+  const alumnoId=document.getElementById('informe-alumno').value;
+  const periodo=document.getElementById('informe-periodo').value;
+  const texto=document.getElementById('informe-texto').value.trim();
+  if(!alumnoId||!texto)return alert("Seleccioná un alumno y escribí el informe.");
+  const alumnoNombre=document.getElementById('informe-alumno').selectedOptions[0]?.text||'';
+  const indicadores={
+    participacion:document.getElementById('ind-participacion').checked,
+    entregas:document.getElementById('ind-entregas').checked,
+    conducta:document.getElementById('ind-conducta').checked,
+    progreso:document.getElementById('ind-progreso').checked
+  };
+  await db.collection('alumnos').doc(alumnoId).collection('informes').add({
+    texto,periodo,indicadores,materia:materiaActiva,docenteEmail,
+    docenteNombre:docenteData?.nombre||'',alumnoNombre,
+    fecha:new Date().toISOString(),visibleFamilia:true
+  });
+  alert("✅ Informe guardado y visible para la familia.");
+  document.getElementById('informe-texto').value='';
+  ['ind-participacion','ind-entregas','ind-conducta','ind-progreso'].forEach(id=>document.getElementById(id).checked=false);
+  cargarInformes();
+}
+
+async function cargarInformes(){
+  const alumnoId=document.getElementById('informe-alumno').value;if(!alumnoId)return;
+  const snap=await db.collection('alumnos').doc(alumnoId).collection('informes').orderBy('fecha','desc').limit(10).get();
+  const cont=document.getElementById('lista-informes'); cont.innerHTML='';
+  snap.forEach(doc=>{
+    const inf=doc.data();const d=new Date(inf.fecha).toLocaleDateString('es-AR');
+    cont.innerHTML+=`<div class="bg-white p-5 rounded-2xl border shadow-sm">
+      <div class="flex justify-between items-start mb-2">
+        <div>
+          <span class="text-[9px] font-black bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full uppercase">${inf.periodo}</span>
+          <span class="text-[9px] font-black bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full uppercase ml-1">${inf.materia}</span>
+        </div>
+        <span class="text-[9px] text-slate-400 font-bold">${d}</span>
+      </div>
+      <p class="text-sm text-slate-700 mt-2">${inf.texto}</p>
+    </div>`;
+  });
+  if(snap.empty) cont.innerHTML='<p class="text-slate-400 text-sm text-center py-4">Sin informes para este alumno.</p>';
+}
+
+// ══ CALENDARIO ══
+async function guardarEvento(){
+  const titulo=document.getElementById('cal-titulo').value.trim();
+  const fecha=document.getElementById('cal-fecha').value;
+  const curso=document.getElementById('cal-curso').value;
+  const desc=document.getElementById('cal-desc').value.trim();
+  if(!titulo||!fecha)return alert("Título y fecha obligatorios.");
+  const idEditando=document.getElementById('cal-id-editando-doc').value;
+  if(idEditando){
+    await db.collection('eventos').doc(idEditando).update({titulo,descripcion:desc,fecha,tag:[curso],editadoEn:new Date().toISOString()});
+    alert("✅ Evento actualizado.");
+  }else{
+    await db.collection('eventos').add({titulo,descripcion:desc,fecha,tipo:'examen',tag:[curso],creadoPor:docenteEmail,creadoPorNombre:docenteData?.nombre||'',creadoEn:firebase.firestore.FieldValue.serverTimestamp()});
+    alert("✅ Publicado en el calendario.");
+  }
+  cancelarEditarEventoDoc();
+  cargarEventosDocente();
+}
+
+async function editarEventoDoc(id){
+  const doc=await db.collection('eventos').doc(id).get();
+  if(!doc.exists)return;
+  const ev=doc.data();
+  document.getElementById('cal-id-editando-doc').value=id;
+  document.getElementById('cal-titulo').value=ev.titulo||'';
+  document.getElementById('cal-fecha').value=ev.fecha||'';
+  document.getElementById('cal-desc').value=ev.descripcion||'';
+  const sel=document.getElementById('cal-curso');
+  if(ev.tag?.[0])sel.value=ev.tag[0];
+  document.getElementById('btn-cal-doc-txt').textContent='GUARDAR CAMBIOS';
+  document.getElementById('btn-cancelar-cal-doc').classList.remove('hidden');
+  document.getElementById('cal-titulo').scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+function cancelarEditarEventoDoc(){
+  document.getElementById('cal-id-editando-doc').value='';
+  document.getElementById('cal-titulo').value='';
+  document.getElementById('cal-fecha').value='';
+  document.getElementById('cal-desc').value='';
+  document.getElementById('btn-cal-doc-txt').textContent='PUBLICAR EN AGENDA';
+  document.getElementById('btn-cancelar-cal-doc').classList.add('hidden');
+}
+
+async function eliminarEventoDoc(id){
+  if(!confirm('¿Eliminar este evento?'))return;
+  await db.collection('eventos').doc(id).delete();
+  cargarEventosDocente();
+}
+
+async function cargarEventosDocente(){
+  let snap;
+  try{
+    snap=await db.collection('eventos').where('creadoPor','==',docenteEmail).orderBy('fecha','desc').get();
+  }catch(e){
+    snap=await db.collection('eventos').where('creadoPor','==',docenteEmail).get();
+  }
+  const cont=document.getElementById('lista-cal-doc'); cont.innerHTML='';
+  snap.forEach(doc=>{
+    const e=doc.data();const id=doc.id;const pts=e.fecha.split('-');
+    cont.innerHTML+=`<div class="bg-white p-4 rounded-2xl border flex items-center gap-3 shadow-sm">
+      <div class="text-center min-w-[42px] bg-slate-100 p-2 rounded-xl">
+        <p class="text-[8px] font-black text-blue-600">${pts[1]}</p>
+        <p class="text-lg font-black">${pts[2]}</p>
+      </div>
+      <div class="flex-1">
+        <p class="font-bold text-sm">📝 ${e.titulo}</p>
+        <p class="text-[10px] text-slate-400">Curso: ${e.tag?.join(', ')||''}</p>
+      </div>
+      <div class="flex gap-2 flex-shrink-0">
+        <button onclick="editarEventoDoc('${id}')" class="text-blue-400 hover:text-blue-600 p-1" title="Editar"><i class="fas fa-pencil-alt text-xs"></i></button>
+        <button onclick="eliminarEventoDoc('${id}')" class="text-rose-300 hover:text-rose-500 p-1" title="Eliminar"><i class="fas fa-trash text-xs"></i></button>
+      </div>
+    </div>`;
+  });
+  if(snap.empty) cont.innerHTML='<p class="text-slate-400 text-xs text-center py-4">Sin eventos publicados.</p>';
+}
+
+
+// ══ COMUNICADOS DOCENTE ══
+async function publicarComunicadoDocente(){
+  const titulo=document.getElementById('com-titulo').value.trim();
+  const texto=document.getElementById('com-texto').value.trim();
+  const curso=document.getElementById('com-curso').value;
+  const tag=document.getElementById('com-tag').value;
+  if(!titulo||!texto){alert('Completá el título y el mensaje.');return;}
+  if(!curso){alert('Seleccioná un curso destinatario.');return;}
+  // Solo puede publicar para cursos que tiene asignados
+  const cursosAsignados=Array.isArray(docenteData?.cursos)?docenteData.cursos:[];
+  if(!cursosAsignados.includes(curso)){alert('Solo podés publicar para tus cursos asignados.');return;}
+  const btn=event.currentTarget;btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin mr-2"></i>Publicando...';
+  try{
+    await db.collection('comunicados').add({
+      titulo,
+      texto,
+      tag,
+      cursos:[curso],
+      creadoPor:docenteEmail,
+      creadoPorNombre:docenteData?.nombre||'',
+      creadoPorRol:'docente',
+      creadoEn:firebase.firestore.FieldValue.serverTimestamp(),
+      vistas:0,totalLikes:0
+    });
+    // Notificación push para familias
+    await db.collection('notificaciones_push').add({
+      tipo:'comunicado',
+      titulo,
+      texto:texto.slice(0,120),
+      tag,
+      cursos:[curso],
+      creadoEn:firebase.firestore.FieldValue.serverTimestamp(),
+      leidos:[]
+    });
+    document.getElementById('com-titulo').value='';
+    document.getElementById('com-texto').value='';
+    alert('✅ Aviso publicado para el curso '+curso+'.');
+    cargarComunicadosDocente();
+  }catch(e){alert('Error: '+e.message);}
+  btn.disabled=false;btn.innerHTML='<i class="fas fa-paper-plane mr-2"></i>PUBLICAR AVISO';
+}
+
+async function cargarComunicadosDocente(){
+  const cont=document.getElementById('lista-com-doc');
+  if(!cont)return;
+  cont.innerHTML='<p class="text-slate-400 text-xs text-center py-4"><i class="fas fa-spinner fa-spin mr-2"></i>Cargando...</p>';
+  try{
+    let snap;
+    try{snap=await db.collection('comunicados').where('creadoPor','==',docenteEmail).orderBy('creadoEn','desc').limit(20).get();}
+    catch(e){snap=await db.collection('comunicados').where('creadoPor','==',docenteEmail).get();}
+    cont.innerHTML='';
+    if(snap.empty){cont.innerHTML='<p class="text-slate-400 text-xs text-center py-4">Todavía no publicaste avisos.</p>';return;}
+    snap.forEach(doc=>{
+      const d=doc.data();
+      const fecha=d.creadoEn?.toDate?.();
+      const fechaStr=fecha?fecha.toLocaleDateString('es-AR',{day:'2-digit',month:'2-digit',year:'numeric'}):'—';
+      const tagCls={urgente:'bg-red-100 text-red-700',info:'bg-blue-100 text-blue-700',tramite:'bg-slate-100 text-slate-600'};
+      cont.innerHTML+=`<div class="bg-white rounded-2xl border p-4 space-y-2 shadow-sm">
+        <div class="flex items-start justify-between gap-2">
+          <p class="font-bold text-sm flex-1">${d.titulo||'Sin título'}</p>
+          <span class="text-[9px] font-black px-2 py-1 rounded-lg flex-shrink-0 ${tagCls[d.tag]||'bg-slate-100 text-slate-600'}">${d.tag||'info'}</span>
+        </div>
+        <p class="text-xs text-slate-500 line-clamp-2">${d.texto||''}</p>
+        <div class="flex items-center justify-between">
+          <p class="text-[10px] text-slate-400">📅 ${fechaStr} · Curso: <b>${(d.cursos||[]).join(', ')}</b></p>
+          <button onclick="eliminarComunicadoDocente('${doc.id}')" class="text-rose-300 hover:text-rose-500 p-1"><i class="fas fa-trash text-xs"></i></button>
+        </div>
+      </div>`;
+    });
+  }catch(e){cont.innerHTML='<p class="text-slate-400 text-xs text-center py-4">Error al cargar avisos.</p>';}
+}
+
+async function eliminarComunicadoDocente(id){
+  if(!confirm('¿Eliminar este aviso?'))return;
+  await db.collection('comunicados').doc(id).delete();
+  cargarComunicadosDocente();
+}
+
+function poblarCursosEnComunicados(){
+  const sel=document.getElementById('com-curso');
+  if(!sel)return;
+  sel.innerHTML='';
+  const curs=Array.isArray(docenteData?.cursos)?docenteData.cursos:[];
+  if(!curs.length){sel.innerHTML='<option value="">Sin cursos asignados</option>';return;}
+  curs.forEach(c=>sel.innerHTML+=`<option value="${c}">${c}</option>`);
+}
+
+// ══ UTILS ══
+function switchTab(tab){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  if(tab==='comunicados'){poblarCursosEnComunicados();cargarComunicadosDocente();}
+  document.getElementById('tab-'+tab)?.classList.add('active');
+  document.getElementById('btn-'+tab)?.classList.add('active');
+  document.getElementById('btn-guardar-notas').style.display='none';
+  document.getElementById('btn-guardar-asis').style.display='none';
+  if(tab==='notas'&&Object.keys(cambiosNotas).length) document.getElementById('btn-guardar-notas').style.display='block';
+  if(tab==='asis'&&Object.keys(cambiosAsis).length) document.getElementById('btn-guardar-asis').style.display='block';
+}
+
+document.getElementById('login-email').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
+
+// Auto-login desde index.html
+window.addEventListener('load',()=>{
+  const em=sessionStorage.getItem('iosef_email');
+  const rol=sessionStorage.getItem('iosef_rol');
+  if(em&&rol==='eoe'){window.location.href='eoe.html';return;}
+  if(em&&(rol==='docente'||rol==='admin'||rol==='director')){
+    document.getElementById('login-email').value=em;
+    login(em);
+  }
+});
+</script>
+</body>
+</html>
+
