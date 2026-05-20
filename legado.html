@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nuestro Legado · Colegio Rabino Iosef Caro</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --primary:#13134F;--primary-soft:#E8E8F5;--ink:#13134F;--bg:#FAF8F3;
+  --accent:#FFB400;--muted:#6B6A8E;--white:#FFFFFF;--border:rgba(19,19,79,0.12);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden;}
+a{color:var(--primary);text-decoration:none;}
+
+/* ── TOPBAR ── */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;background:rgba(19,19,79,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,180,0,0.2);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;}
+.nav-pills{display:flex;gap:.1rem;align-items:center;}
+.npill{font-family:'Inter',sans-serif;font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,0.55);padding:.45rem .85rem;border-radius:100px;transition:all .2s;}
+.npill:hover,.npill.active{color:var(--accent);background:rgba(255,180,0,0.1);}
+.cta-btn{background:var(--accent);color:var(--primary);font-family:'Inter',sans-serif;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.5rem 1.25rem;border-radius:100px;transition:all .3s;}
+.cta-btn:hover{background:#ffc933;box-shadow:0 0 20px rgba(255,180,0,.35);}
+.mob-toggle{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:4px;padding:6px;}
+.mob-toggle span{display:block;width:18px;height:1.5px;background:rgba(255,255,255,.6);}
+@media(max-width:900px){.nav-pills{display:none;}.mob-toggle{display:flex;}}
+
+/* ── MOB MENU ── */
+.mob-menu{position:fixed;top:68px;inset-x:0;z-index:199;background:rgba(19,19,79,.98);border-bottom:2px solid var(--accent);padding:1.5rem;display:none;}
+.mob-menu.open{display:block;}
+.mob-menu a{display:block;font-family:'Inter',sans-serif;font-size:.8rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.55);padding:.85rem 0;border-bottom:1px solid rgba(255,255,255,.06);transition:color .2s;}
+.mob-menu a:hover{color:var(--accent);}
+
+/* ── FOOTER ── */
+footer{background:var(--primary);border-top:3px solid var(--accent);padding:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;position:relative;z-index:2;}
+.foot-brand{font-family:'Playfair Display',serif;font-size:.95rem;color:var(--white);}
+.foot-brand small{display:block;font-size:.58rem;letter-spacing:.14em;color:rgba(255,255,255,.45);margin-top:.2rem;}
+.foot-nav{display:flex;gap:.15rem;flex-wrap:wrap;}
+.foot-nav a{font-family:'Inter',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45);padding:.35rem .75rem;border-radius:100px;transition:all .2s;}
+.foot-nav a:hover{color:var(--accent);background:rgba(255,180,0,.1);}
+.foot-copy{width:100%;text-align:center;font-size:.7rem;color:rgba(255,255,255,.25);margin-top:.5rem;}
+@media(max-width:760px){footer{flex-direction:column;text-align:center;}}
+
+/* ── WA FLOAT ── */
+.wa-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;}
+.wa-tooltip{background:#fff;color:#13134F;font-family:Inter,sans-serif;font-size:.78rem;font-weight:500;padding:.45rem .85rem;border-radius:100px;box-shadow:0 4px 16px rgba(0,0,0,.15);white-space:nowrap;opacity:0;transform:translateX(8px);transition:all .25s;pointer-events:none;}
+.wa-btn{width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,.45);transition:transform .25s,box-shadow .25s;text-decoration:none;animation:wa-pulse 2.5s ease-in-out infinite;}
+.wa-btn:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(37,211,102,.6);}
+.wa-float:hover .wa-tooltip{opacity:1;transform:translateX(0);}
+@keyframes wa-pulse{0%,100%{box-shadow:0 4px 18px rgba(37,211,102,.45);}50%{box-shadow:0 4px 28px rgba(37,211,102,.75);}}
+
+/* ══════════════════════════════════════
+   LEGADO — ESTILOS PROPIOS
+══════════════════════════════════════ */
+
+/* Hero cinematográfico */
+.leg-page-hero{position:relative;height:520px;display:flex;align-items:flex-end;overflow:hidden;margin-top:68px;}
+.leg-page-hero video,
+.leg-page-hero img.leg-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.leg-page-hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,55,.95) 0%,rgba(10,10,55,.55) 50%,rgba(10,10,55,.2) 100%);z-index:1;}
+.leg-page-hero-content{position:relative;z-index:2;padding:0 3rem 3rem;max-width:1100px;margin:0 auto;width:100%;}
+.leg-eyebrow{font-size:.6rem;font-weight:700;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:.6rem;margin-bottom:1rem;}
+.leg-eyebrow::before,.leg-eyebrow::after{content:'';width:22px;height:1px;background:var(--accent);opacity:.6;}
+.leg-page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.4rem,6vw,4.5rem);color:var(--white);line-height:.95;letter-spacing:-.02em;margin-bottom:.75rem;}
+.leg-page-hero h1 em{font-style:italic;color:var(--accent);}
+.leg-page-hero p{font-size:.95rem;color:rgba(255,255,255,.65);max-width:50ch;line-height:1.75;}
+.leg-hero-stats{display:inline-flex;margin-top:2rem;border:1px solid rgba(255,255,255,.12);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.06);backdrop-filter:blur(8px);}
+.leg-stat{padding:1rem 1.5rem;text-align:center;border-right:1px solid rgba(255,255,255,.1);}
+.leg-stat:last-child{border-right:none;}
+.leg-stat .n{font-family:'Playfair Display',serif;font-size:1.9rem;font-weight:700;color:var(--accent);display:block;}
+.leg-stat .l{font-size:.52rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.4);margin-top:.1rem;display:block;}
+
+/* Contenedor general */
+.leg-wrap{max-width:1100px;margin:0 auto;padding:4rem 2rem 5rem;}
+@media(max-width:760px){.leg-wrap{padding:2.5rem 1rem 4rem;}}
+
+/* Separador con label */
+.leg-divider{display:flex;align-items:center;gap:1.25rem;margin:3.5rem 0 2rem;}
+.leg-divider::before,.leg-divider::after{content:'';flex:1;height:1px;background:var(--border);}
+.leg-divider span{font-size:.58rem;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);white-space:nowrap;}
+
+/* ── MOSAICO ── */
+.leg-mosaic{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;background:rgba(19,19,79,.12);margin-bottom:3.5rem;}
+@media(max-width:900px){.leg-mosaic{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:560px){.leg-mosaic{grid-template-columns:1fr;}}
+
+.leg-tile{position:relative;min-height:280px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;}
+.leg-tile.tall{min-height:400px;}
+.leg-tile.wide{grid-column:span 2;}
+@media(max-width:900px){.leg-tile.wide{grid-column:span 1;}}
+
+/* media de fondo */
+.leg-tile-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;transition:transform .6s ease;}
+.leg-tile:hover .leg-tile-media{transform:scale(1.04);}
+
+/* overlays */
+.leg-tile-overlay{position:absolute;inset:0;z-index:1;}
+.leg-tile.dark  .leg-tile-overlay{background:linear-gradient(to top,rgba(10,10,55,.93) 0%,rgba(10,10,55,.5) 55%,rgba(10,10,55,.1) 100%);}
+.leg-tile.gold  .leg-tile-overlay{background:linear-gradient(to top,rgba(160,88,0,.92) 0%,rgba(160,88,0,.4) 55%,rgba(160,88,0,.05) 100%);}
+.leg-tile.light .leg-tile-overlay{background:linear-gradient(to top,rgba(19,19,79,.9) 0%,rgba(19,19,79,.45) 55%,rgba(19,19,79,.05) 100%);}
+
+/* sin media: color sólido */
+.leg-tile.dark:not(:has(.leg-tile-media)) {background:var(--primary);}
+.leg-tile.gold:not(:has(.leg-tile-media)) {background:var(--accent);}
+.leg-tile.light:not(:has(.leg-tile-media)){background:var(--primary-soft);}
+
+/* comillas decorativas */
+.leg-tile::before{content:'\201C';position:absolute;top:.1rem;left:1rem;font-family:'Playfair Display',serif;font-size:6rem;line-height:1;font-weight:700;z-index:2;opacity:.15;color:var(--white);pointer-events:none;}
+.leg-tile.gold:not(:has(.leg-tile-media))::before,
+.leg-tile.light:not(:has(.leg-tile-media))::before{color:var(--primary);}
+
+/* tile solo visual sin texto */
+.leg-tile.visual .leg-tile-overlay{background:rgba(10,10,55,.1);}
+.leg-tile.visual::before{display:none;}
+
+/* contenido */
+.leg-tile-body{position:relative;z-index:2;padding:1.75rem 1.6rem 1.6rem;}
+.leg-stars{font-size:.65rem;letter-spacing:.12em;color:var(--accent);margin-bottom:.65rem;display:block;}
+.leg-tile.gold:not(:has(.leg-tile-media)) .leg-stars,
+.leg-tile.light:not(:has(.leg-tile-media)) .leg-stars{color:var(--primary);opacity:.6;}
+
+.leg-quote{font-family:'Playfair Display',serif;font-size:clamp(.88rem,1.4vw,1.02rem);line-height:1.72;font-style:italic;color:var(--white);margin-bottom:.9rem;}
+.leg-tile.gold:not(:has(.leg-tile-media)) .leg-quote,
+.leg-tile.light:not(:has(.leg-tile-media)) .leg-quote{color:var(--primary);}
+
+.leg-quote strong{font-style:normal;font-weight:700;background:var(--accent);color:var(--primary);padding:.04em .28em;border-radius:3px;}
+.leg-tile.gold .leg-quote strong{background:var(--primary);color:var(--accent);}
+
+.leg-author{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:.15rem;}
+.leg-tile.gold:not(:has(.leg-tile-media)) .leg-author,
+.leg-tile.light:not(:has(.leg-tile-media)) .leg-author{color:var(--primary);}
+
+.leg-role{font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);}
+.leg-tile.gold:not(:has(.leg-tile-media)) .leg-role,
+.leg-tile.light:not(:has(.leg-tile-media)) .leg-role{color:rgba(19,19,79,.55);}
+
+/* ── CARRUSEL ── */
+.leg-carousel{display:flex;gap:1.25rem;overflow-x:auto;padding-bottom:.85rem;scrollbar-width:thin;margin-bottom:4rem;}
+.leg-carousel::-webkit-scrollbar{height:4px;}
+.leg-carousel::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px;}
+.leg-item{flex:0 0 400px;height:320px;object-fit:cover;border-radius:14px;display:block;background:var(--primary-soft);}
+@media(max-width:600px){.leg-item{flex:0 0 85vw;height:260px;}}
+
+/* ── CTA FINAL ── */
+.leg-cta{background:var(--primary);padding:3rem 2.5rem;text-align:center;border-top:4px solid var(--accent);position:relative;overflow:hidden;}
+.leg-cta::before{content:'"';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-family:'Playfair Display',serif;font-size:22rem;font-weight:700;color:rgba(255,255,255,.03);line-height:1;pointer-events:none;}
+.leg-cta-tag{font-size:.58rem;font-weight:700;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);display:inline-flex;align-items:center;gap:.6rem;margin-bottom:1rem;}
+.leg-cta-tag::before,.leg-cta-tag::after{content:'';width:20px;height:1px;background:var(--accent);opacity:.5;}
+.leg-cta h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3.5vw,2.4rem);color:var(--white);margin-bottom:.6rem;line-height:1.1;}
+.leg-cta h2 em{font-style:italic;color:var(--accent);}
+.leg-cta p{font-size:.9rem;color:rgba(255,255,255,.6);max-width:48ch;margin:0 auto 2rem;line-height:1.75;}
+.leg-cta-btn{display:inline-flex;align-items:center;gap:.6rem;background:var(--accent);color:var(--primary);font-family:'Inter',sans-serif;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:.85rem 2.25rem;border-radius:100px;transition:all .3s;text-decoration:none;}
+.leg-cta-btn:hover{background:#ffc933;box-shadow:0 6px 24px rgba(255,180,0,.4);transform:translateY(-1px);}
+
+</style>
+</head>
+<body>
+
+<!-- ══ TOPBAR ══ -->
+<header class="topbar">
+  <a href="index.html" style="text-decoration:none;">
+    <img src="https://i.ibb.co/hF7Sqzw5/Logo-blanco.png" alt="Colegio Rabino Iosef Caro"
+      onerror="this.style.display='none';"
+      style="height:44px;width:auto;max-width:180px;object-fit:contain;display:block;"/>
+  </a>
+  <nav class="nav-pills">
+    <a class="npill" href="index.html">Inicio</a>
+    <a class="npill" href="institucional.html">Institucional</a>
+    <a class="npill" href="niveles.html">Niveles</a>
+    <a class="npill" href="propuesta.html">Propuesta</a>
+    <a class="npill" href="novedades.html">Novedades</a>
+    <a class="npill" href="calendario.html">Calendario</a>
+    <a class="npill active" href="legado.html">Nuestro Legado</a>
+    <a class="npill" href="contacto.html">Contacto</a>
+  </nav>
+  <div style="display:flex;align-items:center;gap:.75rem;">
+    <a href="app/index.html" style="text-decoration:none;background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.2);font-family:'Inter',sans-serif;font-size:.62rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:.45rem 1rem;border-radius:100px;transition:all .2s;" onmouseover="this.style.background='rgba(255,180,0,0.15)';this.style.borderColor='rgba(255,180,0,0.5)';this.style.color='#FFB400'" onmouseout="this.style.background='rgba(255,255,255,0.12)';this.style.borderColor='rgba(255,255,255,0.2)';this.style.color='rgba(255,255,255,0.85)'">🔑 Ingresar a las APP</a>
+    <a href="contacto.html" class="cta-btn" style="text-decoration:none;">Inscribirse</a>
+    <button class="mob-toggle" onclick="document.getElementById('mob').classList.toggle('open')" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mob-menu" id="mob">
+  <a href="index.html" onclick="this.closest('.mob-menu').classList.remove('open')">Inicio</a>
+  <a href="institucional.html" onclick="this.closest('.mob-menu').classList.remove('open')">Institucional</a>
+  <a href="niveles.html" onclick="this.closest('.mob-menu').classList.remove('open')">Niveles</a>
+  <a href="propuesta.html" onclick="this.closest('.mob-menu').classList.remove('open')">Propuesta</a>
+  <a href="novedades.html" onclick="this.closest('.mob-menu').classList.remove('open')">Novedades</a>
+  <a href="legado.html" onclick="this.closest('.mob-menu').classList.remove('open')" style="color:var(--accent)!important;">Nuestro Legado</a>
+  <a href="contacto.html" onclick="this.closest('.mob-menu').classList.remove('open')">Contacto</a>
+  <a href="equipo.html" onclick="this.closest('.mob-menu').classList.remove('open')">Sumate</a>
+  <a href="app/index.html" onclick="this.closest('.mob-menu').classList.remove('open')" style="color:rgba(255,180,0,0.85)!important;">🔑 Ingresar a la app</a>
+  <a href="contacto.html" class="cta-btn" style="margin:1rem auto;text-decoration:none;">Inscribirse</a>
+</div>
+
+<!-- ══ HERO ══ -->
+<div class="leg-page-hero">
+  <!-- OPCIÓN A: video de fondo (recomendado) -->
+  <video class="leg-bg" autoplay muted loop playsinline
+    onerror="this.style.display='none'">
+    <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+  </video>
+  <!-- OPCIÓN B: foto de fondo — descomentá si no tenés video
+  <img class="leg-bg" src="PEGAR_URL_FOTO_HERO" alt=""> -->
+  <div class="leg-page-hero-overlay"></div>
+  <div class="leg-page-hero-content">
+    <div class="leg-eyebrow">Colegio Rabino Iosef Caro</div>
+    <h1>28 Mundos · <em>28 Egresados</em><br>28 Agradecimientos</h1>
+    <p>Formamos Iehudim íntegros para el mañana. Sus palabras son el mejor testimonio de lo que hacemos cada día.</p>
+    <div class="leg-hero-stats">
+      <div class="leg-stat"><span class="n">+55</span><span class="l">Años</span></div>
+      <div class="leg-stat"><span class="n">+800</span><span class="l">Egresados</span></div>
+      <div class="leg-stat"><span class="n">4</span><span class="l">Niveles</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ CONTENIDO ══ -->
+<div class="leg-wrap">
+
+  <div class="leg-divider"><span>Testimonios de nuestra comunidad</span></div>
+
+  <!-- ══════════════════════════════════════
+       MOSAICO DE TESTIMONIOS
+       Clases disponibles por tile:
+         .dark / .light / .gold  → variante de color
+         .wide  → ocupa 2 columnas
+         .tall  → más alto (400px)
+         .visual → solo foto/video, sin texto
+       Dentro del tile:
+         <img src="..." class="leg-tile-media">   ← foto de fondo
+         <video class="leg-tile-media" ...>       ← video de fondo
+         <div class="leg-tile-overlay"></div>     ← siempre que haya media
+         <div class="leg-tile-body"> ... </div>   ← texto encima
+  ══════════════════════════════════════ -->
+  <div class="leg-mosaic">
+
+    <!-- TILE 1 — foto de fondo, amplio, alto -->
+    <div class="leg-tile dark wide tall">
+      <img src="https://i.ibb.co/GvTynVH9/IOSEF-27.jpg" class="leg-tile-media" alt="">
+      <div class="leg-tile-overlay"></div>
+      <div class="leg-tile-body">
+        <span class="leg-stars">★ ★ ★</span>
+        <p class="leg-quote">Agradezco a la escuela Iosef Caro, no solo por darme todas las herramientas para transitar la universidad de la mejor manera, sino también por las humanas en múltiples ámbitos que me permitieron insertarme sin problemas y poder llevar una vida <strong>equilibrada en lo personal y espiritual.</strong></p>
+        <div class="leg-author">Hodesh Schillinger</div>
+        <div class="leg-role">Lic. en Informática</div>
+      </div>
+    </div>
+
+    <!-- TILE 2 — video de fondo, alto -->
+    <div class="leg-tile gold tall">
+      <video class="leg-tile-media" autoplay muted loop playsinline>
+        <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+      </video>
+      <div class="leg-tile-overlay"></div>
+      <div class="leg-tile-body">
+        <span class="leg-stars">★ ★ ★</span>
+        <p class="leg-quote">Haberme educado en Moldes me dio las herramientas suficientes para enfrentar desafíos a <strong>gran escala.</strong> Agradecido de por vida.</p>
+        <div class="leg-author">Ilan Daniel Soae</div>
+        <div class="leg-role">Derecho</div>
+      </div>
+    </div>
+
+    <!-- TILE 3 — foto de fondo -->
+    <div class="leg-tile dark">
+      <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg" class="leg-tile-media" alt="">
+      <div class="leg-tile-overlay"></div>
+      <div class="leg-tile-body">
+        <span class="leg-stars">★ ★ ★</span>
+        <p class="leg-quote">Siempre me sentí muy acompañada y contenida. Los morim nos daban lo mejor para que <strong>aprendiéramos en un ambiente sano.</strong></p>
+        <div class="leg-author">Micaela Marklluk</div>
+        <div class="leg-role">Diseñadora Gráfica</div>
+      </div>
+    </div>
+
+    <!-- TILE 4 — solo color, sin foto -->
+    <div class="leg-tile gold">
+      <div class="leg-tile-body">
+        <span class="leg-stars">★ ★ ★</span>
+        <p class="leg-quote">En el colegio siempre tuvieron las puertas abiertas y nos enseñaron sobre la constancia y <strong>la alegría.</strong></p>
+        <div class="leg-author">Mordejai Kimhi</div>
+        <div class="leg-role"><!-- PEGAR ROL --></div>
+      </div>
+    </div>
+
+    <!-- TILE 5 — foto de fondo, amplio -->
+    <div class="leg-tile light wide">
+      <img src="https://i.ibb.co/3YBpCSG7/web.jpg" class="leg-tile-media" alt="">
+      <div class="leg-tile-overlay"></div>
+      <div class="leg-tile-body">
+        <span class="leg-stars">★ ★ ★</span>
+        <p class="leg-quote">Agradezco al colegio por proporcionarme los valores y herramientas fundamentales para mi desarrollo como docente, <strong>a través del ejemplo y el accionar diario.</strong></p>
+        <div class="leg-author">Matías Salama</div>
+        <div class="leg-role">Profesor de Historia</div>
+      </div>
+    </div>
+
+    <!-- TILE 6 — solo visual (foto grande sin texto), amplio -->
+    <!-- FOTO VISUAL: reemplazá con una foto de egresados real -->
+    <div class="leg-tile visual wide tall">
+      <img src="https://i.ibb.co/XkLmFjXZ/web-9.jpg" class="leg-tile-media" alt="Egresados">
+      <div class="leg-tile-overlay"></div>
+    </div>
+
+    <!-- TILE 7 — foto de fondo -->
+    <!-- FOTO 7: reemplazá PEGAR_URL_FOTO_7 -->
+    <div class="leg-tile dark">
+      <img src="PEGAR_URL_FOTO_7" class="leg-tile-media" alt="" onerror="this.remove()">
+      <div class="leg-tile-overlay"></div>
+      <div class="leg-tile-body">
+        <span class="leg-stars">★ ★ ★</span>
+        <p class="leg-quote">El colegio Iosef Caro me brindó contención, cariño y acompañamiento. Siempre me sentí <strong>escuchada y apoyada.</strong></p>
+        <div class="leg-author">Liz Houslining</div>
+        <div class="leg-role"><!-- PEGAR ROL --></div>
+      </div>
+    </div>
+
+    <!-- TILE 8 — foto de fondo, amplio -->
+    <!-- FOTO 8: reemplazá PEGAR_URL_FOTO_8 -->
+    <div class="leg-tile light wide">
+      <img src="PEGAR_URL_FOTO_8" class="leg-tile-media" alt="" onerror="this.remove()">
+      <div class="leg-tile-overlay"></div>
+      <div class="leg-tile-body">
+        <span class="leg-stars">★ ★ ★</span>
+        <p class="leg-quote">Asistí al jardín, primaria y secundaria en R' Iosef Caro. Al terminar estudié en la Midrashá para formarme como mora y actualmente trabajo de eso. <strong>Estoy feliz y agradecida por la escuela que elegí.</strong></p>
+        <div class="leg-author"><!-- PEGAR NOMBRE --></div>
+        <div class="leg-role">Mora · Midrashá</div>
+      </div>
+    </div>
+
+    <!-- TILE 9 — video de fondo -->
+    <!-- VIDEO 9: reemplazá PEGAR_URL_VIDEO_9.mp4 -->
+    <div class="leg-tile dark">
+      <video class="leg-tile-media" autoplay muted loop playsinline onerror="this.remove()">
+        <source src="PEGAR_URL_VIDEO_9.mp4" type="video/mp4">
+      </video>
+      <div class="leg-tile-overlay"></div>
+      <div class="leg-tile-body">
+        <span class="leg-stars">★ ★ ★</span>
+        <p class="leg-quote">Agradezco la dedicación de los morim y el estudio personalizado que nos brindaron. <strong>¡Gracias, R' Iosef Caro!</strong></p>
+        <div class="leg-author"><!-- PEGAR NOMBRE --></div>
+        <div class="leg-role"><!-- PEGAR ROL --></div>
+      </div>
+    </div>
+
+    <!--
+    ══ PARA AGREGAR MÁS TESTIMONIOS ═══════════════════════════════
+    Copiá este bloque y pegalo antes de este comentario:
+
+    CON FOTO:
+    <div class="leg-tile dark">
+      <img src="URL_FOTO" class="leg-tile-media" alt="" onerror="this.remove()">
+      <div class="leg-tile-overlay"></div>
+      <div class="leg-tile-body">
+        <span class="leg-stars">★ ★ ★</span>
+        <p class="leg-quote">Texto del testimonio con <strong>frase clave.</strong></p>
+        <div class="leg-author">Nombre Apellido</div>
+        <div class="leg-role">Profesión · Año</div>
+      </div>
+    </div>
+
+    CON VIDEO:
+    <div class="leg-tile gold">
+      <video class="leg-tile-media" autoplay muted loop playsinline onerror="this.remove()">
+        <source src="URL.mp4" type="video/mp4">
+      </video>
+      <div class="leg-tile-overlay"></div>
+      <div class="leg-tile-body">
+        <span class="leg-stars">★ ★ ★</span>
+        <p class="leg-quote">Testimonio con <strong>frase clave.</strong></p>
+        <div class="leg-author">Nombre</div>
+        <div class="leg-role">Rol</div>
+      </div>
+    </div>
+
+    Modificadores:
+      .wide  → ocupa 2 columnas
+      .tall  → más alto
+      .visual → solo imagen/video, sin texto
+      .dark / .light / .gold → color del overlay
+    ══════════════════════════════════════════════════════════════ -->
+
+  </div><!-- /leg-mosaic -->
+
+  <!-- ══ SEPARADOR ══ -->
+  <div class="leg-divider"><span>Fotos y Videos · Egresados</span></div>
+
+  <!-- ══ CARRUSEL 8 SLOTS ══ -->
+  <div class="leg-carousel">
+    <img src="https://i.ibb.co/mf7Mm6R/web-8.jpg" alt="" class="leg-item">
+    <video autoplay muted loop playsinline class="leg-item">
+      <source src="https://stream.vidhosting.in/videos/988aca6a.mp4" type="video/mp4">
+    </video>
+    <img src="https://i.ibb.co/3YBpCSG7/web.jpg" alt="" class="leg-item">
+    <img src="https://i.ibb.co/GvTynVH9/IOSEF-27.jpg" alt="" class="leg-item">
+    <!-- FOTO 5: reemplazá PEGAR_URL_FOTO_5 -->
+    <img src="PEGAR_URL_FOTO_5" alt="" class="leg-item" onerror="this.style.display='none'">
+    <!-- FOTO 6: reemplazá PEGAR_URL_FOTO_6 -->
+    <img src="PEGAR_URL_FOTO_6" alt="" class="leg-item" onerror="this.style.display='none'">
+    <!-- VIDEO 7: reemplazá PEGAR_URL_VIDEO_7.mp4 -->
+    <video autoplay muted loop playsinline class="leg-item" onerror="this.style.display='none'">
+      <source src="PEGAR_URL_VIDEO_7.mp4" type="video/mp4">
+    </video>
+    <!-- FOTO 8: reemplazá PEGAR_URL_FOTO_8 -->
+    <img src="PEGAR_URL_FOTO_8" alt="" class="leg-item" onerror="this.style.display='none'">
+  </div>
+
+</div><!-- /leg-wrap -->
+
+<!-- ══ CTA FINAL ══ -->
+<div class="leg-cta">
+  <div class="leg-cta-tag">Sumá tu historia</div>
+  <h2>Los Egresados del <em>R' Iosef Caro</em><br>son el ejemplo de quienes somos</h2>
+  <p>¿Sos egresado/a y querés compartir tu testimonio? Escribinos y sumamos tu historia al legado del colegio.</p>
+  <a href="contacto.html" class="leg-cta-btn">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+    Compartir mi testimonio
+  </a>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="foot-brand">
+    Rabino Iosef Caro
+    <small>Belgrano, CABA · Comunidad Ajdut Israel · Desde 1967</small>
+  </div>
+  <div class="foot-nav">
+    <a href="index.html">Inicio</a>
+    <a href="institucional.html">Institucional</a>
+    <a href="niveles.html">Niveles</a>
+    <a href="propuesta.html">Propuesta</a>
+    <a href="novedades.html">Novedades</a>
+    <a href="legado.html">Nuestro Legado</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="equipo.html">Sumate</a>
+  </div>
+  <div style="margin-top:1rem;display:flex;justify-content:center;gap:1rem;width:100%;">
+    <a href="PEGAR_AQUI_LINK_DE_FACEBOOK" target="_blank" rel="noopener noreferrer">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" style="width:42px;height:42px;border-radius:50%;">
+    </a>
+    <a href="PEGAR_AQUI_LINK_DE_INSTAGRAM" target="_blank" rel="noopener noreferrer">
+      <img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" style="width:42px;height:42px;border-radius:50%;">
+    </a>
+  </div>
+  <p class="foot-copy">&copy; 2026 Colegio Rabino Iosef Caro · "Formamos Iehudim íntegros para el mañana"</p>
+</footer>
+
+<!-- ══ WHATSAPP ══ -->
+<style>
+.wa-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;display:flex;flex-direction:column;align-items:flex-end;gap:.5rem;}
+.wa-tooltip{background:#fff;color:#13134F;font-family:Inter,sans-serif;font-size:.78rem;font-weight:500;padding:.45rem .85rem;border-radius:100px;box-shadow:0 4px 16px rgba(0,0,0,.15);white-space:nowrap;opacity:0;transform:translateX(8px);transition:all .25s;pointer-events:none;}
+.wa-btn{width:56px;height:56px;border-radius:50%;background:#25D366;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(37,211,102,.45);transition:transform .25s,box-shadow .25s;text-decoration:none;animation:wa-pulse 2.5s ease-in-out infinite;}
+.wa-btn:hover{transform:scale(1.1);box-shadow:0 6px 24px rgba(37,211,102,.6);}
+.wa-float:hover .wa-tooltip{opacity:1;transform:translateX(0);}
+@keyframes wa-pulse{0%,100%{box-shadow:0 4px 18px rgba(37,211,102,.45);}50%{box-shadow:0 4px 28px rgba(37,211,102,.75);}}
+</style>
+<div class="wa-float">
+  <span class="wa-tooltip">¡Escribinos por WhatsApp!</span>
+  <a class="wa-btn" href="https://wa.me/5491124670668" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+</div>
+
+</body>
+</html>
