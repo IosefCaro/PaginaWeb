@@ -458,6 +458,8 @@ Nuestro Legado
     <a class="npill" href="novedades.html">Novedades</a>
     <a class="npill" href="calendario.html">Calendario</a>
     <a class="npill active" href="contacto.html">Contacto</a>
+    <a class="npill" href="legado.html">Nuestro Legado</a>
+
   </nav>
   <div style="display:flex;align-items:center;gap:.75rem;">
     <a href="contacto.html" class="cta-btn" style="text-decoration:none;">Inscribirse</a>
@@ -576,7 +578,7 @@ Nuestro Legado
 /* ═══════════════════════════════════════
    NAVEGACIÓN
 ═══════════════════════════════════════ */
-function goPage(id){const m={"home": "index.html", "institucional": "institucional.html", "niveles": "niveles.html", "propuesta": "propuesta.html", "novedades": "novedades.html", "calendario": "calendario.html", "contacto": "contacto.html", "equipo": "equipo.html"};if(m[id])window.location.href=m[id];}
+function goPage(id){const m={"home": "index.html", "institucional": "institucional.html", "niveles": "niveles.html", "propuesta": "propuesta.html", "novedades": "novedades.html","legado":"legado.html" ,"calendario": "calendario.html", "contacto": "contacto.html", "equipo": "equipo.html"};if(m[id])window.location.href=m[id];}
 function switchTab(btn){
   const bar=btn.closest('.tab-bar');
   const page=btn.closest('.page');
