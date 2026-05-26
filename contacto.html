@@ -515,14 +515,57 @@ Nuestro Legado
       <div class="cform">
         <h3>Solicitá información</h3>
         <p class="cform-sub">Completá el formulario y nos comunicaremos a la brevedad.</p>
-        <div class="fg"><label>Nombre completo</label><input type="text" placeholder="Tu nombre completo"/></div>
-        <div class="fg"><label>Correo electrónico</label><input type="email" placeholder="tu@email.com"/></div>
-        <div class="fg"><label>Teléfono</label><input type="tel" placeholder="+54 11 ..."/></div>
-        <div class="fg"><label>Nivel de interés</label>
-          <select><option value="">Seleccioná un nivel</option><option>גן · Jardín Maternal</option><option>גן · Jardín de Infantes</option><option>יסודי · Nivel Primario</option><option>בנות · Sec. Mujeres</option><option>בנים · Sec. Varones</option></select>
+
+        <!-- Mensaje de éxito — aparece después de enviar -->
+        <div class="success-banner" id="contact-success">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          <h4>¡Mensaje enviado!</h4>
+          <p>Nos comunicaremos con vos a la brevedad en <strong>info@iosefcaro.org</strong>.</p>
         </div>
-        <div class="fg"><label>Mensaje</label><textarea placeholder="¿En qué podemos ayudarte?"></textarea></div>
-        <button class="btn-send">Enviar Consulta</button>
+
+        <!-- Formulario conectado a Formspree → info@iosefcaro.org -->
+        <form id="contact-form"
+              action="https://formspree.io/f/mgoqnglp"
+              method="POST">
+
+          <!-- Campo oculto: asunto del email -->
+          <input type="hidden" name="_subject" value="Nueva consulta — Colegio Rabino Iosef Caro"/>
+          <!-- Evitar spam -->
+          <input type="text" name="_gotcha" style="display:none"/>
+
+          <div class="fg">
+            <label for="cf-nombre">Nombre completo</label>
+            <input type="text" id="cf-nombre" name="nombre"
+              placeholder="Tu nombre completo" required/>
+          </div>
+          <div class="fg">
+            <label for="cf-email">Correo electrónico</label>
+            <input type="email" id="cf-email" name="email"
+              placeholder="tu@email.com" required/>
+          </div>
+          <div class="fg">
+            <label for="cf-tel">Teléfono</label>
+            <input type="tel" id="cf-tel" name="telefono"
+              placeholder="+54 11 ..."/>
+          </div>
+          <div class="fg">
+            <label for="cf-nivel">Nivel de interés</label>
+            <select id="cf-nivel" name="nivel">
+              <option value="">Seleccioná un nivel</option>
+              <option>גן · Jardín Maternal</option>
+              <option>גן · Jardín de Infantes</option>
+              <option>יסודי · Nivel Primario</option>
+              <option>בנות · Sec. Mujeres</option>
+              <option>בנים · Sec. Varones</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label for="cf-msg">Mensaje</label>
+            <textarea id="cf-msg" name="mensaje"
+              placeholder="¿En qué podemos ayudarte?"></textarea>
+          </div>
+          <button type="submit" class="btn-send" id="cf-btn">Enviar Consulta</button>
+        </form>
       </div>
     </div>
   </div>
@@ -845,6 +888,36 @@ function renderVideoEmbed(url){
 // ── Admin removido de página pública ──
 function openAdminLogin(){}
 function openNewPost(){ window.location.href='admin.html'; }
+
+/* ── FORMULARIO DE CONTACTO → Formspree → info@iosefcaro.org ── */
+const contactForm = document.getElementById('contact-form');
+if(contactForm){
+  contactForm.addEventListener('submit', async function(e){
+    e.preventDefault();
+    const btn = document.getElementById('cf-btn');
+    btn.textContent = 'Enviando…';
+    btn.disabled = true;
+    try {
+      const res = await fetch(contactForm.action, {
+        method: 'POST',
+        body: new FormData(contactForm),
+        headers: { 'Accept': 'application/json' }
+      });
+      if(res.ok){
+        contactForm.style.display = 'none';
+        const s = document.getElementById('contact-success');
+        if(s){ s.style.display = 'block'; }
+      } else {
+        btn.textContent = 'Error al enviar. Intentá de nuevo.';
+        btn.disabled = false;
+      }
+    } catch(err){
+      btn.textContent = 'Error de conexión. Intentá de nuevo.';
+      btn.disabled = false;
+    }
+  });
+}
+
 
 /* ═══════════════════════════════════════
    MODAL PROPUESTA DETALLE
